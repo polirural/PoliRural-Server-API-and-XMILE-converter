@@ -1,0 +1,1747 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xmile xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" xmlns:isee="http://iseesystems.com/XMILE" version="1.0">
+	<header>
+		<smile version="1.0" namespace="std, isee" uses_submodels=""/>
+		<name>Vidzeme_v2</name>
+		<uuid>8d623a8f-8453-47f6-adb8-4ed972001f0e</uuid>
+		<vendor>isee systems, inc.</vendor>
+		<product version="2.1.4" isee:build_number="2496" isee:saved_by_v1="true" lang="en">Stella Architect</product>
+	</header>
+	<sim_specs isee:sim_duration="1.5" isee:simulation_delay="0.05" isee:restore_on_start="false" method="Euler" time_units="Years" isee:instantaneous_flows="false" isee:loop_scores="true" isee:loop_exhaustive_allowed="1000">
+		<start>2011</start>
+		<stop>2041</stop>
+		<dt reciprocal="true">4</dt>
+	</sim_specs>
+	<default_format precision="0.01" scale_by="1" delimit_000s="true"/>
+	<model_units/>
+	<model name="New combined model"><variables><aux name="mean_working_period_for_farmers">
+				<eqn>45</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="abandonment_ratio">
+				<eqn>agriculture_profitability</eqn>
+				<gf>
+					<xscale min="0" max="75000"/>
+					<yscale min="0" max="1"/>
+					<ypts>0.993307149075715,0.977022630089974,0.924141819978757,0.777299861174691,0.5,0.222700138825309,0.0758581800212436,0.0229773699100256,0.00669285092428486</ypts>
+				</gf>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="Jobs_per_farm" access="output" isee:autocreated="true">
+				<doc>1,1 Greece - 12,4 Slovakia
+mean 1,5</doc>
+				<eqn>mean_jobs_per_farm*MAX(1, "diversification/_multifunctionality"/4)</eqn>
+				<units>job/farm</units>
+			</aux>
+			<aux name="diversification/_multifunctionality" access="output" isee:autocreated="true">
+				<doc>0-5</doc>
+				<eqn>(effect_of_tourism_on_diversification+"CAP_Eco-Schemes")/2</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="farmer_retirement">
+				<eqn>farms/mean_working_period_for_farmers</eqn>
+				<units>farm/year</units>
+			</aux>
+			<aux name="generational_transition_ratio">
+				<doc>0-1</doc>
+				<eqn>social_capital</eqn>
+				<gf>
+					<xscale min="0" max="5"/>
+					<yscale min="0" max="1"/>
+					<ypts>0,0.0171443508529218,0.0405193893712887,0.0723895039310372,0.115842018512068,0.17508626816404,0.255861366007455,0.365992163003651,0.516147257467657,0.720872484274773,1</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="retirement_substitution">
+				<eqn>farmer_retirement*generational_transition_ratio</eqn>
+				<units>farm/year</units>
+			</aux>
+			<aux name="retirement_not_covered">
+				<eqn>farmer_retirement-retirement_substitution</eqn>
+				<units>farm/year</units>
+			</aux>
+			<aux name="land_access">
+				<doc>0,6 - 1,2</doc>
+				<eqn>MIN(0.6, new_forms_of_property)</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="new_forms_of_property">
+				<doc>0-1,2</doc>
+				<eqn>"social_innovation_/_potential_initiatives"*AKIS_effect/5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="max_agricultural_land">
+				<eqn>400000</eqn>
+				<units>ha</units>
+			</aux>
+			<aux name="potential_land_transformation">
+				<eqn>MAX (0, max_agricultural_land-agricultural_land)</eqn>
+				<units>ha</units>
+			</aux>
+			<aux name="potential_new_farms">
+				<eqn>potential_land_transformation/average_farm_area</eqn>
+				<units>farm</units>
+			</aux>
+			<aux name="farm_to_fork_effect_on_services">
+				<doc>0-5 over time</doc>
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2022" max="2040"/>
+					<yscale min="0" max="5"/>
+					<ypts>2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="CAP_Eco-Schemes" access="output" isee:autocreated="true">
+				<doc>0-5 over time</doc>
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2022" max="2040"/>
+					<yscale min="0" max="5"/>
+					<ypts>2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="farming_attraction_factor">
+				<doc>0 - 1
+for profitability*land access 0 - 100k</doc>
+				<eqn>land_access*agriculture_profitability</eqn>
+				<gf>
+					<xscale min="0" max="100000"/>
+					<yscale min="0" max="1"/>
+					<ypts>0,0.0139810175320806,0.0336236144274046,0.0612204336079019,0.0999925182227609,0.154465265083535,0.23099661953696,0.338519161578867,0.489582697951918,0.701819049401251,1</ypts>
+				</gf>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="farm_to_fork_effect_on_industry">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2021" max="2040"/>
+					<yscale min="0" max="5"/>
+					<ypts>2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="related_agricultural_jobs_on_industry" access="output" isee:autocreated="true">
+				<eqn>(farms/max_mean_related_agri_jobs_on_industry)*MAX(1, STEP (farm_to_fork_effect_on_industry/4, 2021))* AKIS_effect</eqn>
+				<units>job</units>
+			</aux>
+			<aux name="social_innovation_/_potential_initiatives" access="input">
+				<eqn>social_innovation</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="average_farm_area" access="output" isee:autocreated="true">
+				<eqn>25.125</eqn>
+				<units>ha/farm</units>
+			</aux>
+			<aux name="agricultural_land" access="output" isee:autocreated="true">
+				<eqn>farms*average_farm_area</eqn>
+				<units>ha</units>
+			</aux>
+			<aux name="agriculture_profitability">
+				<doc>0 - 105 aprox
+</doc>
+				<eqn>mean_local_income_per_farm*(1+CAP_direct_payment)</eqn>
+				<units>€/farm</units>
+			</aux>
+			<aux name="CAP_direct_payment">
+				<eqn>CAP_mean_proportion_of_direct_payment_to_FNVA- STEP(CAP_reform_direct_payments_decrease_2021, 2021)+ STEP ("Eco-schemes_effect_on_direct_payment", 2021)</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="agriculture_jobs" access="output" isee:autocreated="true">
+				<eqn>farms*Jobs_per_farm</eqn>
+				<units>job</units>
+			</aux>
+			<aux name="effect_of_tourism_on_diversification">
+				<doc>0-5
+10 times visitors = 0
+0 times visitors = 2,5</doc>
+				<eqn>tourist_visitors/total_rural_population</eqn>
+				<gf>
+					<xscale min="0" max="10"/>
+					<yscale min="0" max="5"/>
+					<ypts>2.473,4.069,4.628,4.734,5,5,4.654,1.277,0.505,0</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="AKIS_effect">
+				<doc>0,7-1,2 over time</doc>
+				<eqn>AKIS_evolution*0.22</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="CAP_reform_direct_payments_decrease_2021">
+				<eqn>0.05</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="CAP_mean_proportion_of_direct_payment_to_FNVA">
+				<doc>FNVA farm net value added</doc>
+				<eqn>0.7</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="Eco-schemes_effect_on_direct_payment">
+				<eqn>"CAP_Eco-Schemes"</eqn>
+				<gf>
+					<xscale min="0" max="5"/>
+					<yscale min="0" max="0.05"/>
+					<ypts>0,0.00306035122800446,0.00644256240429208,0.0101804838351156,0.0143115258945134,0.0188770334399073,0.0239226996053315,0.0294990231136766,0.0356618136848812,0.0424727505983673,0.05</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="initial_mean_income_per_farm">
+				<eqn>56580</eqn>
+				<units>€/farm</units>
+			</aux>
+			<aux name="technical_obsolescence_time">
+				<eqn>normal_technical_obsolescence_time+ RAMP(((final_technical_obsolescence_time-normal_technical_obsolescence_time)/time_for_slope), 2021)</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="agricultural_obsolescence_covered">
+				<doc>0-1</doc>
+				<eqn>MAX (0.6, AKIS_effect)</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="mean_jobs_per_farm">
+				<eqn>1</eqn>
+				<units>job/farm</units>
+			</aux>
+			<aux name="max_mean_related_agri_jobs_on_services">
+				<eqn>200</eqn>
+				<units>farm/job</units>
+			</aux>
+			<aux name="max_mean_related_agri_jobs_on_industry">
+				<eqn>5</eqn>
+				<units>farm/job</units>
+			</aux>
+			<aux name="max_improvement_per_diversification">
+				<eqn>0.015</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="initial_number_of_farms" access="output" isee:autocreated="true">
+				<eqn>16581</eqn>
+				<units>farm</units>
+			</aux>
+			<aux name="final_technical_obsolescence_time">
+				<eqn>7</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<range min="2" max="7"/>
+				<units>year</units>
+			</aux>
+			<aux name="time_for_slope">
+				<eqn>19</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="normal_technical_obsolescence_time">
+				<eqn>7</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="AKIS_evolution">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2021" max="2040"/>
+					<yscale min="0" max="5"/>
+					<ypts>3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="related_agricultural_jobs_effect_on_services" access="output" isee:autocreated="true">
+				<eqn>(farms/max_mean_related_agri_jobs_on_services)*MAX(1, STEP(("CAP_Eco-Schemes"+farm_to_fork_effect_on_services)/8, 2021)) * AKIS_effect</eqn>
+				<units>job</units>
+			</aux>
+		<aux name="vocational_training_campaign">
+				<eqn>initial_fraction_VT+ STEP((VT_fraction_objective/100)-initial_fraction_VT, 2021)</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="students_university_campaign">
+				<eqn>initial_fraction_university_students+ STEP ((university_students_objective/100)-initial_fraction_university_students, 2021)</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="workforce_specialization" access="output" isee:autocreated="true">
+				<eqn>(VT_PROFESSIONALS+GRADUATED_PROFESSIONALS)/(VT_PROFESSIONALS+GRADUATED_PROFESSIONALS+UNSKILLED_WORKERS)</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="time_to_become_VT_professional">
+				<eqn>3</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="time_to_become_graduated_professional">
+				<eqn>5</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="working_lifetime_duration_for_VT">
+				<eqn>42</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="working_lifetime_duration_for_GP">
+				<eqn>40</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="working_lifetime_duration_for_NSW">
+				<eqn>45</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="initial_fraction_VT">
+				<eqn>0.7</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="VT_fraction_objective">
+				<eqn>70</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<range min="40" max="85"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="initial_fraction_university_students">
+				<eqn>0.25</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="university_students_objective">
+				<eqn>25</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<range min="15" max="60"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="graduate_migrating_ratio">
+				<eqn>0.6</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="VT_migrating_ratio">
+				<eqn>0.3</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="unskilled_migrating_ratio">
+				<eqn>0.1</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="years_for_education_campaign">
+				<doc>Campaign starting in 2021. How many years? now it is fixed in 9</doc>
+				<eqn>4</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<range min="3" max="10"/>
+				<units>year</units>
+			</aux>
+			<aux name="total_regional_employment">
+				<eqn>agriculture_jobs+ total_industrial_jobs+ total_services_job+ Rest_of_primary_sector_jobs</eqn>
+				<units>job</units>
+			</aux>
+			<aux name="workforce_as_ratio_of_WAP">
+				<eqn>0.74</eqn>
+				<units>job/person</units>
+			</aux>
+			<aux name="structural_unemployment">
+				<doc>from 8% to 2% depending on workforce specialization</doc>
+				<eqn>workforce_specialization</eqn>
+				<gf>
+					<xscale min="0" max="1"/>
+					<yscale min="0.02" max="0.08"/>
+					<ypts>0.0799224590134228,0.0797078641253745,0.0789101785382941,0.0760774799944656,0.0674504380872162,0.05,0.0325495619127838,0.0239225200055344,0.021089821461706,0.0202921358746255,0.0200775409865772</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="employment_gap" access="output" isee:autocreated="true">
+				<doc>employment gap &lt; 0 means unemployment
+employment gap &gt; 0 you need people to work</doc>
+				<eqn>total_employment- total_workforce</eqn>
+				<units>job</units>
+			</aux>
+			<aux name="relative_employment_gap" access="output" isee:autocreated="true">
+				<eqn>employment_gap/total_workforce</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="remote_workers_delay_step">
+				<eqn>STEP (remote_workers_potential_2030, 2021)</eqn>
+				<units>job</units>
+			</aux>
+			<aux name="remote_workers">
+				<eqn>DELAY1(remote_workers_delay_step, years_for_remote_workers_trend)* broadband_infrastructure/100</eqn>
+				<units>job</units>
+			</aux>
+			<aux name="primary_jobs_viability_ratio">
+				<eqn>0.46</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="new_industrial_job_viability_ratio">
+				<eqn>0.6</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="related_agricultural_jobs_effect_on_industry" access="input">
+				<eqn>related_agricultural_jobs_on_industry</eqn>
+				<units>job</units>
+			</aux>
+			<aux name="total_workforce" access="output" isee:autocreated="true">
+				<eqn>regional_WA*workforce_as_ratio_of_WAP* (1-structural_unemployment)</eqn>
+				<units>job</units>
+			</aux>
+			<aux name="total_employment">
+				<eqn>total_regional_employment+remote_workers</eqn>
+				<units>job</units>
+			</aux>
+			<aux name="Previous_population" access="output" isee:autocreated="true">
+				<eqn>PREVIOUS(total_rural_population,  INIT(total_rural_population))</eqn>
+				<units>person</units>
+			</aux>
+			<aux name="Difference_of_population" access="output" isee:autocreated="true">
+				<eqn>total_rural_population-Previous_population</eqn>
+				<units>person</units>
+			</aux>
+			<aux name="ratio_population_services">
+				<doc>Value?
+4%?</doc>
+				<eqn>0.04</eqn>
+				<units>job/person/year</units>
+			</aux>
+			<aux name="endogenous_primary_job_creation_ratio" access="input">
+				<eqn>endogenous_primary_job_creation</eqn>
+				<units>job/year</units>
+			</aux>
+			<aux name="endogenous_industrial_job_creation_ratio" access="input">
+				<eqn>endogenous_industrial_job_creation</eqn>
+				<units>job/year</units>
+			</aux>
+			<aux name="endogenous_service_jobs_creation_ratio" access="input">
+				<eqn>endogenous_service_job_creation</eqn>
+				<units>job/year</units>
+			</aux>
+			<aux name="remote_workers_potential_2030">
+				<eqn>0</eqn>
+				<units>job</units>
+			</aux>
+			<aux name="total_services_job">
+				<eqn>population_services+related_agricultural_jobs_effect_on_services+service_jobs +jobs_per_tourism</eqn>
+				<units>job</units>
+			</aux>
+			<aux name="new_services_viability_ratio">
+				<doc>0-1</doc>
+				<eqn>0.6</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="total_industrial_jobs">
+				<eqn>related_agricultural_jobs_effect_on_industry+Industrial_jobs</eqn>
+				<units>job</units>
+			</aux>
+			<aux name="resulting_average_life_for_industrial_business">
+				<eqn>DELAY1(function_life_of_an_industrial_business, 10)</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="resulting_average_life_for_services">
+				<eqn>DELAY1(function_life_of_a_service_business, 10)</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="years_for_remote_workers_trend">
+				<eqn>7</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="average_life_of_a_primary_sector_business">
+				<eqn>20</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="2041_average_life_of_a_service_business">
+				<doc>Subtract to the original obsolescence time</doc>
+				<eqn>15</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<range min="0" max="30"/>
+				<units>year</units>
+			</aux>
+			<aux name="jobs_per_tourism">
+				<eqn>tourist_visitors/visitors_per_tourism_workplace</eqn>
+				<units>job</units>
+			</aux>
+			<aux name="visitors_per_tourism_workplace">
+				<eqn>73.1</eqn>
+				<units>person/job/year</units>
+			</aux>
+			<aux name="services_ratio">
+				<eqn>(total_services_job+remote_workers)/total_employment</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="primary_ratio">
+				<eqn>(agriculture_jobs+Rest_of_primary_sector_jobs)/total_employment</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="industrial_ratio">
+				<eqn>total_industrial_jobs/total_employment</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="average_life_of_a_service_business">
+				<eqn>15</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="average_life_of_an_industrial_business">
+				<eqn>20</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="2041_average_life_of_an_industrial_business">
+				<doc>Subtract to the original obsolescence time</doc>
+				<eqn>20</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<range min="0" max="30"/>
+				<units>year</units>
+			</aux>
+			<aux name="regional_WA">
+				<eqn>WORKING_AGE_RURAL_POPULATION-commuters</eqn>
+				<units>person</units>
+			</aux>
+			<aux name="function_life_of_an_industrial_business">
+				<eqn>average_life_of_an_industrial_business+ STEP ("2041_average_life_of_an_industrial_business"-average_life_of_an_industrial_business, 2022)</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="function_life_of_a_service_business">
+				<eqn>average_life_of_a_service_business+ STEP("2041_average_life_of_a_service_business"-average_life_of_a_service_business, 2022)</eqn>
+				<units>year</units>
+			</aux>
+		<aux name="natural_land_variation">
+				<eqn>STEP((natural_land_objective-initial_natural_land)/years_for_completing_natural_land_objective, 2021)</eqn>
+				<units>ha/year</units>
+			</aux>
+			<aux name="potential_visitors_as_a_function_of_Natural_Capital" access="output" isee:autocreated="true">
+				<eqn>Natural_Capital</eqn>
+				<gf>
+					<xscale min="200000" max="800000"/>
+					<yscale min="0" max="2000000"/>
+					<ypts>13385.7018485697,35972.4199241831,94851.7463551336,238405.844044235,537882.84273999,1000000,1462117.15726001,1761594.15595577,1905148.25364487,1964027.58007582,1986614.29815143</ypts>
+				</gf>
+				<units>person</units>
+			</aux>
+			<aux name="ratio_effect_of_agriculture_on_Natural_Capital">
+				<doc>-10% to 10% of agricultural land</doc>
+				<eqn>"diversification/_multifunctionality"</eqn>
+				<gf>
+					<xscale min="0" max="5"/>
+					<yscale min="-0.2" max="0.2"/>
+					<ypts>-0.197322859630286,-0.192805516015163,-0.181029650728973,-0.152318831191153,-0.0924234314520019,0,0.0924234314520021,0.152318831191153,0.181029650728973,0.192805516015163,0.197322859630286</ypts>
+				</gf>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="natural_land_objective">
+				<eqn>486759</eqn>
+				<format precision="1"/>
+				<range min="400000" max="550000"/>
+				<units>ha</units>
+			</aux>
+			<aux name="tourist_visitors" access="output" isee:autocreated="true">
+				<eqn>DELAY1((attraction_ratio_for_tourists*(city_and_regional_connections_access/5))*potential_visitors_as_a_function_of_Natural_Capital, 3)</eqn>
+				<units>person/year</units>
+			</aux>
+			<aux name="attraction_ratio_for_tourists" access="output" isee:autocreated="true">
+				<eqn>DELAY1(tourist_campaign, time_to_complete_campaign)</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="effect_of_tourism_on_natural_capital">
+				<doc>-10% to 5% of the Natural Capital</doc>
+				<eqn>relative_tourist_visits</eqn>
+				<gf>
+					<xscale min="0" max="1.5"/>
+					<yscale min="-0.015" max="0.015"/>
+					<ypts>0.00383,0.00846,0.01309,0.01468,0.01452,0.01309,-0.00144,-0.00543,-0.00814,-0.00989,-0.01117,-0.01245,-0.0134,-0.01388,-0.01468</ypts>
+				</gf>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="relative_natural_capital">
+				<eqn>Natural_Capital/initial_Natural_capital</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="natural_capital_perception" access="output" isee:autocreated="true">
+				<eqn>relative_natural_capital</eqn>
+				<gf type="extrapolate">
+					<xscale min="0" max="2"/>
+					<yscale min="0" max="5"/>
+					<ypts>0,1.67915455835093,2.80472551920568,3.55921829750222,4.06496993138351,4.40398538988941,4.63123424764189,4.78356371243207,4.88567320628281,4.95411924690151,5</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="years_for_completing_natural_land_objective">
+				<eqn>10</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<range min="3" max="10"/>
+				<units>year</units>
+			</aux>
+			<aux name="previous_agricultural_land">
+				<eqn>PREVIOUS(agricultural_land, 419277)</eqn>
+				<units>ha</units>
+			</aux>
+			<aux name="difference_of_agricultural_land">
+				<eqn>agricultural_land-previous_agricultural_land</eqn>
+				<units>ha</units>
+			</aux>
+			<aux name="effect_of_agriculture_on_Natural_Capital">
+				<eqn>IF difference_of_agricultural_land&lt;0 AND ratio_effect_of_agriculture_on_Natural_Capital&lt;0 THEN  ABS (difference_of_agricultural_land)* ratio_effect_of_agriculture_on_Natural_Capital ELSE difference_of_agricultural_land* ratio_effect_of_agriculture_on_Natural_Capital</eqn>
+				<units>ha/year</units>
+			</aux>
+			<aux name="normal_attraction_ratio">
+				<eqn>0.09</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="attraction_ratio_objective">
+				<eqn>9</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<range min="5" max="20"/>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="time_to_complete_campaign">
+				<eqn>8</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<range min="4" max="10"/>
+				<units>year</units>
+			</aux>
+			<aux name="tourist_campaign">
+				<eqn>normal_attraction_ratio+ STEP ((attraction_ratio_objective/100)-normal_attraction_ratio, 2021)</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="initial_natural_land">
+				<eqn>486759</eqn>
+				<units>ha</units>
+			</aux>
+			<aux name="initial_Natural_capital">
+				<eqn>INIT(Natural_Capital)</eqn>
+				<units>ha</units>
+			</aux>
+			<aux name="relative_tourist_visits">
+				<eqn>tourist_visitors/total_rural_population</eqn>
+				<units>dmnl/year</units>
+			</aux>
+		<aux name="total_rural_population" access="output" isee:autocreated="true">
+				<eqn>INFANTS+ SCHOOL_AGE_POPULATION+ WORKING_AGE_POPULATION+ ELDERLY_POPULATION+ POST_SCHOOL_POPULATION</eqn>
+				<units>person</units>
+			</aux>
+			<aux name="school_age_duration">
+				<eqn>10</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="working_age_duration">
+				<eqn>45</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="children_death_rate">
+				<eqn>0.0000091</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="working_age_death_rate">
+				<eqn>0.001755</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="adapted_life_expectancy">
+				<eqn>(life_expectancy- STEP (smooth_life_expectancy, 2020)+ STEP(smooth_life_expectancy, 2022))- 65</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="post_school_death_rate">
+				<eqn>0.00002475</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="birth_rate">
+				<eqn>0.0103</eqn>
+				<format precision="full" delimit_000s="false"/>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="infant_duration">
+				<eqn>5</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="infant_death_rate">
+				<eqn>0.0017</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="postschool_age_duration">
+				<eqn>5</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="post_school_leaving_ratio_1" access="input">
+				<eqn>post_school_leaving_ratio</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="WA_leaving_ratio_1" access="input">
+				<eqn>WA_leaving_ratio</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="elderly_leaving_ratio_1" access="input">
+				<eqn>elderly_leaving_ratio</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="initial_rural_population">
+				<eqn>INIT (total_rural_population)</eqn>
+				<units>person</units>
+			</aux>
+			<aux name="total_population_in_relation_to_initial_population" access="output" isee:autocreated="true">
+				<eqn>total_rural_population/initial_rural_population</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="WA_migration_ratio" access="output" isee:autocreated="true">
+				<eqn>IF working_age_net_migration&lt;0 THEN ABS(working_age_net_migration/WORKING_AGE_POPULATION) ELSE 0</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="fertility_rate">
+				<eqn>1.6</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="max_WA_population_living_rural_per_year">
+				<eqn>0.16</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="max_post_school_leaving_per_year">
+				<eqn>0.2</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="smooth_life_expectancy">
+				<eqn>SMTH3("life_expectancy_drop_2020_-_2022", 5)</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="life_expectancy">
+				<eqn>75</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="proportion_of_newcomers" access="output" isee:autocreated="true">
+				<eqn>NEWCOMERS/total_rural_population</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="integration_time">
+				<eqn>7</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="life_expectancy_drop_2020_-_2022">
+				<eqn>0</eqn>
+				<format delimit_000s="false"/>
+				<range min="0" max="3"/>
+				<units>year</units>
+			</aux>
+		<aux name="health_centers_accessibility" access="output" isee:autocreated="true">
+				<eqn>average_speed_public_transport</eqn>
+				<gf>
+					<xscale min="0" max="70"/>
+					<yscale min="0" max="5"/>
+					<ypts>0,2.56815606907501,3.81821182935456,4.42667929074639,4.7228522002571,4.86701503211567,4.93718661574841,4.97134279238592,4.9879683884192,4.99606093479508,5</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="VT_centers_accessibility" access="output" isee:autocreated="true">
+				<eqn>average_speed_public_transport</eqn>
+				<gf>
+					<xscale min="0" max="70"/>
+					<yscale min="0" max="5"/>
+					<ypts>0,1.93372405103092,3.12550371253659,3.86001325169309,4.31270117760576,4.59169872269203,4.76364859302981,4.8696235681861,4.93493734444724,4.97519108702373,5</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="University_Accessibility" access="output" isee:autocreated="true">
+				<eqn>average_speed_public_transport</eqn>
+				<gf>
+					<xscale min="0" max="70"/>
+					<yscale min="0" max="5"/>
+					<ypts>0,1.86230131943535,3.03794168540085,3.78010422143265,4.24861929273748,4.54438519492572,4.73109737187576,4.84896571560132,4.92337407331825,4.97034685263398,5</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="community_activity_and_networks">
+				<eqn>community_and_public_services_accessibility*community_climate</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="social_capital" access="output" isee:autocreated="true">
+				<eqn>shared_knowledge</eqn>
+				<gf>
+					<xscale min="0" max="15"/>
+					<yscale min="1" max="5"/>
+					<ypts>1,1.26666666666667,1.53333333333333,1.8,2.06666666666667,2.33333333333333,2.6,2.86666666666667,3.13333333333333,3.4,3.66666666666667,3.93333333333333,4.2,4.46666666666667,4.73333333333333,5</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="social_innovation" access="output" isee:autocreated="true">
+				<doc>0-5</doc>
+				<eqn>social_capital*workforce_specialization</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="city_and_regional_connections_access" access="output" isee:autocreated="true">
+				<eqn>average_speed_public_transport</eqn>
+				<gf>
+					<xscale min="0" max="70"/>
+					<yscale min="0" max="5"/>
+					<ypts>0,1.67915455835093,2.80472551920568,3.55921829750222,4.06496993138351,4.40398538988941,4.63123424764189,4.78356371243207,4.88567320628281,4.95411924690151,5</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="cultural_appeal" access="output" isee:autocreated="true">
+				<eqn>shared_knowledge</eqn>
+				<gf>
+					<xscale min="0" max="40"/>
+					<yscale min="0" max="5"/>
+					<ypts>0,1.67915455835093,2.80472551920568,3.55921829750222,4.06496993138351,4.40398538988941,4.63123424764189,4.78356371243207,4.88567320628281,4.95411924690151,5</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="institutional_support">
+				<eqn>LOG10(inst_support_evolution)</eqn>
+				<gf>
+					<xscale min="4.5" max="7.5"/>
+					<yscale min="0.15" max="0.25"/>
+					<ypts>0.15,0.158761849343026,0.166817767490201,0.174224630431257,0.181034731728877,0.187296151719083,0.193053096965617,0.198346212364908,0.203212868105135,0.207687423505355,0.211801469597446,0.21558405216353,0.219061876803549,0.2222594974808,0.2251994898766,0.227902610777981,0.230387944623715,0.232673038243314,0.234774024740276,0.236705737394217,0.238481814386045,0.240114795085563,0.2416162085813,0.242996655077604,0.244265880733673,0.2454328464729,0.246505791248338,0.247492290210939,0.24839930819126,0.249233248872208,0.25</ypts>
+				</gf>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="infrastructures_depletion_time" access="output" isee:autocreated="true">
+				<eqn>30</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="potential_initiatives_active_time">
+				<eqn>2</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="population_covered_objective">
+				<eqn>89</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<range min="65" max="100"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="broadband_infrastructures_depletion_time">
+				<eqn>10</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="endogenous_primary_job_creation" access="output" isee:autocreated="true">
+				<eqn>becoming_stablished_jobs*0.05*average_jobs_per_primary_initiative</eqn>
+				<units>job/year</units>
+			</aux>
+			<aux name="endogenous_industrial_job_creation" access="output" isee:autocreated="true">
+				<eqn>becoming_stablished_jobs*0.15*average_jobs_per_industrial_initiative</eqn>
+				<units>job/year</units>
+			</aux>
+			<aux name="endogenous_service_job_creation" access="output" isee:autocreated="true">
+				<eqn>becoming_stablished_jobs*0.8*average_jobs_per_service_initiative</eqn>
+				<units>job/year</units>
+			</aux>
+			<aux name="time_to_implement_initiatives">
+				<eqn>1</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="speed_objective">
+				<eqn>52.17</eqn>
+				<format precision="1"/>
+				<range min="9000" max="20000"/>
+				<units>km/h</units>
+			</aux>
+			<aux name="community_and_public_services_accessibility" access="output" isee:autocreated="true">
+				<eqn>average_speed_public_transport</eqn>
+				<gf>
+					<xscale min="0" max="70"/>
+					<yscale min="0" max="1"/>
+					<ypts>0,0.229619398287328,0.411695209995278,0.556071519037015,0.670554153588988,0.76133271484291,0.833315223068567,0.890393473911992,0.935653451643413,0.97154217552649,1</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="time_to_build_effective_shared_knowledge">
+				<eqn>proportion_of_newcomers</eqn>
+				<gf>
+					<xscale min="0" max="0.4"/>
+					<yscale min="1" max="5"/>
+					<ypts>1.02677140369714,1.07194483984837,1.18970349271027,1.47681168808847,2.07576568547998,3,3.92423431452002,4.52318831191153,4.81029650728973,4.92805516015163,4.97322859630286</ypts>
+				</gf>
+				<units>year</units>
+			</aux>
+			<aux name="effect_of_social_innovation_in_creating_initiatives_ratio">
+				<doc>social innovation 0 - 5</doc>
+				<eqn>social_innovation</eqn>
+				<gf>
+					<xscale min="0" max="5"/>
+					<yscale min="0" max="0.03"/>
+					<ypts>0,0.0100749273501056,0.0168283531152341,0.0213553097850133,0.024389819588301,0.0264239123393365,0.0277874054858513,0.0287013822745924,0.0293140392376969,0.0297247154814091,0.03</ypts>
+				</gf>
+				<units>initiative/person/year</units>
+			</aux>
+			<aux name="effect_of_broadband_in_creating_potential_initiatives">
+				<eqn>broadband_infrastructure_population_covered</eqn>
+				<gf>
+					<xscale min="0" max="100"/>
+					<yscale min="0" max="1"/>
+					<ypts>0.00669285092428486,0.0179862099620916,0.0474258731775668,0.119202922022118,0.268941421369995,0.5,0.731058578630005,0.880797077977883,0.952574126822433,0.982013790037909,0.993307149075715</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="year_initiating_infrastructures_plan">
+				<eqn>2021</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<range min="2021" max="2040"/>
+				<units>year</units>
+			</aux>
+			<aux name="shared_knowledge_loss_time">
+				<eqn>3</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="community_climate">
+				<doc>0 - 5 over time</doc>
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2022" max="2041"/>
+					<yscale min="0" max="5"/>
+					<ypts>3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="max_speed_improvement_per_year">
+				<eqn>0.4</eqn>
+				<units>km/h/year</units>
+			</aux>
+			<aux name="broadband_gap">
+				<eqn>MAX (0, population_covered_objective-broadband_infrastructure_population_covered)</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="average_jobs_per_service_initiative">
+				<eqn>5</eqn>
+				<units>job/initiative</units>
+			</aux>
+			<aux name="average_jobs_per_primary_initiative">
+				<eqn>3</eqn>
+				<units>job/initiative</units>
+			</aux>
+			<aux name="average_jobs_per_industrial_initiative">
+				<eqn>11.5</eqn>
+				<units>job/initiative</units>
+			</aux>
+			<aux name="broadband_effect_on_retention" access="output" isee:autocreated="true">
+				<eqn>broadband_infrastructure_population_covered</eqn>
+				<gf>
+					<yscale min="0.83" max="1"/>
+					<xpts>63,65,70.4,74.1,77.8,81.5,85.2,88.9,92.6,96.3,100</xpts>
+					<ypts>0.83,0.97,0.9837,0.9873,0.993546776182089,0.99717351946166,0.998777254130638,0.999486420644565,0.999800011885189,0.999938680962569,1</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="social_capital_effect_on_retention" access="output" isee:autocreated="true">
+				<eqn>social_capital</eqn>
+				<gf>
+					<xscale min="0" max="5"/>
+					<yscale min="0.5" max="1"/>
+					<ypts>0.5,0.777211508042245,0.900778169799528,0.955857845263477,0.980409537492349,0.991353421715047,0.996231643581114,0.998406104502879,0.999375367572517,0.999807415299271,1</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="effect_of_c&amp;r_connections_on_retention">
+				<eqn>city_and_regional_connections_access</eqn>
+				<gf>
+					<yscale min="0.7" max="1"/>
+					<xpts>4,4.14,4.23,4.6,4.8,5</xpts>
+					<ypts>0.7,0.71,0.91,0.9658,0.9819,1</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="infrastructures_gap">
+				<eqn>speed_objective-initial_speed</eqn>
+				<units>km/h</units>
+			</aux>
+			<aux name="initial_speed">
+				<eqn>TIME</eqn>
+				<gf>
+					<yscale min="0" max="75"/>
+					<xpts>2011,2014,2018,2020,2041</xpts>
+					<ypts>45,48.48,51.56,52.17,52.17</ypts>
+				</gf>
+				<units>km/h</units>
+			</aux>
+			<aux name="initial_population_covered">
+				<eqn>TIME</eqn>
+				<gf>
+					<yscale min="0" max="100"/>
+					<xpts>2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2041</xpts>
+					<ypts>59.8,62.2,67.8,62.9,71.3,71.9,73.4,76.3,83.3,89,89</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="infrastructure_campaign">
+				<eqn>infrastructures_gap/time_for_infrastructure_campaign_extension</eqn>
+				<units>km/h/year</units>
+			</aux>
+			<aux name="time_for_infrastructure_campaign_extension">
+				<eqn>10</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<range min="2" max="10"/>
+				<units>year</units>
+			</aux>
+			<aux name="broadband_campaign">
+				<eqn>broadband_gap/time_to_complete_broadband_campaign</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="time_to_complete_broadband_campaign">
+				<eqn>10</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<units>year</units>
+			</aux>
+			<aux name="inst_support_evolution">
+				<doc>Leader funding per year (from 2022 takes the average)</doc>
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2010" max="2040"/>
+					<yscale min="0" max="2500000"/>
+					<ypts>312004,456959,351077,640616,381136,35943,1526926,1576892,1311411,1864761,1480274,542846,809716,809716,809716,809716,809716,809716,809716,809716,809716,809716,809716,809716,809716,809716,809716,809716,809716,809716,809716</ypts>
+				</gf>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="population_covered_2011">
+				<eqn>59.8</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="population_covered_2021">
+				<eqn>89</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="first_gap">
+				<eqn>(population_covered_2021-population_covered_2011)/years_1st_gap</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="years_1st_gap">
+				<eqn>11</eqn>
+				<units>year</units>
+			</aux>
+		<aux name="WA_moving" access="output" isee:autocreated="true">
+				<doc>WA MOVING RATIO weights = 0,52 (of the employment gap)
+TOTAL = 1,02</doc>
+				<eqn>(employment_attractiveness*(housing_accessibility_factor_for_WA+natural_capital_factor_for_WA+cultural_appeal_factor_for_WA+public_services_factor_for_WA_attraction))+ potential_commuters_moving</eqn>
+				<units>person/year</units>
+			</aux>
+			<aux name="elderly_move_rural" access="output" isee:autocreated="true">
+				<eqn>maximum_elderly_population_moving* (natural_capital_factor_for_elderly+ cultural_appeal_factor_for_elderly+ housing_accessibility_factor_for_elderly+ medical_and_care_services_factor)</eqn>
+				<units>person/year</units>
+			</aux>
+			<aux name="housing_accessibility" access="output" isee:autocreated="true">
+				<eqn>total_population_in_relation_with_initial_population</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="5"/>
+				<gf>
+					<xscale min="0.7" max="1.5"/>
+					<yscale min="0" max="5"/>
+					<ypts>4.99893072664118,4.99301633911985,4.9546847159954,4.71784921322847,3.59437581760487,1.40562418239513,0.282150786771533,0.0453152840046021,0.00698366088014677,0.00106927335882271</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="maximum_elderly_population_moving">
+				<eqn>7200</eqn>
+				<units>person/year</units>
+			</aux>
+			<aux name="public_services_weight_for_young">
+				<doc>NCWFY + HAWFY = 0,5 (of the employment gap)</doc>
+				<eqn>1-housing_accessibility_weight_for_young</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="cultural_appeal_weight_for_WA">
+				<eqn>0.2</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="natural_capital_weight_for_WA">
+				<eqn>0.19</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="housing_accessibility_weight_for_WA">
+				<eqn>0.43</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="medical_and_care_services_weight">
+				<eqn>0.35</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="cultural_appeal_weight_for_elderly">
+				<eqn>0.175</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="natural_capital_weight_for_elderly">
+				<eqn>0.175</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="housing_accessibility_weight_for_elderly">
+				<eqn>0.3</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="housing_accessibility_factor_for_young">
+				<eqn>housing_accessibility_weight_for_young*0.5*housing_accessibility/5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="public_services_factor_for_young">
+				<eqn>public_services_weight_for_young*0.5*community_and_public_services_accessibility</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="housing_accessibility_factor_for_WA">
+				<eqn>housing_accessibility_weight_for_WA*housing_accessibility*0.52/5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="housing_accessibility_factor_for_elderly">
+				<eqn>housing_accessibility_weight_for_elderly*housing_accessibility/5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="medical_and_care_services_factor">
+				<eqn>health_centers_accessibility*medical_and_care_services_weight/5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="natural_capital_factor_for_WA">
+				<eqn>natural_capital_weight_for_WA*0.52* natural_capital_perception/5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="cultural_appeal_factor_for_WA">
+				<eqn>cultural_appeal_weight_for_WA*0.52*cultural_appeal/5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="cultural_appeal_factor_for_elderly">
+				<eqn>cultural_appeal_weight_for_elderly*cultural_appeal/5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="natural_capital_factor_for_elderly">
+				<eqn>natural_capital_perception*natural_capital_weight_for_elderly/5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="employment_gap_1" access="input">
+				<eqn>employment_gap</eqn>
+				<units>job</units>
+			</aux>
+			<aux name="attraction_ratio_for_commuters">
+				<doc>COMMUTING: housing access + regional conn.
+from 0 to 10, converted in 0 to 1 via graph.</doc>
+				<eqn>housing_accessibility+city_and_regional_connections_access</eqn>
+				<gf type="extrapolate">
+					<xscale min="0" max="10"/>
+					<yscale min="0" max="1"/>
+					<ypts>0,0.00702648084746909,0.0186757278780363,0.0379890881966742,0.0700088304013663,0.123094563486641,0.211105736068413,0.35702001565038,0.598932222491425,1</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="total_population_in_relation_with_initial_population" access="input">
+				<eqn>total_population_in_relation_to_initial_population</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="max_attraction_ratio_for_commuters">
+				<eqn>normal_max_attraction_ratio_for_commuters+ STEP(additional_attraction_from_2021/100, 2021)</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="additional_attraction_from_2021">
+				<eqn>0</eqn>
+				<format delimit_000s="false"/>
+				<range min="0" max="5"/>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="normal_max_attraction_ratio_for_commuters">
+				<eqn>0.02</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="public_services_factor_for_WA_attraction">
+				<eqn>community_and_public_services_accessibility*public_services_weight_in_WA_attraction*0.52</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="public_services_weight_in_WA_attraction">
+				<eqn>0.18</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="time_to_retire">
+				<eqn>30</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="employment_attractiveness">
+				<eqn>employment_gap_1</eqn>
+				<gf>
+					<xscale min="-10000" max="0"/>
+					<yscale min="0" max="500"/>
+					<ypts>0,6.98537953215236,14.8862838321917,23.8227043188742,33.9303588457621,45.3627528548809,58.2935106713511,72.9190123444773,89.4613760811303,108.171831565782,129.334535397972,153.270886592434,180.344407681603,210.966265550034,245.601515845924,284.776165803907,329.085162742574,379.201429558398,435.886084438567,500</ypts>
+				</gf>
+				<units>person/year</units>
+			</aux>
+			<aux name="PS_moving" access="output" isee:autocreated="true">
+				<doc>NCWFY + HAWFY = 0,5 (of the employment gap)</doc>
+				<eqn>employment_attractiveness* (housing_accessibility_factor_for_young+ public_services_factor_for_young)</eqn>
+				<units>person/year</units>
+			</aux>
+		<aux name="post_school_leaving_ratio" access="output">
+				<eqn>1-  (higher_education_factor+ broadband_factor_for_young+ social_capital_factor_for_young+ housing_factor_for_young+ employment_factor_for_young)</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="WA_leaving_ratio" access="output" isee:autocreated="true">
+				<eqn>(1-retention_factor)* effect_of_employment_in_WA_leaving_ratio</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="elderly_leaving_ratio" access="output" isee:autocreated="true">
+				<eqn>maximum_ratio_elderly_population_leaving* (1- medical_and_care_factor- social_capital_factor_for_elderly)</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="maximum_ratio_elderly_population_leaving">
+				<eqn>0.01</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="higher_education_weight">
+				<eqn>0.33</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="broadband_weight_for_young">
+				<eqn>0.05</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="housing_accessibility_weight_for_young">
+				<eqn>0.23</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="social_capital_weight_for_young">
+				<eqn>0.14</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="broadband_weight_for_WA">
+				<eqn>0.1</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="c&amp;r_connections_weight">
+				<eqn>0.35</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="social_capital_weight_for_WA">
+				<eqn>0.25</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="medical_and_care_weight">
+				<eqn>0.54</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="social_capital_weight_for_elderly">
+				<eqn>0.46</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="employment_weight_for_young">
+				<eqn>0.25</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="effect_of_employment_in_PS_retention">
+				<eqn>relative_employment_gap</eqn>
+				<gf>
+					<xscale min="-0.5" max="-0.2"/>
+					<yscale min="0" max="5"/>
+					<ypts>0,0.112388008147996,0.259465152802842,0.451938414285842,0.70381953743955,1.03344506418721,1.46481120438568,2.02932072142979,2.76806900307921,3.73483573979897,5</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="higher_education_factor">
+				<eqn>(VT_centers_accessibility+University_Accessibility)*higher_education_weight/10</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="broadband_factor_for_young">
+				<doc>is divided by 100 because ...pop covered... is expressed in % (50%)</doc>
+				<eqn>broadband_weight_for_young*broadband_effect_on_retention</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="housing_factor_for_young">
+				<eqn>housing_accessibility_weight_for_young*housing_accessibility/5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="social_capital_factor_for_young">
+				<eqn>social_capital_weight_for_young*social_capital_effect_on_retention</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="employment_factor_for_young">
+				<eqn>(employment_weight_for_young/5)*effect_of_employment_in_PS_retention</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="broadband_factor_for_WA">
+				<doc>is divided by 100 because ...pop covered... is expressed in % (50%)</doc>
+				<eqn>broadband_weight_for_WA*broadband_effect_on_retention</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="social_capital_factor_for_WA">
+				<eqn>(social_capital_weight_for_WA/5)*social_capital_effect_on_retention</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="c&amp;r_factor">
+				<eqn>city_and_regional_connections_access*"c&amp;r_connections_weight"/5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="social_capital_factor_for_elderly">
+				<eqn>social_capital_weight_for_elderly*social_capital_effect_on_retention</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="medical_and_care_factor">
+				<eqn>medical_and_care_weight*health_centers_accessibility/5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="retention_factor">
+				<eqn>social_capital_factor_for_WA+broadband_factor_for_WA+"c&amp;r_factor"+public_services_retention</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="effect_of_employment_in_WA_leaving_ratio">
+				<eqn>relative_employment_gap</eqn>
+				<gf>
+					<xscale min="-0.5" max="0"/>
+					<yscale min="0" max="0.5"/>
+					<ypts>0.5,0.499976329057465,0.49992797578237,0.499829203238398,0.499627437889028,0.499215286348026,0.498373373238171,0.496653574537858,0.493140495177319,0.485964232867553,0.471305087584064,0.441360454686517,0.380191742457516,0.255240758134016,0</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="public_services_weight_for_WA_retention">
+				<eqn>0.3</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="public_services_retention">
+				<eqn>public_services_weight_for_WA_retention*community_and_public_services_accessibility</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="broadband_infrastructure"><eqn>broadband_infrastructure_population_covered</eqn>
+				<non_negative/>
+				<units>dmnl</units>
+			</aux><stock name="farms">
+				<eqn>initial_number_of_farms</eqn>
+				<inflow>increasing_farms</inflow>
+				<outflow>decreasing_farms</outflow>
+				<non_negative/>
+				<units>farm</units>
+			</stock>
+			<stock name="mean_local_income_per_farm">
+				<eqn>initial_mean_income_per_farm</eqn>
+				<inflow>improving_income_per_farm</inflow>
+				<outflow>decreasing_income_per_farm</outflow>
+				<non_negative/>
+				<units>€/farm</units>
+			</stock>
+			<stock name="VT_STUDENTS">
+				<eqn>7695</eqn>
+				<inflow>entering_VT</inflow>
+				<outflow>becoming_vt_professional</outflow>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<stock name="UNIVERSITY_STUDENTS">
+				<eqn>16620*0.34</eqn>
+				<inflow>entering_university</inflow>
+				<outflow>becoming_graduated_professional</outflow>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<stock name="UNSKILLED_WORKERS">
+				<eqn>0.2550*(16620+123584)</eqn>
+				<inflow>early_working_entrance</inflow>
+				<outflow>NSW_retitiring</outflow>
+				<outflow>a_not_specialized_workers_leaving</outflow>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<stock name="VT_PROFESSIONALS">
+				<eqn>123584*0.5</eqn>
+				<inflow>becoming_vt_professional</inflow>
+				<outflow>VTW_retiring</outflow>
+				<outflow>VT_professionals_leaving</outflow>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<stock name="GRADUATED_PROFESSIONALS">
+				<eqn>123584*0.25</eqn>
+				<inflow>becoming_graduated_professional</inflow>
+				<outflow>graduated_migration_net_flow</outflow>
+				<outflow>GradW_retiring</outflow>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<stock name="WORKING_AGE_RURAL_POPULATION" access="input">
+				<eqn>WORKING_AGE_POPULATION</eqn>
+				<inflow>1</inflow>
+				<outflow>1</outflow>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<stock name="Rest_of_primary_sector_jobs">
+				<doc>aprox 2%</doc>
+				<eqn>383</eqn>
+				<inflow>creation_of_primary_jobs</inflow>
+				<outflow>destruction_of_primary_jobs</outflow>
+				<non_negative/>
+				<units>job</units>
+			</stock>
+			<stock name="Industrial_jobs">
+				<doc>25% total - 4% (agriindustry) = 21%</doc>
+				<eqn>9343</eqn>
+				<inflow>creation_of_industrial_jobs</inflow>
+				<outflow>destruction_of_industrial_jobs</outflow>
+				<non_negative/>
+				<units>job</units>
+			</stock>
+			<stock name="service_jobs">
+				<doc>total 68% - 2% (agriservices) - 10% (population) = 56%</doc>
+				<eqn>19531*(1-0.1)</eqn>
+				<inflow>creation_of_services_jobs</inflow>
+				<outflow>destruction_of_services_jobs</outflow>
+				<non_negative/>
+				<units>job</units>
+			</stock>
+			<stock name="population_services">
+				<eqn>19531*0.1</eqn>
+				<inflow>change_in_population_services</inflow>
+				<non_negative/>
+				<units>job</units>
+			</stock>
+			<stock name="Natural_Capital" access="output" isee:autocreated="true">
+				<eqn>initial_natural_land-1160</eqn>
+				<inflow>natural_capital_net_variation</inflow>
+				<non_negative/>
+				<units>ha</units>
+			</stock>
+			<stock name="SCHOOL_AGE_POPULATION">
+				<eqn>20383</eqn>
+				<inflow>children_net_migration</inflow>
+				<inflow>aging</inflow>
+				<outflow>aging_1</outflow>
+				<outflow>rural_children_deaths</outflow>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<stock name="WORKING_AGE_POPULATION" access="output">
+				<eqn>123584</eqn>
+				<inflow>working_age_net_migration</inflow>
+				<inflow>aging_2</inflow>
+				<outflow>aging_3</outflow>
+				<outflow>working_age_deaths</outflow>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<stock name="ELDERLY_POPULATION">
+				<eqn>86730</eqn>
+				<inflow>aging_3</inflow>
+				<inflow>elderly_net_migration</inflow>
+				<outflow>elderly_deaths</outflow>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<stock name="POST_SCHOOL_POPULATION" access="output" isee:autocreated="true">
+				<eqn>16620</eqn>
+				<inflow>post_school_net_migration</inflow>
+				<inflow>aging_1</inflow>
+				<outflow>aging_2</outflow>
+				<outflow>Rural_Post_school_age_deaths</outflow>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<stock name="INFANTS">
+				<eqn>11974</eqn>
+				<inflow>births</inflow>
+				<inflow>infant_net_migration</inflow>
+				<outflow>aging</outflow>
+				<outflow>rural_infant_deaths</outflow>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<stock name="NEWCOMERS">
+				<eqn>4000</eqn>
+				<inflow>newcomers_arrival</inflow>
+				<outflow>newcomers_integration</outflow>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<stock name="average_speed_public_transport">
+				<eqn>initial_speed</eqn>
+				<inflow>building_mobility_infrastructures</inflow>
+				<outflow>mobility_infrastructures_depletion</outflow>
+				<non_negative/>
+				<units>km/h</units>
+			</stock>
+			<stock name="broadband_infrastructure_population_covered" access="output" isee:autocreated="true">
+				<doc>Expressed in % (50 for 50%)</doc>
+				<eqn>59.8</eqn>
+				<inflow>building_infrastructure</inflow>
+				<non_negative/>
+				<units>dmnl</units>
+			</stock>
+			<stock name="potential_initiatives">
+				<eqn>3000</eqn>
+				<inflow>creating_potential_initiatives</inflow>
+				<outflow>planning_initiatives</outflow>
+				<outflow>dismissing_potential_initiatives</outflow>
+				<non_negative/>
+				<units>initiative</units>
+			</stock>
+			<stock name="implemented_initiatives">
+				<eqn>3000*0.2</eqn>
+				<inflow>planning_initiatives</inflow>
+				<outflow>becoming_stablished_jobs</outflow>
+				<non_negative/>
+				<units>initiative</units>
+			</stock>
+			<stock name="shared_knowledge">
+				<eqn>5</eqn>
+				<inflow>building_shared_knowledge</inflow>
+				<outflow>shared_knowledge_loss</outflow>
+				<non_negative/>
+				<units>dmnl</units>
+			</stock>
+			<stock name="potential_commuters">
+				<eqn>100000</eqn>
+				<inflow>increasing_potential_commuters</inflow>
+				<outflow>potential_commuters_moving</outflow>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<stock name="commuters" access="output" isee:autocreated="true">
+				<eqn>10000</eqn>
+				<inflow>potential_commuters_moving</inflow>
+				<outflow>commuters_retiring</outflow>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<flow name="increasing_farms">
+				<eqn>potential_new_farms*farming_attraction_factor</eqn>
+				<non_negative/>
+				<units>farm/year</units>
+			</flow>
+			<flow name="decreasing_farms">
+				<eqn>(farms*abandonment_ratio)+retirement_not_covered</eqn>
+				<non_negative/>
+				<units>farm/year</units>
+			</flow>
+			<flow name="improving_income_per_farm">
+				<doc>diversification can increase up to a 10% income (/50)</doc>
+				<eqn>(decreasing_income_per_farm*agricultural_obsolescence_covered)+ ("diversification/_multifunctionality"*mean_local_income_per_farm*max_improvement_per_diversification)</eqn>
+				<non_negative/>
+				<units>€/farm/Years</units>
+			</flow>
+			<flow name="decreasing_income_per_farm">
+				<eqn>mean_local_income_per_farm/technical_obsolescence_time</eqn>
+				<non_negative/>
+				<units>€/farm/Years</units>
+			</flow>
+			<flow name="entering_VT">
+				<eqn>aging_1* (VT_centers_accessibility/5)* DELAY1(vocational_training_campaign, years_for_education_campaign)</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="entering_university">
+				<eqn>aging_1* (University_Accessibility/5)* DELAY1(students_university_campaign, years_for_education_campaign)</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="early_working_entrance">
+				<eqn>aging_1-entering_VT-entering_university</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="becoming_vt_professional">
+				<eqn>VT_STUDENTS/time_to_become_VT_professional</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="becoming_graduated_professional">
+				<eqn>UNIVERSITY_STUDENTS/time_to_become_graduated_professional</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="graduated_migration_net_flow">
+				<eqn>WA_migration_ratio*GRADUATED_PROFESSIONALS*graduate_migrating_ratio</eqn>
+				<units>person/year</units>
+			</flow>
+			<flow name="NSW_retitiring">
+				<eqn>UNSKILLED_WORKERS/working_lifetime_duration_for_NSW</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="VTW_retiring">
+				<eqn>VT_PROFESSIONALS/working_lifetime_duration_for_VT</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="GradW_retiring">
+				<eqn>GRADUATED_PROFESSIONALS/working_lifetime_duration_for_GP</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="VT_professionals_leaving">
+				<eqn>WA_migration_ratio*VT_PROFESSIONALS*VT_migrating_ratio</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="a_not_specialized_workers_leaving">
+				<eqn>WA_migration_ratio*unskilled_migrating_ratio*UNSKILLED_WORKERS</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="creation_of_primary_jobs">
+				<eqn>endogenous_primary_job_creation_ratio</eqn>
+				<non_negative/>
+				<units>job/Years</units>
+			</flow>
+			<flow name="destruction_of_primary_jobs">
+				<eqn>(endogenous_primary_job_creation_ratio*(1-primary_jobs_viability_ratio))+(Rest_of_primary_sector_jobs/average_life_of_a_primary_sector_business)</eqn>
+				<non_negative/>
+				<units>job/Years</units>
+			</flow>
+			<flow name="creation_of_industrial_jobs">
+				<eqn>endogenous_industrial_job_creation_ratio</eqn>
+				<non_negative/>
+				<units>job/Years</units>
+			</flow>
+			<flow name="destruction_of_industrial_jobs">
+				<eqn>(Industrial_jobs/resulting_average_life_for_industrial_business)+ (endogenous_industrial_job_creation_ratio*(1-new_industrial_job_viability_ratio))</eqn>
+				<non_negative/>
+				<units>job/Years</units>
+			</flow>
+			<flow name="creation_of_services_jobs">
+				<eqn>endogenous_service_jobs_creation_ratio</eqn>
+				<non_negative/>
+				<units>job/Years</units>
+			</flow>
+			<flow name="destruction_of_services_jobs">
+				<eqn>(service_jobs/resulting_average_life_for_services)+ STEP((endogenous_service_jobs_creation_ratio*(1-new_services_viability_ratio)), 2015)</eqn>
+				<non_negative/>
+				<units>job/Years</units>
+			</flow>
+			<flow name="change_in_population_services">
+				<eqn>Difference_of_population*ratio_population_services</eqn>
+				<units>job/Years</units>
+			</flow>
+			<flow name="natural_capital_net_variation">
+				<eqn>DELAY1(natural_land_variation, years_for_completing_natural_land_objective)+ (Natural_Capital*effect_of_tourism_on_natural_capital)+ effect_of_agriculture_on_Natural_Capital</eqn>
+				<units>ha/year</units>
+			</flow>
+			<flow name="births">
+				<eqn>total_rural_population*birth_rate</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="aging_1" access="output" isee:autocreated="true">
+				<eqn>SCHOOL_AGE_POPULATION/school_age_duration</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="aging_3">
+				<eqn>WORKING_AGE_POPULATION/working_age_duration</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="children_net_migration">
+				<eqn>working_age_net_migration*0.5*fertility_rate*2/3</eqn>
+				<units>person/year</units>
+			</flow>
+			<flow name="rural_children_deaths">
+				<eqn>SCHOOL_AGE_POPULATION*children_death_rate</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="working_age_net_migration">
+				<eqn>WA_moving- (WORKING_AGE_POPULATION*WA_leaving_ratio_1*max_WA_population_living_rural_per_year)</eqn>
+				<units>person/year</units>
+			</flow>
+			<flow name="working_age_deaths">
+				<eqn>WORKING_AGE_POPULATION*working_age_death_rate</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="elderly_net_migration">
+				<eqn>elderly_move_rural- (ELDERLY_POPULATION*elderly_leaving_ratio_1)</eqn>
+				<units>person/year</units>
+			</flow>
+			<flow name="elderly_deaths">
+				<eqn>ELDERLY_POPULATION/ DELAY1(adapted_life_expectancy, 1)</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="post_school_net_migration">
+				<eqn>PS_moving- (POST_SCHOOL_POPULATION*max_post_school_leaving_per_year* post_school_leaving_ratio_1)</eqn>
+				<units>person/year</units>
+			</flow>
+			<flow name="Rural_Post_school_age_deaths">
+				<eqn>POST_SCHOOL_POPULATION*post_school_death_rate</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="aging">
+				<eqn>INFANTS/infant_duration</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="infant_net_migration">
+				<eqn>working_age_net_migration*0.5*fertility_rate/3</eqn>
+				<units>person/year</units>
+			</flow>
+			<flow name="rural_infant_deaths">
+				<eqn>INFANTS*infant_death_rate</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="aging_2">
+				<eqn>POST_SCHOOL_POPULATION/postschool_age_duration</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="newcomers_arrival">
+				<eqn>MAX (0, infant_net_migration)+ MAX (0, children_net_migration)+ PS_moving+ WA_moving+ elderly_move_rural</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="newcomers_integration">
+				<eqn>NEWCOMERS/integration_time</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="building_mobility_infrastructures">
+				<eqn>MIN (max_speed_improvement_per_year, mobility_infrastructures_depletion+ STEP(infrastructure_campaign, year_initiating_infrastructures_plan)- STEP(infrastructure_campaign, year_initiating_infrastructures_plan+time_for_infrastructure_campaign_extension))</eqn>
+				<non_negative/>
+				<units>km/h/year</units>
+			</flow>
+			<flow name="mobility_infrastructures_depletion">
+				<eqn>average_speed_public_transport/infrastructures_depletion_time</eqn>
+				<non_negative/>
+				<units>km/h/year</units>
+			</flow>
+			<flow name="building_infrastructure">
+				<eqn>first_gap- STEP(first_gap, 2022)+ STEP(broadband_campaign, 2022)</eqn>
+				<non_negative/>
+				<units>dmnl/year</units>
+			</flow>
+			<flow name="creating_potential_initiatives">
+				<eqn>effect_of_social_innovation_in_creating_initiatives_ratio*effect_of_broadband_in_creating_potential_initiatives*WORKING_AGE_POPULATION</eqn>
+				<non_negative/>
+				<units>initiative/year</units>
+			</flow>
+			<flow name="planning_initiatives">
+				<eqn>potential_initiatives*institutional_support</eqn>
+				<non_negative/>
+				<units>initiative/year</units>
+			</flow>
+			<flow name="dismissing_potential_initiatives">
+				<eqn>potential_initiatives/potential_initiatives_active_time</eqn>
+				<non_negative/>
+				<units>initiative/year</units>
+			</flow>
+			<flow name="becoming_stablished_jobs">
+				<eqn>implemented_initiatives/time_to_implement_initiatives</eqn>
+				<non_negative/>
+				<units>initiative/year</units>
+			</flow>
+			<flow name="building_shared_knowledge">
+				<eqn>community_activity_and_networks/time_to_build_effective_shared_knowledge</eqn>
+				<non_negative/>
+				<units>dmnl/year</units>
+			</flow>
+			<flow name="shared_knowledge_loss">
+				<eqn>shared_knowledge/shared_knowledge_loss_time</eqn>
+				<non_negative/>
+				<units>dmnl/year</units>
+			</flow>
+			<flow name="potential_commuters_moving">
+				<eqn>SMTH1(potential_commuters*attraction_ratio_for_commuters* max_attraction_ratio_for_commuters, 3)</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="increasing_potential_commuters">
+				<eqn>SMTH3(potential_commuters_moving, 3)</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="commuters_retiring">
+				<eqn>commuters/time_to_retire</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			</variables></model></xmile>

@@ -1,0 +1,324 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xmile xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" xmlns:isee="http://iseesystems.com/XMILE" version="1.0">
+	<header>
+		<smile version="1.0" namespace="std, isee"/>
+		<name>Flanders Land Use</name>
+		<uuid>7234f805-6ead-494c-af47-db110bd27ebe</uuid>
+		<vendor>isee systems, inc.</vendor>
+		<product version="2.1.4" isee:build_number="2496" isee:saved_by_v1="true" lang="en">Stella Architect</product>
+	</header>
+	<sim_specs isee:sim_duration="1.5" isee:simulation_delay="0.05" isee:restore_on_start="false" method="Euler" time_units="Year" isee:instantaneous_flows="false" isee:loop_scores="true" isee:loop_exhaustive_allowed="1000">
+		<start>2010</start>
+		<stop>2040</stop>
+		<dt reciprocal="true">4</dt>
+	</sim_specs>
+	<default_format/>
+	<model_units>
+		<unit name="Dimensionless">
+			<eqn>1</eqn>
+			<alias>dmnl</alias>
+			<alias>unitless</alias>
+			<alias>fraction</alias>
+		</unit>
+		<unit name="Hectares">
+			<eqn/>
+			<alias>ha</alias>
+			<alias>hectare</alias>
+		</unit>
+		<unit name="Years">
+			<eqn/>
+			<alias>yr</alias>
+			<alias>year</alias>
+		</unit>
+	</model_units>
+	<model>
+		<variables>
+			<stock name="arable_land_farms">
+				<eqn>10416</eqn>
+				<inflow>increasing_arable_land_farms</inflow>
+				<inflow>arable_land_new_owners</inflow>
+				<outflow>"retirement_+_abandonment"</outflow>
+				<non_negative/>
+				<units>farm</units>
+			</stock>
+			<flow name="increasing_arable_land_farms">
+				<eqn>IF (arable_land_farms_profitability &gt;=0.9) AND(agricultural_land_availability&gt;0)
+AND (arable_land_farms_profitability&gt;intensive_farms_profitability)
+THEN
+INT(agricultural_land_availability*max_transformation_per_year/arable_land_farms_average_size)
+ELSE 0</eqn>
+				<non_negative/>
+				<units>farm/Year</units>
+			</flow>
+			<stock name="arable_land_standby_farms">
+				<eqn>10416*0.15</eqn>
+				<inflow>"retirement_+_abandonment"</inflow>
+				<outflow>arable_land_abandonment</outflow>
+				<outflow>arable_land_new_owners</outflow>
+				<outflow>new_uses</outflow>
+				<outflow>to_other_farm_owners</outflow>
+				<non_negative/>
+				<units>farm</units>
+			</stock>
+			<flow name="retirement_+_abandonment">
+				<eqn>IF arable_land_farms_profitability&gt;=0.6 THEN
+retirement_ratio*arable_land_farms
+ELSE 
+(retirement_ratio*arable_land_farms)+
+((1-arable_land_farms_profitability)*arable_land_farms*max_transformation_per_year)</eqn>
+				<non_negative/>
+				<units>farm/Year</units>
+			</flow>
+			<flow name="arable_land_abandonment">
+				<eqn>arable_land_standby_farms/time_before_abandonment</eqn>
+				<non_negative/>
+				<units>farm/Year</units>
+			</flow>
+			<flow name="arable_land_new_owners">
+				<eqn>IF arable_land_farms_profitability&gt;0.7 THEN
+"retirement_+_abandonment"*
+(access_to_newcomers-average_environmental_permissions_denials)
+ELSE 0</eqn>
+				<non_negative/>
+				<units>farm/Year</units>
+			</flow>
+			<flow name="new_uses">
+				<eqn>IF arable_land_farms_profitability&lt;0.5 THEN
+arable_land_standby_farms*new_uses_ratio
+ELSE 0</eqn>
+				<non_negative/>
+				<units>farm/Year</units>
+			</flow>
+			<flow name="to_other_farm_owners">
+				<eqn>IF arable_land_farms_profitability&gt;0.5  
+THEN
+arable_land_standby_farms*max_transformation_per_year
+ELSE 0</eqn>
+				<non_negative/>
+				<units>farm/Year</units>
+			</flow>
+			<aux name="initial_farms'_average_size">
+				<eqn>21.77</eqn>
+				<units>ha/farm</units>
+			</aux>
+			<aux name="current_agricultural_land">
+				<eqn>arable_land+intensive_farm_land</eqn>
+				<units>ha</units>
+			</aux>
+			<aux name="maximum_agricultural_land">
+				<eqn>622738</eqn>
+				<units>ha</units>
+			</aux>
+			<aux name="average_environmental_permissions_denials">
+				<eqn>0.063</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="arable_land_farms_profitability">
+				<eqn>(size_effect_on_profitability+CAP_effect_on_arable_land_farms_profitability)/2</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="new_uses_ratio">
+				<eqn>0.15</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<stock name="converted_farms">
+				<eqn>10416*0.15*0.15</eqn>
+				<inflow>new_uses</inflow>
+				<inflow>new_uses_2</inflow>
+				<non_negative/>
+				<units>farm</units>
+			</stock>
+			<stock name="intensive_farms">
+				<eqn>17915</eqn>
+				<inflow>increasing_intensive_farms</inflow>
+				<inflow>intensive_farm_new_owners</inflow>
+				<outflow>"intensive_farms_retirement_+_abandonment"</outflow>
+				<non_negative/>
+				<units>farm</units>
+			</stock>
+			<flow name="increasing_intensive_farms">
+				<eqn>IF agricultural_land_availability&gt;0 AND (intensive_farms_profitability &gt;=1) 
+AND (intensive_farms_profitability&gt;arable_land_farms_profitability)
+THEN
+INT(agricultural_land_availability*max_transformation_per_year/intensive_farm_average_size)
+ELSE 0</eqn>
+				<non_negative/>
+				<units>farm/Year</units>
+			</flow>
+			<stock name="intensive_standby_farms">
+				<eqn>17915*0.15</eqn>
+				<inflow>"intensive_farms_retirement_+_abandonment"</inflow>
+				<outflow>intensive_farms_abandonment</outflow>
+				<outflow>new_uses_2</outflow>
+				<outflow>to_other_intensive_farms_owners</outflow>
+				<outflow>intensive_farm_new_owners</outflow>
+				<non_negative/>
+				<units>farm</units>
+			</stock>
+			<flow name="intensive_farms_abandonment">
+				<eqn>intensive_standby_farms/time_before_abandonment</eqn>
+				<non_negative/>
+				<units>farm/Year</units>
+			</flow>
+			<flow name="new_uses_2">
+				<eqn>IF intensive_farms_profitability&lt;0.7 THEN
+intensive_standby_farms*new_uses_ratio
+ELSE 0</eqn>
+				<non_negative/>
+				<units>farm/Year</units>
+			</flow>
+			<flow name="intensive_farms_retirement_+_abandonment">
+				<eqn>IF intensive_farms_profitability&gt;=1 THEN
+intensive_farms*retirement_ratio
+ELSE
+(intensive_farms*retirement_ratio)+
+((1-intensive_farms_profitability)*intensive_farms*max_transformation_per_year)</eqn>
+				<non_negative/>
+				<units>farm/Year</units>
+			</flow>
+			<flow name="to_other_intensive_farms_owners">
+				<eqn>IF intensive_farms_profitability&gt;0.7 AND intensive_farms_profitability&lt;0.9 THEN
+intensive_standby_farms*max_transformation_per_year
+ELSE 0</eqn>
+				<non_negative/>
+				<units>farm/Year</units>
+			</flow>
+			<aux name="agricultural_land_availability">
+				<eqn>MAX(0, maximum_agricultural_land-current_agricultural_land)</eqn>
+				<units>ha</units>
+			</aux>
+			<aux name="intensive_farms_profitability">
+				<eqn>energy_prize_effect_on_profitability+CAP_effect_on_intensive_farm_profitability/2</eqn>
+				<units>dmnl</units>
+			</aux>
+			<flow name="intensive_farm_new_owners">
+				<eqn>IF intensive_farms_profitability&gt;0.9 THEN
+"intensive_farms_retirement_+_abandonment"*
+(1-average_environmental_permissions_denials)*
+access_to_newcomers
+ELSE 0</eqn>
+				<non_negative/>
+				<units>farm/Year</units>
+			</flow>
+			<aux name="arable_land">
+				<eqn>arable_land_farms*arable_land_farms_average_size</eqn>
+				<units>ha</units>
+			</aux>
+			<aux name="energy_prize_index">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2010" max="2040"/>
+					<yscale min="0" max="4"/>
+					<ypts>1,1.16,1.21,1.235,1.126,1.18,1.311,1.508,1.60375,1.6995,1.79525,1.891,1.967,2.051,2.135,2.219,2.309,2.399,2.489,2.579,2.678,2.7545,2.831,2.89925,2.9675,3.03575,3.104,3.1585,3.213,3.311,3.585</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="energy_prize_effect_on_profitability">
+				<eqn>energy_prize_index</eqn>
+				<gf>
+					<xscale min="0.8" max="3"/>
+					<yscale min="0" max="1.2"/>
+					<ypts>1.2,1.00379302144774,0.839667024922658,0.702376583297628,0.58753392728539,0.491468713394051,0.411110720637374,0.343891727015124,0.287663429759495,0.240628786098587,0.201284580204336,0.16837338077846,0.140843353852484,0.117814646428683,0.098551266591204,0.0824375613825723,0.0689585406841634</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="CAP_direct_payments_evolution">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2010" max="2040"/>
+					<yscale min="0" max="1"/>
+					<ypts>0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.175,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="Eco-schemes_evolution">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2023" max="2040"/>
+					<yscale min="0" max="0.5"/>
+					<ypts>0.00334642546214243,0.00599414206256283,0.0106916540658706,0.0189294664809844,0.0330852594407568,0.0565819221683437,0.0934266107829299,0.1463452145373,0.213498049537331,0.286501950462669,0.3536547854627,0.40657338921707,0.443418077831656,0.466914740559243,0.481070533519016,0.48930834593413,0.494005857937437,0.496653574537858</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="CAP_effect_on_arable_land_farms_profitability">
+				<eqn>CAP_direct_payments_evolution+"Eco-schemes_evolution"</eqn>
+				<gf>
+					<xscale min="0" max="0.2"/>
+					<yscale min="0" max="1"/>
+					<ypts>0,0.285488086543384,0.492794985682873,0.643330690871745,0.752642048239854,0.832018385133925,0.889657435735991,0.931511976828523,0.961904611540026,0.983974193969917,1</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="CAP_effect_on_intensive_farm_profitability">
+				<eqn>"Eco-schemes_evolution"+CAP_direct_payments_evolution</eqn>
+				<gf>
+					<xscale min="0" max="0.2"/>
+					<yscale min="0" max="1"/>
+					<ypts>0.536,0.691,0.803,0.913,0.973,1,1,1,1,1,1</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="size_effect_on_profitability">
+				<eqn>arable_land_farms_average_size</eqn>
+				<gf type="extrapolate">
+					<xscale min="0" max="200"/>
+					<yscale min="0" max="1.2"/>
+					<ypts>0,0.712629725952244,1.00205852885125,1.11960769765082,1.16734934239062,1.18673922549858,1.19461426979145,1.19781265537579,1.19911165382783,1.19963923154912,1.19985350297613,1.19994052758422,1.19997587192536,1.19999022674382,1.19999605683731,1.19999842468265,1.1999993863639,1.19999977694296,1.19999993557349,1.2</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="retirement_ratio">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2010" max="2040"/>
+					<yscale min="0" max="1"/>
+					<ypts>0.15,0.14,0.135,0.135,0.135,0.135,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15</ypts>
+				</gf>
+				<units>dmnl/year</units>
+			</aux>
+			<stock name="arable_land_farms_average_size">
+				<eqn>initial_farms'_average_size</eqn>
+				<inflow>increasing_average_size</inflow>
+				<non_negative/>
+				<units>ha/farm</units>
+			</stock>
+			<flow name="increasing_average_size">
+				<eqn>to_other_farm_owners*arable_land_farms_average_size/arable_land_farms</eqn>
+				<non_negative/>
+				<units>ha/farm/Year</units>
+			</flow>
+			<aux name="access_to_newcomers">
+				<doc>this is 0,5 as an example. It could be another value or even be changing in time</doc>
+				<eqn>0.8</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="time_before_abandonment">
+				<eqn>4</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="intensive_farm_land">
+				<eqn>intensive_farms*intensive_farm_average_size</eqn>
+				<units>ha</units>
+			</aux>
+			<stock name="intensive_farm_average_size">
+				<eqn>initial_farms'_average_size</eqn>
+				<inflow>increasing_intensive_farm_size</inflow>
+				<non_negative/>
+				<units>ha/farm</units>
+			</stock>
+			<flow name="increasing_intensive_farm_size">
+				<eqn>to_other_intensive_farms_owners*intensive_farm_average_size/intensive_farms</eqn>
+				<non_negative/>
+				<units>ha/farm/Year</units>
+			</flow>
+			<aux name="max_transformation_per_year">
+				<eqn>0.2</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="farms_average_size">
+				<eqn>(arable_land_farms_average_size*0.73)+(intensive_farm_average_size*0.27)</eqn>
+				<units>ha/farm</units>
+			</aux>
+		</variables>
+		</model>
+</xmile>

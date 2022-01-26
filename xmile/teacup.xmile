@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xmile version="1.0" xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0">
+    <header>
+        <vendor>James Houghton</vendor>
+        <name>Teacup</name>
+        <options>
+            <uses_outputs/>
+        </options>
+        <product version="1.0">Hand Coded XMILE</product>
+    </header>
+    <sim_specs>
+        <start>0.0</start>
+        <stop>50</stop>
+        <dt>5</dt>
+    </sim_specs>
+    <model>
+        <variables>
+            <flow name="Heat Loss to Room">
+                <doc>Heat Loss to Room</doc>
+                <eqn>4</eqn>
+            </flow>
+            <aux name="Room Temperature">
+                <doc>Ambient Room Temperature</doc>
+                <eqn>22</eqn>
+            </aux>
+            <stock name="Teacup Temperature">
+                <doc>The average temperature of the tea and the cup</doc>
+                <outflow>"Heat Loss to Room"</outflow>
+                <eqn>85</eqn>
+            </stock>
+            <aux name="Characteristic Time">
+                <eqn>3.14</eqn>
+            </aux>
+            <aux name="Runar Time">
+                <doc>TEST var</doc>
+                <!-- <eqn>DELAY1("Teacup Temperature", "Room Temperature" - "Heat Loss to Room")</eqn> -->
+                <eqn>1</eqn>
+            </aux>
+            <aux name="Test t">
+                <doc>TEST var</doc>
+                <eqn>"Community climate"</eqn>
+            </aux>
+            <aux name="Test II">
+                <doc>TEST var</doc>
+                <eqn>"Dommunity climate 3"</eqn>
+            </aux>
+			<aux name="Community climate">
+				<doc>0 - 5 over time</doc>
+				<eqn>1</eqn>
+				<gf>
+					<xscale min="0" max="10"/>
+					<yscale min="0" max="50"/>
+                    <xpts>0,10,50</xpts>
+					<ypts>1,20,50</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>            
+			<aux name="Dommunity climate 3">
+				<doc>0 - 5 over time</doc>
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="0" max="50"/>
+					<yscale min="0" max="6"/>
+					<ypts>1,2,3,4,5,6</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>            
+        </variables>
+    </model>
+</xmile>

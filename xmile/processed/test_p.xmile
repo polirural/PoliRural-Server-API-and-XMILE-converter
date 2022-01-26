@@ -1,0 +1,306 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xmile xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" xmlns:isee="http://iseesystems.com/XMILE" version="1.0">
+	<header>
+		<smile namespace="std, isee" uses_submodels="" version="1.0"/>
+		<name>workshop21</name>
+		<uuid>8d623a8f-8453-47f6-adb8-4ed972001f0e</uuid>
+		<vendor>isee systems, inc.</vendor>
+		<product lang="en" version="2.0" isee:build_number="2190" isee:saved_by_v1="true">Stella Architect</product>
+	</header>
+	<sim_specs method="Euler" time_units="Years" isee:instantaneous_flows="false" isee:loop_exhaustive_allowed="1000" isee:loop_scores="true" isee:restore_on_start="false" isee:sim_duration="1.5" isee:simulation_delay="0.05">
+		<start>2010</start>
+		<stop>2040</stop>
+		<dt reciprocal="true">4</dt>
+	</sim_specs>
+	<default_format precision="0.01" scale_by="1"/>
+	<model_units/>
+	<model name="New combined model"><variables><aux name="mean_working_period_for_farmers">
+				<eqn>45</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="abandonment_ratio">
+				<eqn>agriculture_profitability</eqn>
+				<gf>
+					<xscale max="45000" min="0"/>
+					<yscale max="1" min="0"/>
+					<ypts>0.993307149075715,0.924141819978757,0.5,0.0758581800212436,0.00669285092428486</ypts>
+				</gf>
+				<units>dmnl/year</units>
+			</aux>
+			<aux access="output" name="Jobs_per_farm" isee:autocreated="true">
+				<doc>1,1 Greece - 12,4 Slovakia
+mean 1,5</doc>
+				<eqn>mean_jobs_per_farm*MAX(1, "diversification/_multifunctionality"/4)</eqn>
+				<units>job/farm</units>
+			</aux>
+			<aux access="output" name="diversification/_multifunctionality" isee:autocreated="true">
+				<doc>0-5</doc>
+				<eqn>(effect_of_tourism_on_diversification+"CAP_Eco-Schemes")/2</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="farmer_retirement">
+				<eqn>farms/mean_working_period_for_farmers</eqn>
+				<units>farm/year</units>
+			</aux>
+			<aux name="generational_transition_ratio">
+				<doc>0-1</doc>
+				<eqn>social_capital</eqn>
+				<gf>
+					<xscale max="5" min="0"/>
+					<yscale max="1" min="0"/>
+					<ypts>0.000746028833836698,0.00314121328482943,0.0131253183371028,0.0531511363980638,0.191545348561468,0.5,0.808454651438533,0.946848863601936,0.986874681662897,0.996858786715171,0.999253971166163</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="retirement_substitution">
+				<eqn>farmer_retirement*generational_transition_ratio</eqn>
+				<units>farm/year</units>
+			</aux>
+			<aux name="retirement_not_covered">
+				<eqn>farmer_retirement-retirement_substitution</eqn>
+				<units>farm/year</units>
+			</aux>
+			<aux name="land_access">
+				<doc>0,6 - 1,2</doc>
+				<eqn>MIN(0.6, new_forms_of_property)</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="new_forms_of_property">
+				<doc>0-1,2</doc>
+				<eqn>"social_innovation_/_potential_initiatives"*AKIS_effect/5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="max_agricultural_land">
+				<eqn>50000</eqn>
+				<units>ha</units>
+			</aux>
+			<aux name="potential_land_transformation">
+				<eqn>max_agricultural_land-agricultural_land</eqn>
+				<units>ha</units>
+			</aux>
+			<aux name="potential_new_farms">
+				<eqn>potential_land_transformation/average_farm_area</eqn>
+				<units>farm</units>
+			</aux>
+			<aux name="farm_to_fork_effect_on_services">
+				<doc>0-5 over time</doc>
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale max="2040" min="2021"/>
+					<yscale max="5" min="0"/>
+					<ypts>2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux access="output" name="CAP_Eco-Schemes" isee:autocreated="true">
+				<doc>0-5 over time</doc>
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale max="2040" min="2021"/>
+					<yscale max="5" min="0"/>
+					<ypts>2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="farming_attraction_factor">
+				<doc>0 - 1
+for profitability*land access 0 - 100k</doc>
+				<eqn>land_access*agriculture_profitability</eqn>
+				<gf>
+					<xscale max="100000" min="0"/>
+					<yscale max="1" min="0"/>
+					<ypts>0,0.0139810175320806,0.0336236144274046,0.0612204336079019,0.0999925182227609,0.154465265083535,0.23099661953696,0.338519161578867,0.489582697951918,0.701819049401251,1</ypts>
+				</gf>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="farm_to_fork_effect_on_industry">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale max="2040" min="2021"/>
+					<yscale max="5" min="0"/>
+					<ypts>2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux access="output" name="related_agricultural_jobs_on_industry" isee:autocreated="true">
+				<eqn>(farms/max_mean_related_agri_jobs_on_industry)*MAX(1, STEP (farm_to_fork_effect_on_industry/4, 2021))*AKIS_effect</eqn>
+				<units>job</units>
+			</aux>
+			<aux access="input" name="social_capital">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale max="2030" min="2010"/>
+					<yscale max="100" min="0"/>
+					<ypts>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux access="input" name="social_innovation_/_potential_initiatives">
+				<eqn>{Enter equation for use when not hooked up to other models}00</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux access="output" name="average_farm_area" isee:autocreated="true">
+				<eqn>23</eqn>
+				<units>ha/farm</units>
+			</aux>
+			<aux access="output" name="agricultural_land" isee:autocreated="true">
+				<eqn>farms*average_farm_area</eqn>
+				<units>ha</units>
+			</aux>
+			<aux name="agriculture_profitability">
+				<doc>0 - 105 aprox
+				</doc>
+				<eqn>mean_local_income_per_farm*(1+CAP_direct_payment)</eqn>
+				<units>â‚¬/farm</units>
+			</aux>
+			<aux name="CAP_direct_payment">
+				<eqn>CAP_mean_proportion_of_direct_payment_to_FNVA- STEP(CAP_reform_direct_payments_decrease_2021, 2021)+ STEP ("Eco-schemes_effect_on_direct_payment", 2021)</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux access="output" name="agriculture_jobs" isee:autocreated="true">
+				<eqn>farms*Jobs_per_farm</eqn>
+				<units>job</units>
+			</aux>
+			<aux access="input" name="tourist_visitors">
+				<eqn>{Enter equation for use when not hooked up to other models}0</eqn>
+				<units>person/year</units>
+			</aux>
+			<aux access="input" name="total_rural_population">
+				<eqn>{Enter equation for use when not hooked up to other models}0</eqn>
+				<units>person</units>
+			</aux>
+			<aux name="effect_of_tourism_on_diversification">
+				<doc>0-5
+10 times visitors = 0
+0 times visitors = 2,5</doc>
+				<eqn>tourist_visitors/total_rural_population</eqn>
+				<gf>
+					<xscale max="10" min="0"/>
+					<yscale max="5" min="0"/>
+					<ypts>2.473,4.069,4.628,4.734,5,5,4.654,1.277,0.505,0</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="AKIS_effect">
+				<doc>0,7-1,2 over time</doc>
+				<eqn>AKIS_evolution*0.22</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="CAP_reform_direct_payments_decrease_2021">
+				<eqn>0.05</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="CAP_mean_proportion_of_direct_payment_to_FNVA">
+				<doc>FNVA farm net value added</doc>
+				<eqn>0.3</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="Eco-schemes_effect_on_direct_payment">
+				<eqn>"CAP_Eco-Schemes"</eqn>
+				<gf>
+					<xscale max="5" min="0"/>
+					<yscale max="0.05" min="0"/>
+					<ypts>0,0.00306035122800446,0.00644256240429208,0.0101804838351156,0.0143115258945134,0.0188770334399073,0.0239226996053315,0.0294990231136766,0.0356618136848812,0.0424727505983673,0.05</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="initial_mean_income_per_farm">
+				<eqn>35000</eqn>
+				<units>â‚¬/farm</units>
+			</aux>
+			<aux name="technical_obsolescence_time">
+				<eqn>normal_technical_obsolescence_time+ RAMP(((final_technical_obsolescence_time-normal_technical_obsolescence_time)/time_for_slope), 2021)</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="agricultural_obsolescence_covered">
+				<doc>0-1</doc>
+				<eqn>MAX (0.6, AKIS_effect)</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="mean_jobs_per_farm">
+				<eqn>1.5</eqn>
+				<units>job/farm</units>
+			</aux>
+			<aux name="max_mean_related_agri_jobs_on_services">
+				<eqn>10</eqn>
+				<units>farm/job</units>
+			</aux>
+			<aux name="max_mean_related_agri_jobs_on_industry">
+				<eqn>5</eqn>
+				<units>farm/job</units>
+			</aux>
+			<aux name="max_improvement_per_diversification">
+				<eqn>0.015</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux access="input" name="attraction_ratio_for_tourists">
+				<eqn>0.5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux access="output" name="initial_number_of_farms" isee:autocreated="true">
+				<eqn>506</eqn>
+				<units>farm</units>
+			</aux>
+			<aux name="final_technical_obsolescence_time">
+				<eqn>7</eqn>
+				<format precision="1"/>
+				<range max="7" min="2"/>
+				<units>year</units>
+			</aux>
+			<aux name="time_for_slope">
+				<eqn>19</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="normal_technical_obsolescence_time">
+				<eqn>7</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="AKIS_evolution">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale max="2040" min="2021"/>
+					<yscale max="5" min="0"/>
+					<ypts>3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux access="output" name="related_agricultural_jobs_effect_on_services" isee:autocreated="true">
+				<eqn>(farms/max_mean_related_agri_jobs_on_services)*MAX(1, STEP(("CAP_Eco-Schemes"+farm_to_fork_effect_on_services)/8, 2021))*AKIS_effect</eqn>
+				<units>job</units>
+			</aux>
+		<stock name="farms">
+				<eqn>initial_number_of_farms</eqn>
+				<inflow>increasing_farms</inflow>
+				<outflow>decreasing_farms</outflow>
+				<non_negative/>
+				<units>farm</units>
+			</stock>
+			<stock name="mean_local_income_per_farm">
+				<eqn>initial_mean_income_per_farm</eqn>
+				<inflow>improving_income_per_farm</inflow>
+				<outflow>decreasing_income_per_farm</outflow>
+				<non_negative/>
+				<units>â‚¬/farm</units>
+			</stock>
+			<flow name="increasing_farms">
+				<eqn>potential_new_farms*farming_attraction_factor</eqn>
+				<non_negative/>
+				<units>farm/year</units>
+			</flow>
+			<flow name="decreasing_farms">
+				<eqn>(farms*abandonment_ratio)+retirement_not_covered</eqn>
+				<non_negative/>
+				<units>farm/year</units>
+			</flow>
+			<flow name="improving_income_per_farm">
+				<doc>diversification can increase up to a 10% income (/50)</doc>
+				<eqn>(decreasing_income_per_farm*agricultural_obsolescence_covered)+ ("diversification/_multifunctionality"*mean_local_income_per_farm*max_improvement_per_diversification)</eqn>
+				<non_negative/>
+				<units>â‚¬/farm/Years</units>
+			</flow>
+			<flow name="decreasing_income_per_farm">
+				<eqn>mean_local_income_per_farm/technical_obsolescence_time</eqn>
+				<non_negative/>
+				<units>â‚¬/farm/Years</units>
+			</flow>
+			</variables></model></xmile>

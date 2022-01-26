@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xmile xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" version="1.0">
+    <header>
+        <vendor>James Houghton</vendor>
+        <name>Teacup</name>
+        <options>
+            <uses_outputs/>
+        </options>
+        <product version="1.0">Hand Coded XMILE</product>
+    </header>
+    <sim_specs>
+        <start>0.0</start>
+        <stop>50</stop>
+        <dt>5</dt>
+    </sim_specs>
+    <model name="New combined model"><variables><aux name="Room_Temperature">
+                <doc>Ambient Room Temperature</doc>
+                <eqn>22</eqn>
+            </aux>
+            <aux name="Characteristic_Time">
+                <eqn>3.14</eqn>
+            </aux>
+            <aux name="Runar_Time">
+                <doc>TEST var</doc>
+                <!-- <eqn>DELAY1("Teacup Temperature", "Room Temperature" - "Heat Loss to Room")</eqn> -->
+                <eqn>1</eqn>
+            </aux>
+            <aux name="Test_t">
+                <doc>TEST var</doc>
+                <eqn>"Community_climate"</eqn>
+            </aux>
+            <aux name="Test_II">
+                <doc>TEST var</doc>
+                <eqn>"Dommunity_climate_3"</eqn>
+            </aux>
+			<aux name="Community_climate">
+				<doc>0 - 5 over time</doc>
+				<eqn>1</eqn>
+				<gf>
+					<xscale min="0" max="10"/>
+					<yscale min="0" max="50"/>
+                    <xpts>0,10,50</xpts>
+					<ypts>1,20,50</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>            
+			<aux name="Dommunity_climate_3">
+				<doc>0 - 5 over time</doc>
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="0" max="50"/>
+					<yscale min="0" max="6"/>
+					<ypts>1,2,3,4,5,6</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>            
+        <stock name="Teacup_Temperature">
+                <doc>The average temperature of the tea and the cup</doc>
+                <outflow>"Heat Loss to Room"</outflow>
+                <eqn>85</eqn>
+            </stock>
+            <flow name="Heat_Loss_to_Room">
+                <doc>Heat Loss to Room</doc>
+                <eqn>4</eqn>
+            </flow>
+            </variables></model></xmile>
