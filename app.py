@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 from flask import send_from_directory, send_file, request, Flask, Response
 from flask_cors import CORS
+from flask_compress import Compress
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
@@ -13,6 +14,9 @@ server = Flask(__name__)
 
 # Enable CORS for API
 CORS(server)
+
+# Enable content compression for API
+Compress(server)
 
 # Define path directory for models
 MODEL_PATH = os.path.join(os.path.dirname(
