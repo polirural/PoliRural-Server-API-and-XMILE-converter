@@ -8,10 +8,10 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 
 # Setup Flask API app
-app = Flask(__name__)
+server = Flask(__name__)
 
 # Enable CORS for API
-CORS(app)
+CORS(server)
 
 # Define path directory for models
 MODEL_PATH = os.path.join(os.path.dirname(
@@ -36,14 +36,14 @@ def createLookup(series_dict, model):
 # Serve static files from server
 
 
-@app.route('/static/<resource>')
+@server.route('/static/<resource>')
 def serve_static(resource):
     return send_from_directory(STATIC_PATH, resource)
 
 # Serve server root
 
 
-@app.route('/')
+@server.route('/')
 def serve_root():
     return serve_static("index.html")
 
@@ -57,7 +57,7 @@ def load_model(model_name, refresh = False):
     return model_registry[model_name]
 
 # Serve models
-@app.route('/model/<model_name>', methods=['GET', 'POST'])
+@server.route('/model/<model_name>', methods=['GET', 'POST'])
 def execute_model(model_name):
     """Serve selected model
 
@@ -89,7 +89,7 @@ def execute_model(model_name):
     return Response(data.to_json(orient='records'), mimetype="application/json")
 
 # Serve model documentation
-@app.route('/model/<model_name>/doc', methods=['GET', 'POST'])
+@server.route('/model/<model_name>/doc', methods=['GET', 'POST'])
 def get_model_documentation(model_name):
     """Serve model documentation
 
@@ -105,7 +105,7 @@ def get_model_documentation(model_name):
     data.reset_index(inplace=True)
     return Response(data.to_json(orient='records'), mimetype="application/json")
 
-@app.route('/test', methods=['GET'])
+@server.route('/test', methods=['GET'])
 def run_test_model():
     """Serve test model
 
@@ -124,4 +124,4 @@ def run_test_model():
 if __name__ == '__main__':
     # run() method of Flask class runs the application
     # on the local development server.
-    app.run(debug=True)
+    server.run(debug=True)
