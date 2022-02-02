@@ -5,3 +5,4 @@ env/
 test-*.*
 *.pyc
 deprecated/
+config.py

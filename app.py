@@ -1,5 +1,6 @@
 import pysd
 import os
+from config import APP_BASE_PATH
 import pandas as pd
 import numpy as np
 from flask import send_from_directory, send_file, request, Flask, Response
@@ -19,7 +20,7 @@ MODEL_PATH = os.path.join(os.path.dirname(
 
 # Setup serving of static files, if any
 STATIC_PATH = os.path.join(os.path.dirname(
-    os.path.abspath(__file__)), 'static')
+    os.path.abspath(__file__)), '%sstatic' % APP_BASE_PATH)
 
 # Function to create a function wrapping an XY lookup table
 
@@ -36,14 +37,14 @@ def createLookup(series_dict, model):
 # Serve static files from server
 
 
-@server.route('/static/<resource>')
+@server.route('%sstatic/<resource>' % APP_BASE_PATH)
 def serve_static(resource):
     return send_from_directory(STATIC_PATH, resource)
 
 # Serve server root
 
 
-@server.route('/')
+@server.route('%s' % APP_BASE_PATH)
 def serve_root():
     return serve_static("index.html")
 
@@ -57,7 +58,7 @@ def load_model(model_name, refresh = False):
     return model_registry[model_name]
 
 # Serve models
-@server.route('/model/<model_name>', methods=['GET', 'POST'])
+@server.route('%smodel/<model_name>' % APP_BASE_PATH, methods=['GET', 'POST'])
 def execute_model(model_name):
     """Serve selected model
 
@@ -89,7 +90,7 @@ def execute_model(model_name):
     return Response(data.to_json(orient='records'), mimetype="application/json")
 
 # Serve model documentation
-@server.route('/model/<model_name>/doc', methods=['GET', 'POST'])
+@server.route('%smodel/<model_name>/doc' % APP_BASE_PATH, methods=['GET', 'POST'])
 def get_model_documentation(model_name):
     """Serve model documentation
 
@@ -105,7 +106,7 @@ def get_model_documentation(model_name):
     data.reset_index(inplace=True)
     return Response(data.to_json(orient='records'), mimetype="application/json")
 
-@server.route('/test', methods=['GET'])
+@server.route('%stest' % APP_BASE_PATH, methods=['GET'])
 def run_test_model():
     """Serve test model
 
