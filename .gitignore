@@ -6,3 +6,4 @@ test-*.*
 *.pyc
 deprecated/
 config.py
+/.vscode
