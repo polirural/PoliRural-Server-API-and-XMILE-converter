@@ -7,3 +7,4 @@ test-*.*
 deprecated/
 config.py
 /.vscode
+/db

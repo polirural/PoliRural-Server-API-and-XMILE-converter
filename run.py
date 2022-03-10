@@ -21,7 +21,6 @@ model.set_components({"farm_to_fork_effect_on_industry": t})
 stocks = model.run()
 stocks = model.run()
 
-
 # print (stocks)
 # print (stocks["related_agricultural_jobs_on_industry"])
 
