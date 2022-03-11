@@ -1,15 +1,30 @@
 import traceback
 
-from flask import Response, request, send_from_directory
+from flask import Response, request, send_from_directory, jsonify
 from flask_restx import Resource
 
 from config import STATIC_PATH
 from lib.api.util import err_response, empty_response, val_response
-from lib.api.server import ns_sdm, ns_static, sem
-from lib.api.db import db, any_json_object, Store
+from lib.api.server import ns_sdm, ns_static, sem, ns_auth
+from lib.api.db import db, any_json_object, Store, Users, auth_request_model
 from lib.api.auth import auth
 from lib.api.pysdutil import load_model, create_lookup
 
+@ns_auth.route("/login")
+@ns_auth.doc("""Do login""")
+class AuthLogin(Resource):
+    @ns_auth.expect(auth_request_model)
+    def post(self):
+        params = request.get_json()
+        print(params)
+        user = Users.query.filter_by(username=params["username"], password=params["password"]).first()
+        if not user:
+            return err_response("No user", "No user found")
+        else:
+            user_res = user.as_dict()
+            print(user_res)
+            del user_res["password"]
+            return user_res
 
 @ns_static.route("/static/<string:filename>", methods=["GET"])
 @ns_static.doc("Static files")
@@ -22,35 +37,37 @@ class StaticResource(Resource):
 @ns_sdm.route("/model/<string:model_name>", methods=['POST'])
 class ExecuteModel(Resource):
 
-    @auth.login_required
+    # @auth.login_required
     @ns_sdm.doc("Run a model with model parameters")
     def post(self, model_name):
 
         sem.acquire()
+        try:
+            # First load or retrieve model
+            pysd_model = load_model(model_name, True)
+            pysd_model.set_initial_condition('current')
 
-        # First load or retrieve model
-        pysd_model = load_model(model_name, True)
-        pysd_model.set_initial_condition('current')
+            # Only accept numeric (int/float) or dictionary parameters
+            params = request.get_json()
+            for prop in params:
+                if isinstance(params[prop], dict):
+                    params[prop] = create_lookup(params[prop], pysd_model)
+                elif type(params[prop] == int or float):
+                    pass
+                else:
+                    print("Deleting prop %s" % prop)
+                    del params[prop]
 
-        # Only accept numeric (int/float) or dictionary parameters
-        params = request.get_json()
-        for prop in params:
-            if isinstance(params[prop], dict):
-                params[prop] = create_lookup(params[prop], pysd_model)
-            elif type(params[prop] == int or float):
-                pass
-            else:
-                print("Deleting prop %s" % prop)
-                del params[prop]
+            data = pysd_model.run(params=params, initial_condition="original")
 
-        data = pysd_model.run(params=params, initial_condition="original")
-
-        sem.release()
-
-        # data = pysd_model.run(params=params)
-        data.index.name = "IDX_TIME"
-        data.reset_index(inplace=True)
-        return Response(data.to_json(orient='records'), mimetype="application/json")
+            # data = pysd_model.run(params=params)
+            data.index.name = "IDX_TIME"
+            data.reset_index(inplace=True)
+            return Response(data.to_json(orient='records'), mimetype="application/json")
+        except Exception as ex:
+            return { "message": str(ex), "details": traceback.format_exc()}, 400
+        finally:            
+            sem.release()
 
     # Serve model documentation
 
@@ -68,13 +85,19 @@ class ModelDocumentation(Resource):
         Returns:
             [type]: [description]
         """
-        params = request.get_json()  # data is empty
         sem.acquire()
-        pysd_model = load_model(model_name)
-        data = pysd_model.doc()
-        sem.release()
-        data.reset_index(inplace=True)
-        return Response(data.to_json(orient='records'), mimetype="application/json")
+        try:
+            params = request.get_json()  # data is empty
+            sem.acquire()
+            pysd_model = load_model(model_name)
+            data = pysd_model.doc()
+            sem.release()
+            data.reset_index(inplace=True)
+            return Response(data.to_json(orient='records'), mimetype="application/json")
+        except Exception as ex:
+            return { "message": str(ex), "details": traceback.format_exc()}, 400
+        finally:
+            sem.release()
 
 
 @ns_sdm.route("/storage/<string:model>/<string:key>", methods=['GET', 'POST', 'DELETE'])
@@ -82,7 +105,7 @@ class ModelDocumentation(Resource):
 class Storage(Resource):
 
     @ns_sdm.doc("Store a value for a model")
-    @ns_sdm.expect(any_json_object)
+    @ns_sdm.expect(auth_request_model)
     def post(self, model, key):
         try:
             body = request.get_json()  # data is empty
@@ -103,7 +126,7 @@ class Storage(Resource):
 
     # Retrieve value for key
     @ns_sdm.doc("Retrieve a value for a model")
-    @auth.login_required
+    # @auth.login_required
     def get(self, model, key):
         try:
             stored_key = Store.query.filter_by(model=model, key=key).first()
@@ -115,7 +138,7 @@ class Storage(Resource):
 
     # Delete a model key
     @ns_sdm.doc("Delete a stored key/value pair for a model")
-    @auth.login_required
+    # @auth.login_required
     def delete(self, model, key):
         try:
             stored_key = Store.query.filter_by(model=model, key=key).first()

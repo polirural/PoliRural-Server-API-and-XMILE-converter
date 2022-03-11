@@ -1,0 +1,1899 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xmile xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" xmlns:isee="http://iseesystems.com/XMILE" version="1.0">
+	<header>
+		<smile version="1.0" namespace="std, isee" uses_submodels=""/>
+		<name>Central Bohemia</name>
+		<uuid>8d623a8f-8453-47f6-adb8-4ed972001f0e</uuid>
+		<vendor>isee systems, inc.</vendor>
+		<product version="2.1.4" isee:build_number="2496" isee:saved_by_v1="true" lang="en">Stella Architect</product>
+	</header>
+	<sim_specs isee:sim_duration="1.5" isee:simulation_delay="0.05" isee:restore_on_start="false" method="Euler" time_units="Years" isee:instantaneous_flows="false" isee:loop_scores="true" isee:loop_exhaustive_allowed="1000">
+		<start>2010</start>
+		<stop>2040</stop>
+		<dt reciprocal="true">4</dt>
+	</sim_specs>
+	<default_format precision="0.01" scale_by="1" delimit_000s="true"/>
+	<model_units/>
+	<model>
+		<variables>
+			<module name="POP" isee:label="POPULATION">
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<connect to="ED.aging_1" from="POP.aging_1"/>
+				<connect2 to="ED.aging_1" from="POP.aging_1"/>
+				<connect to="RurAtt.ELDERLY_POPULATION" from="POP.ELDERLY_POPULATION"/>
+				<connect2 to="RurAtt.ELDERLY_POPULATION" from="POP.ELDERLY_POPULATION"/>
+				<connect to="RurRetCap.ELDERLY_POPULATION" from="POP.ELDERLY_POPULATION"/>
+				<connect2 to="RurRetCap.ELDERLY_POPULATION" from="POP.ELDERLY_POPULATION"/>
+				<connect to="QofL.proportion_of_newcomers" from="POP.proportion_of_newcomers"/>
+				<connect2 to="QofL.proportion_of_newcomers" from="POP.proportion_of_newcomers"/>
+				<connect to="RurAtt.total_population_in_relation_with_initial_population" from="POP.total_population_in_relation_to_initial_population"/>
+				<connect2 to="RurAtt.total_population_in_relation_with_initial_population" from="POP.total_population_in_relation_to_initial_population"/>
+				<connect to="EMPL.total_rural_population" from="POP.total_rural_population"/>
+				<connect2 to="EMPL.total_rural_population" from="POP.total_rural_population"/>
+				<connect to="NAT.total_rural_population" from="POP.total_rural_population"/>
+				<connect2 to="NAT.total_rural_population" from="POP.total_rural_population"/>
+				<connect to="RurRetCap.total_rural_population" from="POP.total_rural_population"/>
+				<connect2 to="RurRetCap.total_rural_population" from="POP.total_rural_population"/>
+				<connect to="ED.WA_migration_ratio" from="POP.WA_migration_ratio"/>
+				<connect2 to="ED.WA_migration_ratio" from="POP.WA_migration_ratio"/>
+				<connect to="EMPL.WORKING_AGE_RURAL_POPULATION" from="POP.WORKING_AGE_POPULATION"/>
+				<connect2 to="EMPL.WORKING_AGE_RURAL_POPULATION" from="POP.WORKING_AGE_POPULATION"/>
+				<connect to="QofL.WORKING_AGE_POPULATION" from="POP.WORKING_AGE_POPULATION"/>
+				<connect2 to="QofL.WORKING_AGE_POPULATION" from="POP.WORKING_AGE_POPULATION"/>
+				<connect to="POP.elderly_leaving_ratio_1" from="RurRetCap.elderly_leaving_ratio"/>
+				<connect2 to="POP.elderly_leaving_ratio_1" from="RurRetCap.elderly_leaving_ratio"/>
+				<connect to="POP.elderly_move_rural" from="RurAtt.elderly_move_rural"/>
+				<connect2 to="POP.elderly_move_rural" from="RurAtt.elderly_move_rural"/>
+				<connect to="POP.post_school_leaving_ratio_1" from="RurRetCap.post_school_leaving_ratio"/>
+				<connect2 to="POP.post_school_leaving_ratio_1" from="RurRetCap.post_school_leaving_ratio"/>
+				<connect to="POP.PS_moving" from="RurAtt.PS_moving"/>
+				<connect2 to="POP.PS_moving" from="RurAtt.PS_moving"/>
+				<connect to="POP.WA_leaving_ratio_1" from="RurRetCap.WA_leaving_ratio"/>
+				<connect2 to="POP.WA_leaving_ratio_1" from="RurRetCap.WA_leaving_ratio"/>
+				<connect to="POP.WA_moving" from="RurAtt.WA_moving"/>
+				<connect2 to="POP.WA_moving" from="RurAtt.WA_moving"/>
+			</module>
+			<module name="EMPL" isee:label="EMPLOYMENT">
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<connect to="RurAtt.employment_gap_1" from="EMPL.employment_gap"/>
+				<connect2 to="RurAtt.employment_gap_1" from="EMPL.employment_gap"/>
+				<connect to="RurRetCap.relative_employment_gap" from="EMPL.relative_employment_gap"/>
+				<connect2 to="RurRetCap.relative_employment_gap" from="EMPL.relative_employment_gap"/>
+				<connect to="EMPL.agriculture_jobs" from="AGR.agriculture_jobs"/>
+				<connect2 to="EMPL.agriculture_jobs" from="AGR.agriculture_jobs"/>
+				<connect to="EMPL.endogenous_industrial_job_creation_ratio" from="QofL.endogenous_industrial_job_creation"/>
+				<connect2 to="EMPL.endogenous_industrial_job_creation_ratio" from="QofL.endogenous_industrial_job_creation"/>
+				<connect to="EMPL.endogenous_primary_job_creation_ratio" from="QofL.endogenous_primary_job_creation"/>
+				<connect2 to="EMPL.endogenous_primary_job_creation_ratio" from="QofL.endogenous_primary_job_creation"/>
+				<connect to="EMPL.endogenous_service_jobs_creation_ratio" from="QofL.endogenous_service_job_creation"/>
+				<connect2 to="EMPL.endogenous_service_jobs_creation_ratio" from="QofL.endogenous_service_job_creation"/>
+				<connect to="EMPL.total_rural_population" from="POP.total_rural_population"/>
+				<connect2 to="EMPL.total_rural_population" from="POP.total_rural_population"/>
+				<connect to="EMPL.tourist_visitors" from="NAT.tourist_visitors"/>
+				<connect2 to="EMPL.tourist_visitors" from="NAT.tourist_visitors"/>
+				<connect to="EMPL.workforce_specialization" from="ED.workforce_specialization"/>
+				<connect2 to="EMPL.workforce_specialization" from="ED.workforce_specialization"/>
+				<connect to="EMPL.WORKING_AGE_RURAL_POPULATION" from="POP.WORKING_AGE_POPULATION"/>
+				<connect2 to="EMPL.WORKING_AGE_RURAL_POPULATION" from="POP.WORKING_AGE_POPULATION"/>
+			</module>
+			<module name="ED" isee:label="EDUCATION">
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<connect to="EMPL.workforce_specialization" from="ED.workforce_specialization"/>
+				<connect2 to="EMPL.workforce_specialization" from="ED.workforce_specialization"/>
+				<connect to="QofL.workforce_specialization" from="ED.workforce_specialization"/>
+				<connect2 to="QofL.workforce_specialization" from="ED.workforce_specialization"/>
+				<connect to="ED.aging_1" from="POP.aging_1"/>
+				<connect2 to="ED.aging_1" from="POP.aging_1"/>
+				<connect to="ED.University_Accessibility" from="QofL.University_Accessibility"/>
+				<connect2 to="ED.University_Accessibility" from="QofL.University_Accessibility"/>
+				<connect to="ED.VT_centers_accessibility" from="QofL.VT_centers_accessibility"/>
+				<connect2 to="ED.VT_centers_accessibility" from="QofL.VT_centers_accessibility"/>
+				<connect to="ED.WA_migration_ratio" from="POP.WA_migration_ratio"/>
+				<connect2 to="ED.WA_migration_ratio" from="POP.WA_migration_ratio"/>
+			</module>
+			<module name="AGR" isee:label="AGRICULTURE">
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<connect to="NAT.agricultural_land" from="AGR.agricultural_land"/>
+				<connect2 to="NAT.agricultural_land" from="AGR.agricultural_land"/>
+				<connect to="EMPL.agriculture_jobs" from="AGR.agriculture_jobs"/>
+				<connect2 to="EMPL.agriculture_jobs" from="AGR.agriculture_jobs"/>
+				<connect to="NAT.average_farm_area" from="AGR.average_farm_area"/>
+				<connect2 to="NAT.average_farm_area" from="AGR.average_farm_area"/>
+			</module>
+			<module name="QofL" isee:label="QUALITY OF LIFE">
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<connect to="RurRetCap.broadband_effect_on_retention" from="QofL.broadband_effect_on_retention"/>
+				<connect2 to="RurRetCap.broadband_effect_on_retention" from="QofL.broadband_effect_on_retention"/>
+				<connect to="RurRetCap.city_and_regional_connections_access" from="QofL.city_and_regional_connections_access"/>
+				<connect2 to="RurRetCap.city_and_regional_connections_access" from="QofL.city_and_regional_connections_access"/>
+				<connect to="RurAtt.community_and_public_services_accessibility" from="QofL.community_and_public_services_accessibility"/>
+				<connect2 to="RurAtt.community_and_public_services_accessibility" from="QofL.community_and_public_services_accessibility"/>
+				<connect to="RurRetCap.community_and_public_services_accessibility" from="QofL.community_and_public_services_accessibility"/>
+				<connect2 to="RurRetCap.community_and_public_services_accessibility" from="QofL.community_and_public_services_accessibility"/>
+				<connect to="RurAtt.cultural_appeal" from="QofL.cultural_appeal"/>
+				<connect2 to="RurAtt.cultural_appeal" from="QofL.cultural_appeal"/>
+				<connect to="EMPL.endogenous_industrial_job_creation_ratio" from="QofL.endogenous_industrial_job_creation"/>
+				<connect2 to="EMPL.endogenous_industrial_job_creation_ratio" from="QofL.endogenous_industrial_job_creation"/>
+				<connect to="EMPL.endogenous_primary_job_creation_ratio" from="QofL.endogenous_primary_job_creation"/>
+				<connect2 to="EMPL.endogenous_primary_job_creation_ratio" from="QofL.endogenous_primary_job_creation"/>
+				<connect to="EMPL.endogenous_service_jobs_creation_ratio" from="QofL.endogenous_service_job_creation"/>
+				<connect2 to="EMPL.endogenous_service_jobs_creation_ratio" from="QofL.endogenous_service_job_creation"/>
+				<connect to="RurAtt.health_centers_accessibility" from="QofL.health_centers_accessibility"/>
+				<connect2 to="RurAtt.health_centers_accessibility" from="QofL.health_centers_accessibility"/>
+				<connect to="RurRetCap.health_centers_accessibility" from="QofL.health_centers_accessibility"/>
+				<connect2 to="RurRetCap.health_centers_accessibility" from="QofL.health_centers_accessibility"/>
+				<connect to="RurRetCap.social_capital_effect_on_retention" from="QofL.social_capital_effect_on_retention"/>
+				<connect2 to="RurRetCap.social_capital_effect_on_retention" from="QofL.social_capital_effect_on_retention"/>
+				<connect to="ED.University_Accessibility" from="QofL.University_Accessibility"/>
+				<connect2 to="ED.University_Accessibility" from="QofL.University_Accessibility"/>
+				<connect to="RurRetCap.University_Accessibility" from="QofL.University_Accessibility"/>
+				<connect2 to="RurRetCap.University_Accessibility" from="QofL.University_Accessibility"/>
+				<connect to="ED.VT_centers_accessibility" from="QofL.VT_centers_accessibility"/>
+				<connect2 to="ED.VT_centers_accessibility" from="QofL.VT_centers_accessibility"/>
+				<connect to="RurRetCap.VT_centers_accessibility" from="QofL.VT_centers_accessibility"/>
+				<connect2 to="RurRetCap.VT_centers_accessibility" from="QofL.VT_centers_accessibility"/>
+				<connect to="QofL.proportion_of_newcomers" from="POP.proportion_of_newcomers"/>
+				<connect2 to="QofL.proportion_of_newcomers" from="POP.proportion_of_newcomers"/>
+				<connect to="QofL.workforce_specialization" from="ED.workforce_specialization"/>
+				<connect2 to="QofL.workforce_specialization" from="ED.workforce_specialization"/>
+				<connect to="QofL.WORKING_AGE_POPULATION" from="POP.WORKING_AGE_POPULATION"/>
+				<connect2 to="QofL.WORKING_AGE_POPULATION" from="POP.WORKING_AGE_POPULATION"/>
+			</module>
+			<module name="NAT" isee:label="NATURAL  CAPITAL">
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<connect to="RurAtt.natural_capital_perception" from="NAT.natural_capital_perception"/>
+				<connect2 to="RurAtt.natural_capital_perception" from="NAT.natural_capital_perception"/>
+				<connect to="EMPL.tourist_visitors" from="NAT.tourist_visitors"/>
+				<connect2 to="EMPL.tourist_visitors" from="NAT.tourist_visitors"/>
+				<connect to="NAT.agricultural_land" from="AGR.agricultural_land"/>
+				<connect2 to="NAT.agricultural_land" from="AGR.agricultural_land"/>
+				<connect to="NAT.average_farm_area" from="AGR.average_farm_area"/>
+				<connect2 to="NAT.average_farm_area" from="AGR.average_farm_area"/>
+				<connect to="NAT.total_rural_population" from="POP.total_rural_population"/>
+				<connect2 to="NAT.total_rural_population" from="POP.total_rural_population"/>
+			</module>
+			<module name="RurAtt" isee:label="RURAL  ATTRACTIVENESS">
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<connect to="POP.elderly_move_rural" from="RurAtt.elderly_move_rural"/>
+				<connect2 to="POP.elderly_move_rural" from="RurAtt.elderly_move_rural"/>
+				<connect to="RurRetCap.housing_accessibility" from="RurAtt.housing_accessibility"/>
+				<connect2 to="RurRetCap.housing_accessibility" from="RurAtt.housing_accessibility"/>
+				<connect to="POP.PS_moving" from="RurAtt.PS_moving"/>
+				<connect2 to="POP.PS_moving" from="RurAtt.PS_moving"/>
+				<connect to="POP.WA_moving" from="RurAtt.WA_moving"/>
+				<connect2 to="POP.WA_moving" from="RurAtt.WA_moving"/>
+				<connect to="RurAtt.community_and_public_services_accessibility" from="QofL.community_and_public_services_accessibility"/>
+				<connect2 to="RurAtt.community_and_public_services_accessibility" from="QofL.community_and_public_services_accessibility"/>
+				<connect to="RurAtt.cultural_appeal" from="QofL.cultural_appeal"/>
+				<connect2 to="RurAtt.cultural_appeal" from="QofL.cultural_appeal"/>
+				<connect to="RurAtt.ELDERLY_POPULATION" from="POP.ELDERLY_POPULATION"/>
+				<connect2 to="RurAtt.ELDERLY_POPULATION" from="POP.ELDERLY_POPULATION"/>
+				<connect to="RurAtt.employment_gap_1" from="EMPL.employment_gap"/>
+				<connect2 to="RurAtt.employment_gap_1" from="EMPL.employment_gap"/>
+				<connect to="RurAtt.health_centers_accessibility" from="QofL.health_centers_accessibility"/>
+				<connect2 to="RurAtt.health_centers_accessibility" from="QofL.health_centers_accessibility"/>
+				<connect to="RurAtt.natural_capital_perception" from="NAT.natural_capital_perception"/>
+				<connect2 to="RurAtt.natural_capital_perception" from="NAT.natural_capital_perception"/>
+				<connect to="RurAtt.total_population_in_relation_with_initial_population" from="POP.total_population_in_relation_to_initial_population"/>
+				<connect2 to="RurAtt.total_population_in_relation_with_initial_population" from="POP.total_population_in_relation_to_initial_population"/>
+			</module>
+			<module name="RurRetCap" isee:label="RURAL RETENTION CAPACITY">
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<connect to="POP.elderly_leaving_ratio_1" from="RurRetCap.elderly_leaving_ratio"/>
+				<connect2 to="POP.elderly_leaving_ratio_1" from="RurRetCap.elderly_leaving_ratio"/>
+				<connect to="POP.post_school_leaving_ratio_1" from="RurRetCap.post_school_leaving_ratio"/>
+				<connect2 to="POP.post_school_leaving_ratio_1" from="RurRetCap.post_school_leaving_ratio"/>
+				<connect to="POP.WA_leaving_ratio_1" from="RurRetCap.WA_leaving_ratio"/>
+				<connect2 to="POP.WA_leaving_ratio_1" from="RurRetCap.WA_leaving_ratio"/>
+				<connect to="RurRetCap.broadband_effect_on_retention" from="QofL.broadband_effect_on_retention"/>
+				<connect2 to="RurRetCap.broadband_effect_on_retention" from="QofL.broadband_effect_on_retention"/>
+				<connect to="RurRetCap.city_and_regional_connections_access" from="QofL.city_and_regional_connections_access"/>
+				<connect2 to="RurRetCap.city_and_regional_connections_access" from="QofL.city_and_regional_connections_access"/>
+				<connect to="RurRetCap.community_and_public_services_accessibility" from="QofL.community_and_public_services_accessibility"/>
+				<connect2 to="RurRetCap.community_and_public_services_accessibility" from="QofL.community_and_public_services_accessibility"/>
+				<connect to="RurRetCap.ELDERLY_POPULATION" from="POP.ELDERLY_POPULATION"/>
+				<connect2 to="RurRetCap.ELDERLY_POPULATION" from="POP.ELDERLY_POPULATION"/>
+				<connect to="RurRetCap.health_centers_accessibility" from="QofL.health_centers_accessibility"/>
+				<connect2 to="RurRetCap.health_centers_accessibility" from="QofL.health_centers_accessibility"/>
+				<connect to="RurRetCap.housing_accessibility" from="RurAtt.housing_accessibility"/>
+				<connect2 to="RurRetCap.housing_accessibility" from="RurAtt.housing_accessibility"/>
+				<connect to="RurRetCap.relative_employment_gap" from="EMPL.relative_employment_gap"/>
+				<connect2 to="RurRetCap.relative_employment_gap" from="EMPL.relative_employment_gap"/>
+				<connect to="RurRetCap.social_capital_effect_on_retention" from="QofL.social_capital_effect_on_retention"/>
+				<connect2 to="RurRetCap.social_capital_effect_on_retention" from="QofL.social_capital_effect_on_retention"/>
+				<connect to="RurRetCap.total_rural_population" from="POP.total_rural_population"/>
+				<connect2 to="RurRetCap.total_rural_population" from="POP.total_rural_population"/>
+				<connect to="RurRetCap.University_Accessibility" from="QofL.University_Accessibility"/>
+				<connect2 to="RurRetCap.University_Accessibility" from="QofL.University_Accessibility"/>
+				<connect to="RurRetCap.VT_centers_accessibility" from="QofL.VT_centers_accessibility"/>
+				<connect2 to="RurRetCap.VT_centers_accessibility" from="QofL.VT_centers_accessibility"/>
+			</module>
+		</variables>
+		</model>
+	<model name="AGR" run="true">
+		<variables>
+			<aux name="agricultural_land" access="output" isee:autocreated="true">
+				<eqn>initial_number_of_farms*INIT(average_farm_area)</eqn>
+				<units>ha</units>
+			</aux>
+			<aux name="farms">
+				<eqn>agricultural_land/average_farm_area</eqn>
+				<units>farm</units>
+			</aux>
+			<aux name="average_farm_area" access="output" isee:autocreated="true">
+				<eqn>(2.4339*(TIME-2010))+166.15</eqn>
+				<units>ha/farm</units>
+			</aux>
+			<aux name="agriculture_jobs" access="output" isee:autocreated="true">
+				<eqn>farms*mean_jobs_per_farm</eqn>
+				<units>job</units>
+			</aux>
+			<aux name="mean_jobs_per_farm">
+				<eqn>1.5</eqn>
+				<units>job/farm</units>
+			</aux>
+			<aux name="initial_number_of_farms">
+				<eqn>3592</eqn>
+				<units>farm</units>
+			</aux>
+		</variables>
+		</model>
+	<model name="ED">
+		<variables>
+			<aux name="vocational_training_campaign">
+				<eqn>initial_fraction_VT+
+STEP((VT_fraction_objective/100)-initial_fraction_VT, 2021)</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="students_university_campaign">
+				<eqn>initial_fraction_university_students+
+STEP ((university_students_objective/100)-initial_fraction_university_students, 2021)</eqn>
+				<units>dmnl</units>
+			</aux>
+			<stock name="VT_STUDENTS">
+				<eqn>11614.5*0.29*3</eqn>
+				<inflow>entering_VT</inflow>
+				<outflow>becoming_vt_professional</outflow>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<stock name="UNIVERSITY_STUDENTS">
+				<eqn>11614.5*0.37*5</eqn>
+				<inflow>entering_university</inflow>
+				<outflow>becoming_graduated_professional</outflow>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<stock name="UNSKILLED_WORKERS">
+				<eqn>798279*0.34</eqn>
+				<inflow>early_working_entrance</inflow>
+				<outflow>NSW_retitiring</outflow>
+				<outflow>apfx_not_specialized_workers_leaving</outflow>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<flow name="entering_VT">
+				<eqn>aging_1*
+(VT_centers_accessibility/5)*
+DELAY1(vocational_training_campaign, years_for_education_campaign)</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="entering_university">
+				<eqn>aging_1*
+(University_Accessibility/5)*
+DELAY1(students_university_campaign, years_for_education_campaign)</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="early_working_entrance">
+				<eqn>aging_1-entering_VT-entering_university</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<stock name="VT_PROFESSIONALS">
+				<eqn>798279*0.29</eqn>
+				<inflow>becoming_vt_professional</inflow>
+				<outflow>VTW_retiring</outflow>
+				<outflow>VT_professionals_leaving</outflow>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<stock name="GRADUATED_PROFESSIONALS">
+				<eqn>798279*0.37</eqn>
+				<inflow>becoming_graduated_professional</inflow>
+				<outflow>graduated_migration_net_flow</outflow>
+				<outflow>GradW_retiring</outflow>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<flow name="becoming_vt_professional">
+				<eqn>VT_STUDENTS/time_to_become_VT_professional</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="becoming_graduated_professional">
+				<eqn>UNIVERSITY_STUDENTS/time_to_become_graduated_professional</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="graduated_migration_net_flow">
+				<eqn>WA_migration_ratio*GRADUATED_PROFESSIONALS*graduate_migrating_ratio</eqn>
+				<units>person/year</units>
+			</flow>
+			<aux name="workforce_specialization" access="output" isee:autocreated="true">
+				<eqn>(VT_PROFESSIONALS+GRADUATED_PROFESSIONALS)/(VT_PROFESSIONALS+GRADUATED_PROFESSIONALS+UNSKILLED_WORKERS)</eqn>
+				<units>dmnl</units>
+			</aux>
+			<flow name="NSW_retitiring">
+				<eqn>UNSKILLED_WORKERS/working_lifetime_duration_for_NSW</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="VTW_retiring">
+				<eqn>VT_PROFESSIONALS/working_lifetime_duration_for_VT</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="GradW_retiring">
+				<eqn>GRADUATED_PROFESSIONALS/working_lifetime_duration_for_GP</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<aux name="VT_centers_accessibility" access="input">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2010" max="2030"/>
+					<yscale min="0" max="100"/>
+					<ypts>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="University_Accessibility" access="input">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2010" max="2030"/>
+					<yscale min="0" max="100"/>
+					<ypts>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="time_to_become_VT_professional">
+				<eqn>3</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="time_to_become_graduated_professional">
+				<eqn>5</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="working_lifetime_duration_for_VT">
+				<eqn>42</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="working_lifetime_duration_for_GP">
+				<eqn>40</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="working_lifetime_duration_for_NSW">
+				<eqn>45</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="initial_fraction_VT">
+				<eqn>0.29</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="VT_fraction_objective">
+				<eqn>29</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<range min="15" max="30"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="initial_fraction_university_students">
+				<eqn>0.37</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="university_students_objective">
+				<eqn>37</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<range min="5" max="20"/>
+				<units>dmnl</units>
+			</aux>
+			<flow name="VT_professionals_leaving">
+				<eqn>WA_migration_ratio*VT_PROFESSIONALS*VT_migrating_ratio</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="apfx_not_specialized_workers_leaving">
+				<eqn>WA_migration_ratio*unskilled_migrating_ratio*UNSKILLED_WORKERS</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<aux name="graduate_migrating_ratio">
+				<eqn>0.6</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="VT_migrating_ratio">
+				<eqn>0.3</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="unskilled_migrating_ratio">
+				<eqn>0.1</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="years_for_education_campaign">
+				<doc>Campaign starting in 2021. How many years? now it is fixed in 9</doc>
+				<eqn>2031-2021</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<range min="3" max="10"/>
+				<units>year</units>
+			</aux>
+			<aux name="aging_1" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<units>person/year</units>
+			</aux>
+			<aux name="WA_migration_ratio" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<units>dmnl/year</units>
+			</aux>
+		</variables>
+		</model>
+	<model name="EMPL" run="true">
+		<variables>
+			<aux name="total_regional_employment">
+				<eqn>agriculture_jobs+
+total_industrial_jobs+
+total_services_job+
+Rest_of_primary_sector_jobs</eqn>
+				<units>job</units>
+			</aux>
+			<stock name="WORKING_AGE_RURAL_POPULATION" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<aux name="workforce_as_ratio_of_WAP">
+				<eqn>0.62</eqn>
+				<units>job/person</units>
+			</aux>
+			<aux name="structural_unemployment">
+				<doc>from 8% to 2% depending on workforce specialization</doc>
+				<eqn>workforce_specialization</eqn>
+				<gf>
+					<xscale min="0" max="1"/>
+					<yscale min="0.02" max="0.08"/>
+					<ypts>0.0799224590134228,0.0797078641253745,0.0789101785382941,0.0760774799944656,0.0674504380872162,0.05,0.0325495619127838,0.0239225200055344,0.021089821461706,0.0202921358746255,0.0200775409865772</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="employment_gap" access="output" isee:autocreated="true">
+				<doc>employment gap &lt; 0 means unemployment
+employment gap &gt; 0 you need people to work</doc>
+				<eqn>total_employment-
+total_workforce</eqn>
+				<units>job</units>
+			</aux>
+			<aux name="relative_employment_gap" access="output" isee:autocreated="true">
+				<eqn>employment_gap/total_workforce</eqn>
+				<units>dmnl</units>
+			</aux>
+			<stock name="Rest_of_primary_sector_jobs">
+				<doc>aprox 2%</doc>
+				<eqn>22100-5388</eqn>
+				<inflow>creation_of_primary_jobs</inflow>
+				<outflow>destruction_of_primary_jobs</outflow>
+				<non_negative/>
+				<units>job</units>
+			</stock>
+			<flow name="creation_of_primary_jobs">
+				<eqn>endogenous_primary_job_creation_ratio</eqn>
+				<non_negative/>
+				<units>job/Years</units>
+			</flow>
+			<flow name="destruction_of_primary_jobs">
+				<eqn>(endogenous_primary_job_creation_ratio*(1-primary_jobs_viability_ratio))+(Rest_of_primary_sector_jobs/average_life_of_a_primary_sector_business)</eqn>
+				<non_negative/>
+				<units>job/Years</units>
+			</flow>
+			<aux name="primary_jobs_viability_ratio">
+				<eqn>0.6</eqn>
+				<units>dmnl</units>
+			</aux>
+			<stock name="Industrial_jobs">
+				<doc>25% total - 4% (agriindustry) = 21%</doc>
+				<eqn>220600</eqn>
+				<inflow>creation_of_industrial_jobs</inflow>
+				<outflow>destruction_of_industrial_jobs</outflow>
+				<non_negative/>
+				<units>job</units>
+			</stock>
+			<stock name="service_jobs">
+				<doc>total 68% - 2% (agriservices) - 10% (population) = 56%</doc>
+				<eqn>(307000-2643)*(1-0.1)</eqn>
+				<inflow>creation_of_services_jobs</inflow>
+				<outflow>destruction_of_services_jobs</outflow>
+				<non_negative/>
+				<units>job</units>
+			</stock>
+			<flow name="creation_of_industrial_jobs">
+				<eqn>endogenous_industrial_job_creation_ratio</eqn>
+				<non_negative/>
+				<units>job/Years</units>
+			</flow>
+			<flow name="destruction_of_industrial_jobs">
+				<eqn>(Industrial_jobs/resulting_average_life_for_industrial_business)+
+(endogenous_industrial_job_creation_ratio*(1-new_industrial_job_viability_ratio))</eqn>
+				<non_negative/>
+				<units>job/Years</units>
+			</flow>
+			<flow name="creation_of_services_jobs">
+				<eqn>endogenous_service_jobs_creation_ratio</eqn>
+				<non_negative/>
+				<units>job/Years</units>
+			</flow>
+			<flow name="destruction_of_services_jobs">
+				<eqn>(service_jobs/resulting_average_life_for_services)+
+STEP((endogenous_service_jobs_creation_ratio*(1-new_services_viability_ratio)), 2015)</eqn>
+				<non_negative/>
+				<units>job/Years</units>
+			</flow>
+			<aux name="new_industrial_job_viability_ratio">
+				<eqn>0.85</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="total_workforce" access="output" isee:autocreated="true">
+				<eqn>regional_WA*workforce_as_ratio_of_WAP*
+(1-structural_unemployment)</eqn>
+				<units>job</units>
+			</aux>
+			<aux name="total_employment">
+				<eqn>total_regional_employment</eqn>
+				<units>job</units>
+			</aux>
+			<aux name="workforce_specialization" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="total_rural_population" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<units>person</units>
+			</aux>
+			<aux name="Previous_population" access="output" isee:autocreated="true">
+				<eqn>PREVIOUS(total_rural_population, 1292000)</eqn>
+				<units>person</units>
+			</aux>
+			<aux name="Difference_of_population" access="output" isee:autocreated="true">
+				<eqn>total_rural_population-Previous_population</eqn>
+				<units>person</units>
+			</aux>
+			<aux name="ratio_population_services">
+				<doc>Value?
+4%?</doc>
+				<eqn>0.04</eqn>
+				<units>job/person/year</units>
+			</aux>
+			<stock name="population_services">
+				<eqn>(307000-2643)*0.1</eqn>
+				<inflow>change_in_population_services</inflow>
+				<non_negative/>
+				<units>job</units>
+			</stock>
+			<flow name="change_in_population_services">
+				<eqn>Difference_of_population*ratio_population_services</eqn>
+				<units>job/Years</units>
+			</flow>
+			<aux name="agriculture_jobs" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<units>job</units>
+			</aux>
+			<aux name="endogenous_primary_job_creation_ratio" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<units>job/year</units>
+			</aux>
+			<aux name="endogenous_industrial_job_creation_ratio" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<units>job/year</units>
+			</aux>
+			<aux name="endogenous_service_jobs_creation_ratio" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<units>job/year</units>
+			</aux>
+			<aux name="total_services_job">
+				<eqn>population_services+service_jobs
++jobs_per_tourism</eqn>
+				<units>job</units>
+			</aux>
+			<aux name="new_services_viability_ratio">
+				<doc>0-1</doc>
+				<eqn>0.85</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="resulting_average_life_for_industrial_business">
+				<eqn>average_life_of_an_industrial_business-
+STEP (drop_in_the_industrial_average_life_due_to_COVID, 2021)</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="resulting_average_life_for_services">
+				<eqn>average_life_of_a_service_business-
+STEP (Drop_in_the_service_average_life_due_to_COVID, 2021)</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="average_life_of_a_primary_sector_business">
+				<eqn>10</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="Drop_in_the_service_average_life_due_to_COVID">
+				<doc>Subtract to the original obsolescence time</doc>
+				<eqn>TIME</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<range min="0" max="8"/>
+				<gf>
+					<xscale min="2021" max="2040"/>
+					<yscale min="0" max="10"/>
+					<ypts>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</ypts>
+				</gf>
+				<units>year</units>
+			</aux>
+			<aux name="tourist_visitors" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<units>person/year</units>
+			</aux>
+			<aux name="jobs_per_tourism">
+				<eqn>tourist_visitors/visitors_per_tourism_workplace</eqn>
+				<units>job</units>
+			</aux>
+			<aux name="visitors_per_tourism_workplace">
+				<eqn>200</eqn>
+				<units>person/job/year</units>
+			</aux>
+			<aux name="services_ratio">
+				<eqn>total_services_job/total_employment</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="primary_ratio">
+				<eqn>(agriculture_jobs+Rest_of_primary_sector_jobs)/total_employment</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="industrial_ratio">
+				<eqn>total_industrial_jobs/total_employment</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="average_life_of_a_service_business">
+				<eqn>15</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="average_life_of_an_industrial_business">
+				<eqn>20</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="drop_in_the_industrial_average_life_due_to_COVID">
+				<doc>Subtract to the original obsolescence time</doc>
+				<eqn>TIME</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<range min="0" max="8"/>
+				<gf>
+					<xscale min="2021" max="2040"/>
+					<yscale min="0" max="10"/>
+					<ypts>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</ypts>
+				</gf>
+				<units>year</units>
+			</aux>
+			<aux name="regional_WA">
+				<eqn>WORKING_AGE_RURAL_POPULATION</eqn>
+				<units>person</units>
+			</aux>
+			<aux name="total_industrial_jobs">
+				<eqn>Industrial_jobs</eqn>
+				<units>job</units>
+			</aux>
+		</variables>
+		</model>
+	<model name="NAT" run="true">
+		<variables>
+			<stock name="Natural_Capital" access="output" isee:autocreated="true">
+				<eqn>initial_natural_land-(586910*0.0205)</eqn>
+				<inflow>natural_capital_net_variation</inflow>
+				<non_negative/>
+				<units>ha</units>
+			</stock>
+			<aux name="natural_land_variation">
+				<eqn>STEP(2932.8, 2010)-STEP(2932.8, 2019)</eqn>
+				<units>ha/year</units>
+			</aux>
+			<aux name="potential_visitors_as_a_function_of_Natural_Capital" access="output" isee:autocreated="true">
+				<eqn>Natural_Capital</eqn>
+				<gf>
+					<xscale min="0" max="220000"/>
+					<yscale min="0" max="10000000"/>
+					<ypts>66928.5092428486,179862.099620916,474258.731775668,1192029.22022118,2689414.21369995,5000000,7310585.78630005,8807970.77977883,9525741.26822434,9820137.90037908,9933071.49075715</ypts>
+				</gf>
+				<units>person</units>
+			</aux>
+			<aux name="natural_land_objective">
+				<eqn>146576</eqn>
+				<format precision="1"/>
+				<range min="400000" max="550000"/>
+				<units>ha</units>
+			</aux>
+			<aux name="tourist_visitors" access="output" isee:autocreated="true">
+				<eqn>attraction_ratio_for_tourists*potential_visitors_as_a_function_of_Natural_Capital</eqn>
+				<units>person/year</units>
+			</aux>
+			<aux name="attraction_ratio_for_tourists" access="output" isee:autocreated="true">
+				<eqn>DELAY1(tourist_campaign, time_to_complete_campaign)</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="effect_of_tourism_on_natural_capital">
+				<doc>-10% to 5% of the Natural Capital</doc>
+				<eqn>relative_tourist_visits</eqn>
+				<gf>
+					<xscale min="0" max="1.5"/>
+					<yscale min="-0.015" max="0.015"/>
+					<ypts>0.00383,0.00846,0.01309,0.01468,0.01452,0.01309,-0.00144,-0.00543,-0.00814,-0.00989,-0.01117,-0.01245,-0.0134,-0.01388,-0.01468</ypts>
+				</gf>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="total_rural_population" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<units>person</units>
+			</aux>
+			<flow name="natural_capital_net_variation">
+				<eqn>natural_land_variation+
+(Natural_Capital*effect_of_tourism_on_natural_capital)-
+effect_of_agriculture_on_natural_capital</eqn>
+				<units>ha/year</units>
+			</flow>
+			<aux name="relative_natural_capital">
+				<eqn>Natural_Capital/initial_Natural_capital</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="natural_capital_perception" access="output" isee:autocreated="true">
+				<eqn>relative_natural_capital</eqn>
+				<gf type="extrapolate">
+					<xscale min="0" max="2"/>
+					<yscale min="0" max="5"/>
+					<ypts>0.0334642546214243,0.0899310498104578,0.237129365887834,0.596014610110588,1.34470710684998,2.5,3.65529289315003,4.40398538988941,4.76287063411217,4.91006895018954,4.96653574537858</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="years_for_completing_natural_land_objective">
+				<eqn>9</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<range min="3" max="10"/>
+				<units>year</units>
+			</aux>
+			<aux name="normal_attraction_ratio">
+				<eqn>0.11</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="attraction_ratio_objective">
+				<eqn>11</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<range min="5" max="20"/>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="time_to_complete_campaign">
+				<eqn>8</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<range min="4" max="10"/>
+				<units>year</units>
+			</aux>
+			<aux name="tourist_campaign">
+				<eqn>normal_attraction_ratio+
+STEP ((attraction_ratio_objective/100)-normal_attraction_ratio, 2021)</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="initial_natural_land">
+				<eqn>120181</eqn>
+				<units>ha</units>
+			</aux>
+			<aux name="initial_Natural_capital">
+				<eqn>INIT(Natural_Capital)</eqn>
+				<units>ha</units>
+			</aux>
+			<aux name="relative_tourist_visits">
+				<eqn>tourist_visitors/total_rural_population</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="effect_of_agriculture_on_natural_capital">
+				<eqn>agricultural_land*(agriculture_natural_capital_ratio-PREVIOUS(agriculture_natural_capital_ratio, 0.0204))</eqn>
+				<units>ha/year</units>
+			</aux>
+			<aux name="average_farm_area" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<units>ha/farm</units>
+			</aux>
+			<aux name="agriculture_natural_capital_ratio">
+				<eqn>average_farm_area</eqn>
+				<gf>
+					<xscale min="150" max="300"/>
+					<yscale min="0.02" max="0.04"/>
+					<ypts>0.0201338570184857,0.0203597241992418,0.0209485174635513,0.0223840584404424,0.0253788284273999,0.03,0.0346211715726001,0.0376159415595577,0.0390514825364487,0.0396402758007582,0.0398661429815143</ypts>
+				</gf>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="agricultural_land" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<units>ha</units>
+			</aux>
+		</variables>
+		</model>
+	<model name="POP">
+		<variables>
+			<stock name="SCHOOL_AGE_POPULATION">
+				<eqn>116145</eqn>
+				<inflow>children_net_migration</inflow>
+				<inflow>aging</inflow>
+				<outflow>aging_1</outflow>
+				<outflow>rural_children_deaths</outflow>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<stock name="WORKING_AGE_POPULATION" access="output">
+				<eqn>798279</eqn>
+				<inflow>working_age_net_migration</inflow>
+				<inflow>aging_2</inflow>
+				<outflow>aging_3</outflow>
+				<outflow>working_age_deaths</outflow>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<stock name="ELDERLY_POPULATION" access="output" isee:autocreated="true">
+				<eqn>186448</eqn>
+				<inflow>aging_3</inflow>
+				<inflow>elderly_net_migration</inflow>
+				<outflow>elderly_deaths</outflow>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<flow name="births">
+				<eqn>total_rural_population*birth_rate</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="aging_1" access="output" isee:autocreated="true">
+				<eqn>SCHOOL_AGE_POPULATION/school_age_duration</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="aging_3">
+				<eqn>WORKING_AGE_POPULATION/working_age_duration</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="children_net_migration">
+				<eqn>working_age_net_migration*0.5*fertility_rate*1/3</eqn>
+				<units>person/year</units>
+			</flow>
+			<flow name="rural_children_deaths">
+				<eqn>SCHOOL_AGE_POPULATION*children_death_rate</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="working_age_net_migration">
+				<eqn>WA_moving-
+(WORKING_AGE_POPULATION*WA_leaving_ratio_1*max_WA_population_living_rural_per_year)</eqn>
+				<units>person/year</units>
+			</flow>
+			<flow name="working_age_deaths">
+				<eqn>WORKING_AGE_POPULATION*working_age_death_rate</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="elderly_net_migration">
+				<eqn>elderly_move_rural-
+(ELDERLY_POPULATION*elderly_leaving_ratio_1)</eqn>
+				<units>person/year</units>
+			</flow>
+			<flow name="elderly_deaths">
+				<eqn>ELDERLY_POPULATION/
+DELAY1(adapted_life_expectancy, 1)</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<aux name="total_rural_population" access="output" isee:autocreated="true">
+				<eqn>INFANTS+
+SCHOOL_AGE_POPULATION+
+WORKING_AGE_POPULATION+
+ELDERLY_POPULATION+
+POST_SCHOOL_POPULATION</eqn>
+				<units>person</units>
+			</aux>
+			<stock name="POST_SCHOOL_POPULATION" access="output" isee:autocreated="true">
+				<eqn>71866</eqn>
+				<inflow>post_school_net_migration</inflow>
+				<inflow>aging_1</inflow>
+				<outflow>aging_2</outflow>
+				<outflow>Rural_Post_school_age_deaths</outflow>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<flow name="post_school_net_migration">
+				<eqn>PS_moving-
+(POST_SCHOOL_POPULATION*max_post_school_leaving_per_year* post_school_leaving_ratio_1)</eqn>
+				<units>person/year</units>
+			</flow>
+			<aux name="school_age_duration">
+				<eqn>10</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="working_age_duration">
+				<eqn>45</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="children_death_rate">
+				<eqn>0.0000091</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="working_age_death_rate">
+				<eqn>0.001755</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="adapted_life_expectancy">
+				<eqn>(life_expectancy-
+STEP (smooth_life_expectancy, 2020)+
+STEP(smooth_life_expectancy, 2022))-
+65</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="post_school_death_rate">
+				<eqn>0.00002475</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="birth_rate">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2010" max="2040"/>
+					<yscale min="0" max="0.05"/>
+					<ypts>0.0121,0.0114,0.0112,0.011,0.0111,0.0111,0.0111,0.0114,0.0109,0.0108,0.0105,0.0105,0.0105,0.0105,0.0105,0.0105,0.0105,0.0105,0.0105,0.0105,0.0105,0.0105,0.0105,0.0105,0.0105,0.0105,0.0105,0.0105,0.0105,0.0105,0.0105</ypts>
+				</gf>
+				<units>dmnl/year</units>
+			</aux>
+			<flow name="Rural_Post_school_age_deaths">
+				<eqn>POST_SCHOOL_POPULATION*post_school_death_rate</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<stock name="INFANTS">
+				<eqn>92240</eqn>
+				<inflow>births</inflow>
+				<inflow>infant_net_migration</inflow>
+				<outflow>aging</outflow>
+				<outflow>rural_infant_deaths</outflow>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<flow name="aging">
+				<eqn>INFANTS/infant_duration</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="infant_net_migration">
+				<eqn>working_age_net_migration*0.5*fertility_rate*2/3</eqn>
+				<units>person/year</units>
+			</flow>
+			<aux name="infant_duration">
+				<eqn>5</eqn>
+				<units>year</units>
+			</aux>
+			<flow name="rural_infant_deaths">
+				<eqn>INFANTS*infant_death_rate</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<aux name="infant_death_rate">
+				<eqn>0.0017</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<flow name="aging_2">
+				<eqn>POST_SCHOOL_POPULATION/postschool_age_duration</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<aux name="postschool_age_duration">
+				<eqn>5</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="post_school_leaving_ratio_1" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="PS_moving" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<units>person/year</units>
+			</aux>
+			<aux name="WA_leaving_ratio_1" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="WA_moving" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<units>person/year</units>
+			</aux>
+			<aux name="elderly_move_rural" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<units>person/year</units>
+			</aux>
+			<aux name="elderly_leaving_ratio_1" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="initial_rural_population">
+				<eqn>INIT (total_rural_population)</eqn>
+				<units>person</units>
+			</aux>
+			<aux name="total_population_in_relation_to_initial_population" access="output" isee:autocreated="true">
+				<eqn>total_rural_population/initial_rural_population</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="WA_migration_ratio" access="output" isee:autocreated="true">
+				<eqn>IF working_age_net_migration&lt;0
+THEN ABS(working_age_net_migration/WORKING_AGE_POPULATION)
+ELSE 0</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="fertility_rate">
+				<eqn>1.64</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="max_WA_population_living_rural_per_year">
+				<eqn>0.05</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="max_post_school_leaving_per_year">
+				<eqn>0.50</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="smooth_life_expectancy">
+				<eqn>SMTH3("life_expectancy_drop_2020_-_2022", 5)</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="life_expectancy">
+				<eqn>79.5</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="proportion_of_newcomers" access="output" isee:autocreated="true">
+				<eqn>NEWCOMERS/total_rural_population</eqn>
+				<units>dmnl</units>
+			</aux>
+			<stock name="NEWCOMERS">
+				<eqn>100000</eqn>
+				<inflow>newcomers_arrival</inflow>
+				<outflow>newcomers_integration</outflow>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<flow name="newcomers_arrival">
+				<eqn>MAX (0, infant_net_migration)+
+MAX (0, children_net_migration)+
+PS_moving+
+WA_moving+
+elderly_move_rural</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<flow name="newcomers_integration">
+				<eqn>NEWCOMERS/integration_time</eqn>
+				<non_negative/>
+				<units>person/year</units>
+			</flow>
+			<aux name="integration_time">
+				<eqn>7</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="life_expectancy_drop_2020_-_2022">
+				<eqn>0</eqn>
+				<format delimit_000s="false"/>
+				<range min="0" max="3"/>
+				<units>year</units>
+			</aux>
+		</variables>
+		</model>
+	<model name="QofL" run="true">
+		<variables>
+			<stock name="mobility_infrastructures">
+				<eqn>initial_mobility_infrastructures</eqn>
+				<inflow>building_mobility_infrastructures</inflow>
+				<outflow>mobility_infrastructures_depletion</outflow>
+				<non_negative/>
+				<units>km</units>
+			</stock>
+			<flow name="building_mobility_infrastructures">
+				<eqn>MIN (max_km_year_infrastructures, mobility_infrastructures_depletion+
+STEP(infrastructure_campaign, year_initiating_infrastructures_plan)-
+STEP(infrastructure_campaign, year_initiating_infrastructures_plan+time_for_infrastructure_campaign_extension))</eqn>
+				<non_negative/>
+				<units>km/Years</units>
+			</flow>
+			<flow name="mobility_infrastructures_depletion">
+				<eqn>mobility_infrastructures/infrastructures_depletion_time</eqn>
+				<non_negative/>
+				<units>km/Years</units>
+			</flow>
+			<aux name="health_centers_accessibility" access="output" isee:autocreated="true">
+				<eqn>mobility_infrastructures</eqn>
+				<gf>
+					<xscale min="0" max="20000"/>
+					<yscale min="0" max="5"/>
+					<ypts>0,0.38364056039013,0.789377928446147,1.21848482910758,1.67230729332251,2.15226888030385,2.65987514297788,3.19671835063212,3.76448248357698,4.36494851548819,5</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="VT_centers_accessibility" access="output" isee:autocreated="true">
+				<eqn>mobility_infrastructures</eqn>
+				<gf>
+					<xscale min="0" max="20000"/>
+					<yscale min="0" max="5"/>
+					<ypts>0,0.38364056039013,0.789377928446147,1.21848482910758,1.67230729332251,2.15226888030385,2.65987514297788,3.19671835063212,3.76448248357698,4.36494851548819,5</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="University_Accessibility" access="output" isee:autocreated="true">
+				<eqn>mobility_infrastructures</eqn>
+				<gf>
+					<xscale min="0" max="20000"/>
+					<yscale min="0" max="5"/>
+					<ypts>0,0.38364056039013,0.789377928446147,1.21848482910758,1.67230729332251,2.15226888030385,2.65987514297788,3.19671835063212,3.76448248357698,4.36494851548819,5</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="community_activity_and_networks">
+				<eqn>community_and_public_services_accessibility*community_climate</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="social_capital" access="output" isee:autocreated="true">
+				<eqn>shared_knowledge</eqn>
+				<gf>
+					<xscale min="0" max="15"/>
+					<yscale min="1" max="5"/>
+					<ypts>1,1.26666666666667,1.53333333333333,1.8,2.06666666666667,2.33333333333333,2.6,2.86666666666667,3.13333333333333,3.4,3.66666666666667,3.93333333333333,4.2,4.46666666666667,4.73333333333333,5</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="workforce_specialization" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="social_innovation" access="output" isee:autocreated="true">
+				<doc>0-5</doc>
+				<eqn>social_capital*workforce_specialization</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="city_and_regional_connections_access" access="output" isee:autocreated="true">
+				<eqn>mobility_infrastructures</eqn>
+				<gf type="extrapolate">
+					<xscale min="0" max="20000"/>
+					<yscale min="0" max="5"/>
+					<ypts>0,0.843668723929069,1.58301021297441,2.23092546918788,2.79872016954509,3.29630194225693,3.73235324808858,4.11448288334674,4.4493587481582,4.74282419675514,5</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<stock name="broadband_infrastructure_population_covered" access="output" isee:autocreated="true">
+				<doc>Expressed in % (50 for 50%)</doc>
+				<eqn>initial_population_covered</eqn>
+				<inflow>building_infrastructure</inflow>
+				<outflow>broadband_infrastructure_depletion</outflow>
+				<non_negative/>
+				<units>dmnl</units>
+			</stock>
+			<flow name="building_infrastructure">
+				<eqn>broadband_infrastructure_depletion+
+STEP (broadband_campaign, year_initiating_broadband_plan)-
+STEP(broadband_campaign, year_initiating_broadband_plan+time_to_complete_broadband_campaign)</eqn>
+				<non_negative/>
+				<units>dmnl/year</units>
+			</flow>
+			<flow name="broadband_infrastructure_depletion">
+				<eqn>broadband_infrastructure_population_covered/broadband_infrastructures_depletion_time</eqn>
+				<non_negative/>
+				<units>dmnl/year</units>
+			</flow>
+			<aux name="cultural_appeal" access="output" isee:autocreated="true">
+				<eqn>shared_knowledge</eqn>
+				<gf>
+					<xscale min="0" max="40"/>
+					<yscale min="0" max="5"/>
+					<ypts>0,1.67915455835093,2.80472551920568,3.55921829750222,4.06496993138351,4.40398538988941,4.63123424764189,4.78356371243207,4.88567320628281,4.95411924690151,5</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<stock name="potential_initiatives">
+				<eqn>15000</eqn>
+				<inflow>creating_potential_initiatives</inflow>
+				<outflow>planning_initiatives</outflow>
+				<outflow>dismissing_potential_initiatives</outflow>
+				<non_negative/>
+				<units>initiative</units>
+			</stock>
+			<flow name="creating_potential_initiatives">
+				<eqn>effect_of_social_innovation_in_creating_initiatives_ratio*effect_of_broadband_in_creating_potential_initiatives*WORKING_AGE_POPULATION</eqn>
+				<non_negative/>
+				<units>initiative/year</units>
+			</flow>
+			<stock name="implemented_initiatives">
+				<eqn>15000*0.35</eqn>
+				<inflow>planning_initiatives</inflow>
+				<outflow>becoming_stablished_jobs</outflow>
+				<non_negative/>
+				<units>initiative</units>
+			</stock>
+			<flow name="planning_initiatives">
+				<eqn>potential_initiatives*institutional_support</eqn>
+				<non_negative/>
+				<units>initiative/year</units>
+			</flow>
+			<flow name="dismissing_potential_initiatives">
+				<eqn>potential_initiatives/potential_initiatives_active_time</eqn>
+				<non_negative/>
+				<units>initiative/year</units>
+			</flow>
+			<flow name="becoming_stablished_jobs">
+				<eqn>implemented_initiatives/time_to_implement_initiatives</eqn>
+				<non_negative/>
+				<units>initiative/year</units>
+			</flow>
+			<aux name="institutional_support">
+				<eqn>initial_institutional_support+
+STEP(inst_support_evolution*0.08, 2021)</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="infrastructures_depletion_time" access="output" isee:autocreated="true">
+				<eqn>30</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="potential_initiatives_active_time">
+				<eqn>2</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="population_covered_objective">
+				<eqn>82</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<range min="65" max="100"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="broadband_infrastructures_depletion_time">
+				<eqn>10</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="endogenous_primary_job_creation" access="output" isee:autocreated="true">
+				<eqn>becoming_stablished_jobs*0.1*average_jobs_per_primary_initiative</eqn>
+				<units>job/year</units>
+			</aux>
+			<aux name="endogenous_industrial_job_creation" access="output" isee:autocreated="true">
+				<eqn>becoming_stablished_jobs*0.2*average_jobs_per_industrial_initiative</eqn>
+				<units>job/year</units>
+			</aux>
+			<aux name="endogenous_service_job_creation" access="output" isee:autocreated="true">
+				<eqn>becoming_stablished_jobs*0.7*average_jobs_per_service_initiative</eqn>
+				<units>job/year</units>
+			</aux>
+			<stock name="WORKING_AGE_POPULATION" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+			<aux name="time_to_implement_initiatives">
+				<eqn>1</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="infrastructures_objective">
+				<eqn>9647</eqn>
+				<format precision="1"/>
+				<range min="9000" max="20000"/>
+				<units>km</units>
+			</aux>
+			<aux name="community_and_public_services_accessibility" access="output" isee:autocreated="true">
+				<eqn>mobility_infrastructures</eqn>
+				<gf>
+					<xscale min="0" max="10000"/>
+					<yscale min="0" max="1"/>
+					<ypts>0,0.434826684919496,0.681224539909496,0.820847762331811,0.899966325439362,0.944799462217066,0.970204500862623,0.984600459632639,0.992758039386772,0.997380594126485,1</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="time_to_build_effective_shared_knowledge">
+				<eqn>proportion_of_newcomers</eqn>
+				<gf>
+					<xscale min="0" max="0.4"/>
+					<yscale min="1" max="5"/>
+					<ypts>1.02677140369714,1.07194483984837,1.18970349271027,1.47681168808847,2.07576568547998,3,3.92423431452002,4.52318831191153,4.81029650728973,4.92805516015163,4.97322859630286</ypts>
+				</gf>
+				<units>year</units>
+			</aux>
+			<aux name="effect_of_social_innovation_in_creating_initiatives_ratio">
+				<doc>social innovation 0 - 5</doc>
+				<eqn>social_innovation</eqn>
+				<gf>
+					<xscale min="0" max="5"/>
+					<yscale min="0" max="0.03"/>
+					<ypts>0,0.0100749273501056,0.0168283531152341,0.0213553097850133,0.024389819588301,0.0264239123393365,0.0277874054858513,0.0287013822745924,0.0293140392376969,0.0297247154814091,0.03</ypts>
+				</gf>
+				<units>initiative/person/year</units>
+			</aux>
+			<aux name="effect_of_broadband_in_creating_potential_initiatives">
+				<eqn>broadband_infrastructure_population_covered</eqn>
+				<gf>
+					<xscale min="0" max="100"/>
+					<yscale min="0" max="1"/>
+					<ypts>0.00669285092428486,0.0179862099620916,0.0474258731775668,0.119202922022118,0.268941421369995,0.5,0.731058578630005,0.880797077977883,0.952574126822433,0.982013790037909,0.993307149075715</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="year_initiating_infrastructures_plan">
+				<eqn>2021</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<range min="2021" max="2040"/>
+				<units>year</units>
+			</aux>
+			<aux name="year_initiating_broadband_plan">
+				<eqn>2010</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<range min="2021" max="2040"/>
+				<units>year</units>
+			</aux>
+			<stock name="shared_knowledge">
+				<eqn>5</eqn>
+				<inflow>building_shared_knowledge</inflow>
+				<outflow>shared_knowledge_loss</outflow>
+				<non_negative/>
+				<units>dmnl</units>
+			</stock>
+			<flow name="building_shared_knowledge">
+				<eqn>community_activity_and_networks/time_to_build_effective_shared_knowledge</eqn>
+				<non_negative/>
+				<units>dmnl/year</units>
+			</flow>
+			<flow name="shared_knowledge_loss">
+				<eqn>shared_knowledge/shared_knowledge_loss_time</eqn>
+				<non_negative/>
+				<units>dmnl/year</units>
+			</flow>
+			<aux name="shared_knowledge_loss_time">
+				<eqn>3</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="community_climate">
+				<doc>0 - 5 over time</doc>
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2010" max="2040"/>
+					<yscale min="0" max="5"/>
+					<ypts>3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="max_km_year_infrastructures">
+				<eqn>500</eqn>
+				<units>km/year</units>
+			</aux>
+			<aux name="broadband_gap">
+				<eqn>population_covered_objective-initial_population_covered</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="average_jobs_per_service_initiative">
+				<eqn>6</eqn>
+				<units>job/initiative</units>
+			</aux>
+			<aux name="average_jobs_per_primary_initiative">
+				<eqn>5</eqn>
+				<units>job/initiative</units>
+			</aux>
+			<aux name="average_jobs_per_industrial_initiative">
+				<eqn>10</eqn>
+				<units>job/initiative</units>
+			</aux>
+			<aux name="broadband_effect_on_retention" access="output" isee:autocreated="true">
+				<eqn>broadband_infrastructure_population_covered</eqn>
+				<gf>
+					<yscale min="0.83" max="1"/>
+					<xpts>63,65,70.4,74.1,77.8,81.5,85.2,88.9,92.6,96.3,100</xpts>
+					<ypts>0.83,0.97,0.9837,0.9873,0.993546776182089,0.99717351946166,0.998777254130638,0.999486420644565,0.999800011885189,0.999938680962569,1</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="social_capital_effect_on_retention" access="output" isee:autocreated="true">
+				<eqn>social_capital</eqn>
+				<gf>
+					<xscale min="0" max="5"/>
+					<yscale min="0.5" max="1"/>
+					<ypts>0.5,0.667915455835093,0.780472551920568,0.855921829750222,0.906496993138351,0.940398538988941,0.963123424764188,0.978356371243207,0.988567320628281,0.995411924690151,1</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="effect_of_c&amp;r_connections_on_retention">
+				<eqn>city_and_regional_connections_access</eqn>
+				<gf>
+					<yscale min="0.7" max="1"/>
+					<xpts>4,4.14,4.23,4.6,4.8,5</xpts>
+					<ypts>0.7,0.71,0.91,0.9658,0.9819,1</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="infrastructures_gap">
+				<eqn>infrastructures_objective-initial_mobility_infrastructures</eqn>
+				<units>km</units>
+			</aux>
+			<aux name="initial_mobility_infrastructures">
+				<eqn>9647</eqn>
+				<units>km</units>
+			</aux>
+			<aux name="initial_population_covered">
+				<eqn>51</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="infrastructure_campaign">
+				<eqn>infrastructures_gap/time_for_infrastructure_campaign_extension</eqn>
+				<units>km/year</units>
+			</aux>
+			<aux name="time_for_infrastructure_campaign_extension">
+				<eqn>10</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<range min="2" max="10"/>
+				<units>year</units>
+			</aux>
+			<aux name="broadband_campaign">
+				<eqn>broadband_gap/time_to_complete_broadband_campaign</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="time_to_complete_broadband_campaign">
+				<eqn>9</eqn>
+				<format precision="1" delimit_000s="false"/>
+				<range min="2" max="10"/>
+				<units>year</units>
+			</aux>
+			<aux name="proportion_of_newcomers" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="initial_institutional_support">
+				<eqn>0.35</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="inst_support_evolution">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2021" max="2040"/>
+					<yscale min="0" max="5"/>
+					<ypts>0,0,0,0,0,0,0,0,0,0</ypts>
+				</gf>
+				<units>dmnl/year</units>
+			</aux>
+		</variables>
+		</model>
+	<model name="RurAtt">
+		<variables>
+			<aux name="PS_moving" access="output" isee:autocreated="true">
+				<doc>NCWFY + HAWFY = 0,5 (of the employment gap)</doc>
+				<eqn>IF employment_gap_1&gt;0 THEN
+
+(employment_gap_1*people_applying_employment_gap)*
+(housing_accessibility_factor_for_young+
+natural_capital_factor_for_young)
+
+ELSE 0</eqn>
+				<units>person/year</units>
+			</aux>
+			<aux name="WA_moving" access="output" isee:autocreated="true">
+				<doc>WA MOVING RATIO weights = 0,52 (of the employment gap)
+TOTAL = 1,02</doc>
+				<eqn>IF employment_gap_1&gt;0 THEN
+(employment_gap_1*people_applying_employment_gap*(housing_accessibility_factor_for_WA+natural_capital_factor_for_WA+cultural_appeal_factor_for_WA+public_services_factor_for_WA_attraction))
+
+ELSE 0</eqn>
+				<units>person/year</units>
+			</aux>
+			<aux name="elderly_move_rural" access="output" isee:autocreated="true">
+				<eqn>maximum_elderly_population_moving*
+(natural_capital_factor_for_elderly+
+cultural_appeal_factor_for_elderly+
+housing_accessibility_factor_for_elderly+
+medical_and_care_services_factor)</eqn>
+				<units>person/year</units>
+			</aux>
+			<aux name="housing_accessibility" access="output" isee:autocreated="true">
+				<eqn>total_population_in_relation_with_initial_population</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="5"/>
+				<gf>
+					<xscale min="0.8" max="1.2"/>
+					<yscale min="0" max="5"/>
+					<ypts>5,3.42021841353556,2.33957879925754,1.60037409782761,1.09472579158707,0.748840262031681,0.51223945059951,0.350394160215957,0.239684911753189,0.163954949724981</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="maximum_elderly_population_moving">
+				<eqn>15000</eqn>
+				<units>person/year</units>
+			</aux>
+			<aux name="housing_accessibility_weight_for_young">
+				<doc>NCWFY + HAWFY = 0,5 (of the employment gap)</doc>
+				<eqn>0.85</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="natural_capital_weight_for_young">
+				<doc>NCWFY + HAWFY = 0,5 (of the employment gap)</doc>
+				<eqn>1-housing_accessibility_weight_for_young</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="cultural_appeal_weight_for_WA">
+				<eqn>0.05</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="natural_capital_weight_for_WA">
+				<eqn>0.2</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="housing_accessibility_weight_for_WA">
+				<eqn>0.7</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="medical_and_care_services_weight">
+				<eqn>0.05</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="cultural_appeal_weight_for_elderly">
+				<eqn>0.35</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="natural_capital_weight_for_elderly">
+				<eqn>0.3</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="housing_accessibility_weight_for_elderly">
+				<eqn>0.3</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="housing_accessibility_factor_for_young">
+				<eqn>housing_accessibility_weight_for_young*0.5*housing_accessibility/5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="natural_capital_factor_for_young">
+				<eqn>natural_capital_weight_for_young*0.5*natural_capital_perception/5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="housing_accessibility_factor_for_WA">
+				<eqn>housing_accessibility_weight_for_WA*housing_accessibility*0.52/5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="housing_accessibility_factor_for_elderly">
+				<eqn>housing_accessibility_weight_for_elderly*housing_accessibility/5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="medical_and_care_services_factor">
+				<eqn>health_centers_accessibility*medical_and_care_services_weight/5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="natural_capital_factor_for_WA">
+				<eqn>natural_capital_weight_for_WA*0.52*
+natural_capital_perception/5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="cultural_appeal_factor_for_WA">
+				<eqn>cultural_appeal_weight_for_WA*0.52*cultural_appeal/5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="cultural_appeal_factor_for_elderly">
+				<eqn>cultural_appeal_weight_for_elderly*cultural_appeal/5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="natural_capital_factor_for_elderly">
+				<eqn>natural_capital_perception*natural_capital_weight_for_elderly/5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="employment_gap_1" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<units>job</units>
+			</aux>
+			<aux name="cultural_appeal" access="input">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2010" max="2030"/>
+					<yscale min="0" max="100"/>
+					<ypts>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="health_centers_accessibility" access="input">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2010" max="2030"/>
+					<yscale min="0" max="100"/>
+					<ypts>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="total_population_in_relation_with_initial_population" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="natural_capital_perception" access="input">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2010" max="2030"/>
+					<yscale min="0" max="100"/>
+					<ypts>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="people_applying_employment_gap">
+				<eqn>0.9</eqn>
+				<units>person/year/job</units>
+			</aux>
+			<aux name="public_services_factor_for_WA_attraction">
+				<eqn>community_and_public_services_accessibility*public_services_weight_in_WA_attraction*0.52</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="public_services_weight_in_WA_attraction">
+				<eqn>0.05</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="community_and_public_services_accessibility" access="input">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2010" max="2040"/>
+					<yscale min="0" max="100"/>
+					<ypts>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<stock name="ELDERLY_POPULATION" access="input">
+				<eqn>186448</eqn>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+		</variables>
+		</model>
+	<model name="RurRetCap">
+		<variables>
+			<aux name="post_school_leaving_ratio" access="output">
+				<eqn>1- 
+(higher_education_factor+ broadband_factor_for_young+ social_capital_factor_for_young+
+housing_factor_for_young+
+employment_factor_for_young)</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="WA_leaving_ratio" access="output" isee:autocreated="true">
+				<eqn>(1-retention_factor)*
+effect_of_employment_in_WA_leaving_ratio</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="elderly_leaving_ratio" access="output" isee:autocreated="true">
+				<eqn>maximum_ratio_elderly_population_leaving*
+(1-
+medical_and_care_factor-
+social_capital_factor_for_elderly)</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="maximum_ratio_elderly_population_leaving">
+				<eqn>0.07</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="higher_education_weight">
+				<eqn>0.05</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="broadband_weight_for_young">
+				<eqn>0.1</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="housing_accessibility_weight_for_young">
+				<eqn>0.3</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="social_capital_weight_for_young">
+				<eqn>0.35</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="broadband_weight_for_WA">
+				<eqn>0.15</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="c&amp;r_connections_weight">
+				<eqn>0.3</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="social_capital_weight_for_WA">
+				<eqn>0.35</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="medical_and_care_weight">
+				<eqn>0.1</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="social_capital_weight_for_elderly">
+				<eqn>0.9</eqn>
+				<format precision="auto" scale_by="-1" delimit_000s="false"/>
+				<range min="0" max="1"/>
+				<units>dmnl</units>
+			</aux>
+			<aux name="employment_weight_for_young">
+				<eqn>0.2</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="effect_of_employment_in_PS_staying_ratio">
+				<eqn>relative_employment_gap</eqn>
+				<gf>
+					<xscale min="-0.5" max="0.5"/>
+					<yscale min="0" max="5"/>
+					<ypts>0.000753551790298787,0.00437679818214618,0.0253331466673313,0.1437424796327,0.733951699006912,2.5,4.26604830099309,4.8562575203673,4.97466685333267,4.99562320181785,4.9992464482097</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="higher_education_factor">
+				<eqn>(VT_centers_accessibility+University_Accessibility)*higher_education_weight/10</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="broadband_factor_for_young">
+				<doc>is divided by 100 because ...pop covered... is expressed in % (50%)</doc>
+				<eqn>broadband_weight_for_young*broadband_effect_on_retention</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="housing_factor_for_young">
+				<eqn>housing_accessibility_weight_for_young*housing_accessibility/5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="social_capital_factor_for_young">
+				<eqn>social_capital_weight_for_young*social_capital_effect_on_retention</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="employment_factor_for_young">
+				<eqn>(employment_weight_for_young/5)*effect_of_employment_in_PS_staying_ratio</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="broadband_factor_for_WA">
+				<doc>is divided by 100 because ...pop covered... is expressed in % (50%)</doc>
+				<eqn>broadband_weight_for_WA*broadband_effect_on_retention</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="social_capital_factor_for_WA">
+				<eqn>(social_capital_weight_for_WA/5)*social_capital_effect_on_retention</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="c&amp;r_factor">
+				<eqn>city_and_regional_connections_access*"c&amp;r_connections_weight"/5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="social_capital_factor_for_elderly">
+				<eqn>social_capital_weight_for_elderly*social_capital_effect_on_retention</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="medical_and_care_factor">
+				<eqn>medical_and_care_weight*health_centers_accessibility/5</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="University_Accessibility" access="input">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2010" max="2030"/>
+					<yscale min="0" max="100"/>
+					<ypts>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="VT_centers_accessibility" access="input">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2010" max="2030"/>
+					<yscale min="0" max="100"/>
+					<ypts>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="housing_accessibility" access="input">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2010" max="2030"/>
+					<yscale min="0" max="100"/>
+					<ypts>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="relative_employment_gap" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="city_and_regional_connections_access" access="input">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2010" max="2030"/>
+					<yscale min="0" max="100"/>
+					<ypts>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="health_centers_accessibility" access="input">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2010" max="2030"/>
+					<yscale min="0" max="100"/>
+					<ypts>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="retention_factor">
+				<eqn>social_capital_factor_for_WA+broadband_factor_for_WA+"c&amp;r_factor"+public_services_retention</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="broadband_effect_on_retention" access="input">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2010" max="2030"/>
+					<yscale min="0" max="100"/>
+					<ypts>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="social_capital_effect_on_retention" access="input">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2010" max="2030"/>
+					<yscale min="0" max="100"/>
+					<ypts>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="effect_of_employment_in_WA_leaving_ratio">
+				<eqn>relative_employment_gap</eqn>
+				<gf>
+					<xscale min="-1" max="1"/>
+					<yscale min="0" max="0.5"/>
+					<ypts>0.496653574537858,0.491006895018954,0.476287063411217,0.440398538988941,0.365529289315002,0.25,0.134470710684997,0.0596014610110587,0.0237129365887834,0.00899310498104578,0.00334642546214243</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="total_rural_population" access="input">
+				<eqn>{Enter equation for use when not hooked up to other models}</eqn>
+				<units>person</units>
+			</aux>
+			<aux name="public_services_weight_for_WA_retention">
+				<eqn>0.2</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="public_services_retention">
+				<eqn>public_services_weight_for_WA_retention*community_and_public_services_accessibility</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="community_and_public_services_accessibility" access="input">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2010" max="2040"/>
+					<yscale min="0" max="100"/>
+					<ypts>0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<stock name="ELDERLY_POPULATION" access="input">
+				<eqn>186448</eqn>
+				<non_negative/>
+				<units>person</units>
+			</stock>
+		</variables>
+		</model>
+</xmile>

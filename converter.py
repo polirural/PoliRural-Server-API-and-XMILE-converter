@@ -6,6 +6,7 @@ import logging
 from pathlib import Path
 import glob
 from time import perf_counter
+import traceback
 
 st = perf_counter()
 
@@ -51,7 +52,6 @@ for xmile_file in files:
     cleaned_xmile_filename = "{}/clean/{}_c{}".format(fp.parent, fp.stem, fp.suffix).replace(" ", "_").lower()
     processed_xmile_filename = "{}/processed/{}_p{}".format(fp.parent, fp.stem, fp.suffix).replace(" ", "_").lower()
 
-
     # Clean input XMILE file
     log.info("Starting cleaning of %s" % xmile_file)
     try:
@@ -60,6 +60,7 @@ for xmile_file in files:
         log.info("Writing cleaned file to %s in %s s" % (cleaned_xmile_filename, perf_counter() - st))
     except Exception as ex:
         log.error(ex)
+        log.error(traceback.format_exc())
         log.error("Failed after %s s, exiting" % (perf_counter() - st))
         exit(-1)        
 

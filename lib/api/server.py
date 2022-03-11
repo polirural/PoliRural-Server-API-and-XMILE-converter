@@ -25,6 +25,12 @@ ns_sdm = api.namespace(
     decorators=[cross_origin()]
 )
 
+ns_auth = api.namespace(
+    '%sauth' % (APP_BASE_PATH),
+    description='Authenticatoin operations',
+    decorators=[cross_origin()]
+)
+
 ns_static = api.namespace(
     '%sstatic' % (APP_BASE_PATH),
     description='Static files',
