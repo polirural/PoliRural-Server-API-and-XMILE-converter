@@ -39,7 +39,6 @@ class Users(db.Model, CustomModel):
     def __repr__(self):
         return '<User %r>' % self.username
 
-db.create_all()
 
 auth_request_model = api.model('AuthRequest', {
     'username': fields.String,
@@ -50,15 +49,6 @@ auth_response_model = api.model('AuthResponse', {
     'username': fields.String,
     'session': fields.String
 })
-
-try:
-    for key in ['runar', 'antoni', 'patrick','test']:
-        n = Users(username=key, password=key, role={"role": "admin"})
-        db.session.add(n)
-    db.session.flush()
-    db.session.commit()
-except Exception as ex:
-    pass
 
 # Declare expect any JSON object
 any_json_object = api.model('Resource', dict())
