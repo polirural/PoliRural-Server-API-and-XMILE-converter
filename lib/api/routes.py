@@ -85,7 +85,7 @@ class ModelDocumentation(Resource):
         Returns:
             [type]: [description]
         """
-        sem.acquire()
+        # sem.acquire()
         try:
             params = request.get_json()  # data is empty
             sem.acquire()
@@ -97,7 +97,8 @@ class ModelDocumentation(Resource):
         except Exception as ex:
             return { "message": str(ex), "details": traceback.format_exc()}, 400
         finally:
-            sem.release()
+            # sem.release()
+            pass
 
 
 @ns_sdm.route("/storage/<string:model>/<string:key>", methods=['GET', 'POST', 'DELETE'])
