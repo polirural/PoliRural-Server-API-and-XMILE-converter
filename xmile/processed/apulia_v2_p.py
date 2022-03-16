@@ -4,8 +4,8 @@ Translated using PySD
 """
 
 
-from pysd.py_backend.functions import lookup, step, if_then_else, previous, ramp
-from pysd.py_backend.statefuls import DelayN, Integ, Smooth, Initial
+from pysd.py_backend.functions import step, lookup, previous, if_then_else, ramp
+from pysd.py_backend.statefuls import Integ, Initial, DelayN, Smooth
 
 __pysd_version__ = "2.0.0-dev"
 
@@ -74,6 +74,7 @@ _namespace = {
     "structural_unemployment": "structural_unemployment",
     "employment_gap": "employment_gap",
     "relative_employment_gap": "relative_employment_gap",
+    "_step_remote_workers": "nvs_step_remote_workers",
     "remote_workers": "remote_workers",
     "primary_jobs_viability_ratio": "primary_jobs_viability_ratio",
     "new_industrial_job_viability_ratio": "new_industrial_job_viability_ratio",
@@ -438,9 +439,10 @@ _dependencies = {
     "structural_unemployment": {"workforce_specialization": 1},
     "employment_gap": {"total_employment": 1, "total_workforce": 1},
     "relative_employment_gap": {"employment_gap": 1, "total_workforce": 1},
+    "nvs_step_remote_workers": {"remote_workers_potential_2030": 1, "time": 1},
     "_delayn_remote_workers": {
-        "initial": {"remote_workers_potential_2030": 1},
-        "step": {"remote_workers_potential_2030": 1, "time": 1},
+        "initial": {"nvs_step_remote_workers": 1, "years_for_remote_workers_trend": 1},
+        "step": {"nvs_step_remote_workers": 1, "years_for_remote_workers_trend": 1},
     },
     "remote_workers": {"_delayn_remote_workers": 1, "broadband_infrastructure": 1},
     "primary_jobs_viability_ratio": {},
@@ -2605,8 +2607,24 @@ def relative_employment_gap():
     return employment_gap() / total_workforce()
 
 
+def nvs_step_remote_workers():
+    """
+    Real Name: _step_remote_workers
+    Original Eqn: STEP (remote_workers_potential_2030, 2021)
+    Units: job
+    Limits: (None, None)
+    Type: component
+    Subs: None
+
+
+    """
+    return step(__data["time"], remote_workers_potential_2030(), 2021)
+
+
 _delayn_remote_workers = DelayN(
-    lambda: step(__data["time"], lambda: remote_workers_potential_2030(), lambda: 2021),
+    lambda: nvs_step_remote_workers(),
+    lambda: years_for_remote_workers_trend(),
+    lambda: nvs_step_remote_workers(),
     lambda: 1,
     time_step,
     "_delayn_remote_workers",
@@ -2616,7 +2634,7 @@ _delayn_remote_workers = DelayN(
 def remote_workers():
     """
     Real Name: remote_workers
-    Original Eqn: DELAY1(STEP (remote_workers_potential_2030, 2021), years_for_remote_workers_trend)* broadband_infrastructure/100
+    Original Eqn: DELAY1(_step_remote_workers, years_for_remote_workers_trend)*broadband_infrastructure/100
     Units: job
     Limits: (None, None)
     Type: component

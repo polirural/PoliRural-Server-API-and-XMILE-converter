@@ -1,11 +1,18 @@
 """
-Python model 'apulia_v2_p.py'
+Python model 'galilee_v2_p.py'
 Translated using PySD
 """
 
 
-from pysd.py_backend.functions import step, lookup, previous, if_then_else, ramp
-from pysd.py_backend.statefuls import Integ, Initial, DelayN, Smooth
+from pysd.py_backend.functions import (
+    previous,
+    step,
+    ramp,
+    history,
+    lookup,
+    if_then_else,
+)
+from pysd.py_backend.statefuls import Smooth, DelayN, Initial, Integ
 
 __pysd_version__ = "2.0.0-dev"
 
@@ -30,29 +37,31 @@ _namespace = {
     "max_agricultural_land": "max_agricultural_land",
     "potential_land_transformation": "potential_land_transformation",
     "potential_new_farms": "potential_new_farms",
-    "CAP_Eco-Schemes": "cap_ecoschemes",
+    "farm_to_fork_effect_on_services": "farm_to_fork_effect_on_services",
     "farming_attraction_factor": "farming_attraction_factor",
+    "farm_to_fork_effect_on_industry": "farm_to_fork_effect_on_industry",
+    "related_agricultural_jobs_on_industry": "related_agricultural_jobs_on_industry",
     "social_innovation_/_potential_initiatives": "social_innovation__potential_initiatives",
     "average_farm_area": "average_farm_area",
     "agricultural_land": "agricultural_land",
     "agriculture_profitability": "agriculture_profitability",
-    "CAP_direct_payment": "cap_direct_payment",
     "agriculture_jobs": "agriculture_jobs",
     "effect_of_tourism_on_diversification": "effect_of_tourism_on_diversification",
     "AKIS_effect": "akis_effect",
-    "CAP_reform_direct_payments_decrease_2021": "cap_reform_direct_payments_decrease_2021",
-    "CAP_mean_proportion_of_direct_payment_to_FNVA": "cap_mean_proportion_of_direct_payment_to_fnva",
-    "Eco-schemes_effect_on_direct_payment": "ecoschemes_effect_on_direct_payment",
     "initial_mean_income_per_farm": "initial_mean_income_per_farm",
     "technical_obsolescence_time": "technical_obsolescence_time",
     "agricultural_obsolescence_covered": "agricultural_obsolescence_covered",
     "mean_jobs_per_farm": "mean_jobs_per_farm",
+    "max_mean_related_agri_jobs_on_services": "max_mean_related_agri_jobs_on_services",
+    "max_mean_related_agri_jobs_on_industry": "max_mean_related_agri_jobs_on_industry",
     "max_improvement_per_diversification": "max_improvement_per_diversification",
     "initial_number_of_farms": "initial_number_of_farms",
     "final_technical_obsolescence_time": "final_technical_obsolescence_time",
     "time_for_slope": "time_for_slope",
     "normal_technical_obsolescence_time": "normal_technical_obsolescence_time",
     "AKIS_evolution": "akis_evolution",
+    "related_agricultural_jobs_effect_on_services": "related_agricultural_jobs_effect_on_services",
+    "CAP_Eco-Schemes": "cap_ecoschemes",
     "vocational_training_campaign": "vocational_training_campaign",
     "students_university_campaign": "students_university_campaign",
     "workforce_specialization": "workforce_specialization",
@@ -78,6 +87,7 @@ _namespace = {
     "remote_workers": "remote_workers",
     "primary_jobs_viability_ratio": "primary_jobs_viability_ratio",
     "new_industrial_job_viability_ratio": "new_industrial_job_viability_ratio",
+    "related_agricultural_jobs_effect_on_industry": "related_agricultural_jobs_effect_on_industry",
     "total_workforce": "total_workforce",
     "total_employment": "total_employment",
     "Previous_population": "previous_population",
@@ -86,7 +96,7 @@ _namespace = {
     "endogenous_primary_job_creation_ratio": "endogenous_primary_job_creation_ratio",
     "endogenous_industrial_job_creation_ratio": "endogenous_industrial_job_creation_ratio",
     "endogenous_service_jobs_creation_ratio": "endogenous_service_jobs_creation_ratio",
-    "remote_workers_potential_2030": "remote_workers_potential_2030",
+    "remote_workers_potential_2034": "remote_workers_potential_2034",
     "total_services_job": "total_services_job",
     "new_services_viability_ratio": "new_services_viability_ratio",
     "total_industrial_jobs": "total_industrial_jobs",
@@ -96,15 +106,15 @@ _namespace = {
     "average_life_of_a_primary_sector_business": "average_life_of_a_primary_sector_business",
     "Drop_in_the_service_average_life_due_to_COVID": "drop_in_the_service_average_life_due_to_covid",
     "jobs_per_tourism": "jobs_per_tourism",
-    "visitors_per_tourism_workplace": "visitors_per_tourism_workplace",
+    "workplaces_for_visitors_former_visitors_per_tourism_workplace": "workplaces_for_visitors_former_visitors_per_tourism_workplace",
     "services_ratio": "services_ratio",
     "primary_ratio": "primary_ratio",
     "industrial_ratio": "industrial_ratio",
     "average_life_of_a_service_business": "average_life_of_a_service_business",
     "average_life_of_an_industrial_business": "average_life_of_an_industrial_business",
     "drop_in_the_industrial_average_life_due_to_COVID": "drop_in_the_industrial_average_life_due_to_covid",
-    "regional_WA": "regional_wa",
-    "total_primary_sector": "total_primary_sector",
+    "population_services_ratio": "population_services_ratio",
+    "Regional_WA": "regional_wa",
     "natural_land_variation": "natural_land_variation",
     "potential_visitors_as_a_function_of_Natural_Capital": "potential_visitors_as_a_function_of_natural_capital",
     "ratio_effect_of_agriculture_on_Natural_Capital": "ratio_effect_of_agriculture_on_natural_capital",
@@ -168,7 +178,6 @@ _namespace = {
     "endogenous_service_job_creation": "endogenous_service_job_creation",
     "time_to_implement_initiatives": "time_to_implement_initiatives",
     "infrastructures_objective": "infrastructures_objective",
-    "community_and_public_services_accessibility": "community_and_public_services_accessibility",
     "time_to_build_effective_shared_knowledge": "time_to_build_effective_shared_knowledge",
     "effect_of_social_innovation_in_creating_initiatives_ratio": "effect_of_social_innovation_in_creating_initiatives_ratio",
     "effect_of_broadband_in_creating_potential_initiatives": "effect_of_broadband_in_creating_potential_initiatives",
@@ -224,7 +233,8 @@ _namespace = {
     "normal_max_attraction_ratio_for_commuters": "normal_max_attraction_ratio_for_commuters",
     "public_services_factor_for_WA_attraction": "public_services_factor_for_wa_attraction",
     "public_services_weight_in_WA_attraction": "public_services_weight_in_wa_attraction",
-    "time_to_retire": "time_to_retire",
+    "community_and_public_services_accessibility": "community_and_public_services_accessibility",
+    "time_for_commuters_retirement": "time_for_commuters_retirement",
     "post_school_leaving_ratio": "post_school_leaving_ratio",
     "WA_leaving_ratio": "wa_leaving_ratio",
     "elderly_leaving_ratio": "elderly_leaving_ratio",
@@ -239,7 +249,7 @@ _namespace = {
     "medical_and_care_weight": "medical_and_care_weight",
     "social_capital_weight_for_elderly": "social_capital_weight_for_elderly",
     "employment_weight_for_young": "employment_weight_for_young",
-    "effect_of_employment_in_PS_staying_ratio": "effect_of_employment_in_ps_staying_ratio",
+    "effect_of_employment_in_PS_retention": "effect_of_employment_in_ps_retention",
     "higher_education_factor": "higher_education_factor",
     "broadband_factor_for_young": "broadband_factor_for_young",
     "housing_factor_for_young": "housing_factor_for_young",
@@ -275,8 +285,8 @@ _namespace = {
     "mobility_infrastructures": "mobility_infrastructures",
     "broadband_infrastructure_population_covered": "broadband_infrastructure_population_covered",
     "potential_initiatives": "potential_initiatives",
-    "implemented_initiatives": "implemented_initiatives",
     "shared_knowledge": "shared_knowledge",
+    "implemented_initiatives": "implemented_initiatives",
     "potential_commuters": "potential_commuters",
     "commuters": "commuters",
     "increasing_farms": "increasing_farms",
@@ -362,30 +372,26 @@ _dependencies = {
         "agricultural_land": 1,
     },
     "potential_new_farms": {"potential_land_transformation": 1, "average_farm_area": 1},
-    "cap_ecoschemes": {"time": 1},
+    "farm_to_fork_effect_on_services": {"time": 1},
     "farming_attraction_factor": {"land_access": 1, "agriculture_profitability": 1},
+    "farm_to_fork_effect_on_industry": {"time": 1},
+    "related_agricultural_jobs_on_industry": {
+        "farms": 1,
+        "max_mean_related_agri_jobs_on_industry": 1,
+        "farm_to_fork_effect_on_industry": 1,
+        "time": 1,
+        "akis_effect": 1,
+    },
     "social_innovation__potential_initiatives": {"social_innovation": 1},
     "average_farm_area": {},
     "agricultural_land": {"farms": 1, "average_farm_area": 1},
-    "agriculture_profitability": {
-        "mean_local_income_per_farm": 1,
-        "cap_direct_payment": 1,
-    },
-    "cap_direct_payment": {
-        "cap_mean_proportion_of_direct_payment_to_fnva": 1,
-        "cap_reform_direct_payments_decrease_2021": 1,
-        "time": 2,
-        "ecoschemes_effect_on_direct_payment": 1,
-    },
+    "agriculture_profitability": {"mean_local_income_per_farm": 1},
     "agriculture_jobs": {"farms": 1, "jobs_per_farm": 1},
     "effect_of_tourism_on_diversification": {
         "tourist_visitors": 1,
         "total_rural_population": 1,
     },
     "akis_effect": {"akis_evolution": 1},
-    "cap_reform_direct_payments_decrease_2021": {},
-    "cap_mean_proportion_of_direct_payment_to_fnva": {},
-    "ecoschemes_effect_on_direct_payment": {"cap_ecoschemes": 1},
     "initial_mean_income_per_farm": {},
     "technical_obsolescence_time": {
         "normal_technical_obsolescence_time": 2,
@@ -395,12 +401,23 @@ _dependencies = {
     },
     "agricultural_obsolescence_covered": {"akis_effect": 1},
     "mean_jobs_per_farm": {},
+    "max_mean_related_agri_jobs_on_services": {},
+    "max_mean_related_agri_jobs_on_industry": {},
     "max_improvement_per_diversification": {},
     "initial_number_of_farms": {},
     "final_technical_obsolescence_time": {},
     "time_for_slope": {},
     "normal_technical_obsolescence_time": {},
     "akis_evolution": {"time": 1},
+    "related_agricultural_jobs_effect_on_services": {
+        "farms": 1,
+        "max_mean_related_agri_jobs_on_services": 1,
+        "cap_ecoschemes": 1,
+        "farm_to_fork_effect_on_services": 1,
+        "time": 1,
+        "akis_effect": 1,
+    },
+    "cap_ecoschemes": {"time": 1},
     "vocational_training_campaign": {
         "initial_fraction_vt": 2,
         "vt_fraction_objective": 1,
@@ -439,7 +456,7 @@ _dependencies = {
     "structural_unemployment": {"workforce_specialization": 1},
     "employment_gap": {"total_employment": 1, "total_workforce": 1},
     "relative_employment_gap": {"employment_gap": 1, "total_workforce": 1},
-    "nvs_step_remote_workers": {"remote_workers_potential_2030": 1, "time": 1},
+    "nvs_step_remote_workers": {"remote_workers_potential_2034": 1, "time": 1},
     "_delayn_remote_workers": {
         "initial": {"nvs_step_remote_workers": 1, "years_for_remote_workers_trend": 1},
         "step": {"nvs_step_remote_workers": 1, "years_for_remote_workers_trend": 1},
@@ -447,13 +464,20 @@ _dependencies = {
     "remote_workers": {"_delayn_remote_workers": 1, "broadband_infrastructure": 1},
     "primary_jobs_viability_ratio": {},
     "new_industrial_job_viability_ratio": {},
+    "related_agricultural_jobs_effect_on_industry": {
+        "related_agricultural_jobs_on_industry": 1
+    },
     "total_workforce": {
         "regional_wa": 1,
         "workforce_as_ratio_of_wap": 1,
         "structural_unemployment": 1,
     },
     "total_employment": {"total_regional_employment": 1, "remote_workers": 1},
-    "previous_population": {"total_rural_population": 1, "time": 1},
+    "previous_population": {
+        "total_rural_population": 1,
+        "initial_rural_population": 1,
+        "time": 1,
+    },
     "difference_of_population": {"total_rural_population": 1, "previous_population": 1},
     "ratio_population_services": {},
     "endogenous_primary_job_creation_ratio": {"endogenous_primary_job_creation": 1},
@@ -461,14 +485,18 @@ _dependencies = {
         "endogenous_industrial_job_creation": 1
     },
     "endogenous_service_jobs_creation_ratio": {"endogenous_service_job_creation": 1},
-    "remote_workers_potential_2030": {},
+    "remote_workers_potential_2034": {},
     "total_services_job": {
         "population_services": 1,
+        "related_agricultural_jobs_effect_on_services": 1,
         "service_jobs": 1,
         "jobs_per_tourism": 1,
     },
     "new_services_viability_ratio": {},
-    "total_industrial_jobs": {"industrial_jobs": 1},
+    "total_industrial_jobs": {
+        "related_agricultural_jobs_effect_on_industry": 1,
+        "industrial_jobs": 1,
+    },
     "resulting_average_life_for_industrial_business": {
         "average_life_of_an_industrial_business": 1,
         "drop_in_the_industrial_average_life_due_to_covid": 1,
@@ -482,20 +510,27 @@ _dependencies = {
     "years_for_remote_workers_trend": {},
     "average_life_of_a_primary_sector_business": {},
     "drop_in_the_service_average_life_due_to_covid": {"time": 1},
-    "jobs_per_tourism": {"tourist_visitors": 1, "visitors_per_tourism_workplace": 1},
-    "visitors_per_tourism_workplace": {},
+    "jobs_per_tourism": {
+        "tourist_visitors": 1,
+        "workplaces_for_visitors_former_visitors_per_tourism_workplace": 1,
+    },
+    "workplaces_for_visitors_former_visitors_per_tourism_workplace": {},
     "services_ratio": {
         "total_services_job": 1,
         "remote_workers": 1,
         "total_employment": 1,
     },
-    "primary_ratio": {"total_primary_sector": 1, "total_employment": 1},
+    "primary_ratio": {
+        "agriculture_jobs": 1,
+        "rest_of_primary_sector_jobs": 1,
+        "total_employment": 1,
+    },
     "industrial_ratio": {"total_industrial_jobs": 1, "total_employment": 1},
     "average_life_of_a_service_business": {},
     "average_life_of_an_industrial_business": {},
     "drop_in_the_industrial_average_life_due_to_covid": {"time": 1},
+    "population_services_ratio": {},
     "regional_wa": {"working_age_rural_population": 1, "commuters": 1},
-    "total_primary_sector": {"agriculture_jobs": 1, "rest_of_primary_sector_jobs": 1},
     "natural_land_variation": {
         "natural_land_objective": 1,
         "initial_natural_land": 1,
@@ -572,7 +607,7 @@ _dependencies = {
         "time": 2,
     },
     "post_school_death_rate": {},
-    "birth_rate": {"time": 1},
+    "birth_rate": {},
     "infant_duration": {},
     "infant_death_rate": {},
     "postschool_age_duration": {},
@@ -635,7 +670,6 @@ _dependencies = {
     },
     "time_to_implement_initiatives": {},
     "infrastructures_objective": {},
-    "community_and_public_services_accessibility": {"mobility_infrastructures": 1},
     "time_to_build_effective_shared_knowledge": {"proportion_of_newcomers": 1},
     "effect_of_social_innovation_in_creating_initiatives_ratio": {
         "social_innovation": 1
@@ -769,7 +803,8 @@ _dependencies = {
         "public_services_weight_in_wa_attraction": 1,
     },
     "public_services_weight_in_wa_attraction": {},
-    "time_to_retire": {},
+    "community_and_public_services_accessibility": {"time": 1},
+    "time_for_commuters_retirement": {},
     "post_school_leaving_ratio": {
         "higher_education_factor": 1,
         "broadband_factor_for_young": 1,
@@ -797,7 +832,7 @@ _dependencies = {
     "medical_and_care_weight": {},
     "social_capital_weight_for_elderly": {},
     "employment_weight_for_young": {},
-    "effect_of_employment_in_ps_staying_ratio": {"relative_employment_gap": 1},
+    "effect_of_employment_in_ps_retention": {"relative_employment_gap": 1, "time": 2},
     "higher_education_factor": {
         "vt_centers_accessibility": 1,
         "university_accessibility": 1,
@@ -817,7 +852,7 @@ _dependencies = {
     },
     "employment_factor_for_young": {
         "employment_weight_for_young": 1,
-        "effect_of_employment_in_ps_staying_ratio": 1,
+        "effect_of_employment_in_ps_retention": 1,
     },
     "broadband_factor_for_wa": {
         "broadband_weight_for_wa": 1,
@@ -845,7 +880,10 @@ _dependencies = {
         "cr_factor": 1,
         "public_services_retention": 1,
     },
-    "effect_of_employment_in_wa_leaving_ratio": {"relative_employment_gap": 1},
+    "effect_of_employment_in_wa_leaving_ratio": {
+        "relative_employment_gap": 1,
+        "time": 2,
+    },
     "public_services_weight_for_wa_retention": {},
     "public_services_retention": {
         "public_services_weight_for_wa_retention": 1,
@@ -1061,7 +1099,7 @@ _dependencies = {
         "step": {"potential_commuters_moving": 1},
     },
     "increasing_potential_commuters": {"_smooth_increasing_potential_commuters": 1},
-    "commuters_retiring": {"commuters": 1, "time_to_retire": 1},
+    "commuters_retiring": {"commuters": 1, "time_for_commuters_retirement": 1},
     "working_age_rural_population": {"working_age_population": 1},
     "broadband_infrastructure": {"broadband_infrastructure_population_covered": 1},
     "farms": {"_integ_farms": 1},
@@ -1121,21 +1159,17 @@ _dependencies = {
         "initial": {},
         "step": {"creation_of_industrial_jobs": 1, "destruction_of_industrial_jobs": 1},
     },
+    "_initial_service_jobs": {"initial": {"population_services": 1}, "step": {}},
     "service_jobs": {"_integ_service_jobs": 1},
-    "_integ_service_jobs": {
-        "initial": {},
-        "step": {"creation_of_services_jobs": 1, "destruction_of_services_jobs": 1},
-    },
+    "_integ_service_jobs": {"initial": {"_initial_service_jobs": 1}, "step": {}},
     "population_services": {"_integ_population_services": 1},
     "_integ_population_services": {
         "initial": {},
         "step": {"change_in_population_services": 1},
     },
+    "_initial_natural_capital": {"initial": {"agricultural_land": 1}, "step": {}},
     "natural_capital": {"_integ_natural_capital": 1},
-    "_integ_natural_capital": {
-        "initial": {"initial_natural_land": 1},
-        "step": {"natural_capital_net_variation": 1},
-    },
+    "_integ_natural_capital": {"initial": {"_initial_natural_capital": 1}, "step": {}},
     "school_age_population": {"_integ_school_age_population": 1},
     "_integ_school_age_population": {
         "initial": {},
@@ -1210,15 +1244,15 @@ _dependencies = {
             "dismissing_potential_initiatives": 1,
         },
     },
-    "implemented_initiatives": {"_integ_implemented_initiatives": 1},
-    "_integ_implemented_initiatives": {
-        "initial": {},
-        "step": {"planning_initiatives": 1, "becoming_stablished_jobs": 1},
-    },
     "shared_knowledge": {"_integ_shared_knowledge": 1},
     "_integ_shared_knowledge": {
         "initial": {},
         "step": {"building_shared_knowledge": 1, "shared_knowledge_loss": 1},
+    },
+    "implemented_initiatives": {"_integ_implemented_initiatives": 1},
+    "_integ_implemented_initiatives": {
+        "initial": {},
+        "step": {"planning_initiatives": 1, "becoming_stablished_jobs": 1},
     },
     "potential_commuters": {"_integ_potential_commuters": 1},
     "_integ_potential_commuters": {
@@ -1241,8 +1275,8 @@ _dependencies = {
 ##########################################################################
 
 _control_vars = {
-    "initial_time": lambda: 2010,
-    "final_time": lambda: 2040,
+    "initial_time": lambda: 2014,
+    "final_time": lambda: 2044,
     "time_step": lambda: 1 / 4,
     "saveper": lambda: time_step(),
 }
@@ -1260,7 +1294,7 @@ def time():
 def initial_time():
     """
     Real Name: INITIAL TIME
-    Original Eqn: 2010
+    Original Eqn: 2014
     Units: Years
     Limits: None
     Type: constant
@@ -1274,7 +1308,7 @@ def initial_time():
 def final_time():
     """
     Real Name: FINAL TIME
-    Original Eqn: 2010
+    Original Eqn: 2014
     Units: Years
     Limits: None
     Type: constant
@@ -1321,7 +1355,7 @@ def saveper():
 def mean_working_period_for_farmers():
     """
     Real Name: mean_working_period_for_farmers
-    Original Eqn: 45
+    Original Eqn: 30
     Units: year
     Limits: (None, None)
     Type: constant
@@ -1329,7 +1363,7 @@ def mean_working_period_for_farmers():
 
 
     """
-    return 45
+    return 30
 
 
 def abandonment_ratio(x=None):
@@ -1346,14 +1380,62 @@ def abandonment_ratio(x=None):
     return (
         lookup(
             agriculture_profitability(),
-            [0.000, 7500.000, 15000.000, 22500.000, 30000.000],
-            [0.993, 0.924, 0.500, 0.076, 0.007],
+            [
+                0.000,
+                30000.000,
+                60000.000,
+                90000.000,
+                120000.000,
+                150000.000,
+                180000.000,
+                210000.000,
+                240000.000,
+                270000.000,
+                300000.000,
+            ],
+            [
+                0.996,
+                0.988,
+                0.965,
+                0.902,
+                0.752,
+                0.500,
+                0.248,
+                0.098,
+                0.035,
+                0.012,
+                0.004,
+            ],
         )
         if x is None
         else lookup(
             x,
-            [0.000, 7500.000, 15000.000, 22500.000, 30000.000],
-            [0.993, 0.924, 0.500, 0.076, 0.007],
+            [
+                0.000,
+                30000.000,
+                60000.000,
+                90000.000,
+                120000.000,
+                150000.000,
+                180000.000,
+                210000.000,
+                240000.000,
+                270000.000,
+                300000.000,
+            ],
+            [
+                0.996,
+                0.988,
+                0.965,
+                0.902,
+                0.752,
+                0.500,
+                0.248,
+                0.098,
+                0.035,
+                0.012,
+                0.004,
+            ],
         )
     )
 
@@ -1429,17 +1511,17 @@ def generational_transition_ratio(x=None):
                 5.000,
             ],
             [
-                0.001,
-                0.003,
-                0.013,
-                0.053,
-                0.192,
-                0.500,
-                0.808,
-                0.947,
-                0.987,
-                0.997,
-                0.999,
+                0.000,
+                0.336,
+                0.561,
+                0.712,
+                0.813,
+                0.881,
+                0.926,
+                0.957,
+                0.977,
+                0.991,
+                1.000,
             ],
         )
         if x is None
@@ -1459,17 +1541,17 @@ def generational_transition_ratio(x=None):
                 5.000,
             ],
             [
-                0.001,
-                0.003,
-                0.013,
-                0.053,
-                0.192,
-                0.500,
-                0.808,
-                0.947,
-                0.987,
-                0.997,
-                0.999,
+                0.000,
+                0.336,
+                0.561,
+                0.712,
+                0.813,
+                0.881,
+                0.926,
+                0.957,
+                0.977,
+                0.991,
+                1.000,
             ],
         )
     )
@@ -1534,7 +1616,7 @@ def new_forms_of_property():
 def max_agricultural_land():
     """
     Real Name: max_agricultural_land
-    Original Eqn: 2300000
+    Original Eqn: 9500
     Units: ha
     Limits: (None, None)
     Type: constant
@@ -1542,7 +1624,7 @@ def max_agricultural_land():
 
 
     """
-    return 2300000
+    return 9500
 
 
 def potential_land_transformation():
@@ -1573,9 +1655,9 @@ def potential_new_farms():
     return potential_land_transformation() / average_farm_area()
 
 
-def cap_ecoschemes(x=None):
+def farm_to_fork_effect_on_services(x=None):
     """
-    Real Name: CAP_Eco-Schemes
+    Real Name: farm_to_fork_effect_on_services
     Original Eqn: TIME
     Units: dmnl
     Limits: (None, None)
@@ -1589,29 +1671,27 @@ def cap_ecoschemes(x=None):
             time(),
             [
                 2021.000,
-                2021.950,
-                2022.900,
-                2023.850,
-                2024.800,
-                2025.750,
-                2026.700,
-                2027.650,
-                2028.600,
-                2029.550,
-                2030.500,
-                2031.450,
-                2032.400,
-                2033.350,
-                2034.300,
-                2035.250,
-                2036.200,
-                2037.150,
-                2038.100,
-                2039.050,
-                2040.000,
+                2022.211,
+                2023.421,
+                2024.632,
+                2025.842,
+                2027.053,
+                2028.263,
+                2029.474,
+                2030.684,
+                2031.895,
+                2033.105,
+                2034.316,
+                2035.526,
+                2036.737,
+                2037.947,
+                2039.158,
+                2040.368,
+                2041.579,
+                2042.789,
+                2044.000,
             ],
             [
-                2.000,
                 2.000,
                 2.000,
                 2.000,
@@ -1639,29 +1719,27 @@ def cap_ecoschemes(x=None):
             x,
             [
                 2021.000,
-                2021.950,
-                2022.900,
-                2023.850,
-                2024.800,
-                2025.750,
-                2026.700,
-                2027.650,
-                2028.600,
-                2029.550,
-                2030.500,
-                2031.450,
-                2032.400,
-                2033.350,
-                2034.300,
-                2035.250,
-                2036.200,
-                2037.150,
-                2038.100,
-                2039.050,
-                2040.000,
+                2022.211,
+                2023.421,
+                2024.632,
+                2025.842,
+                2027.053,
+                2028.263,
+                2029.474,
+                2030.684,
+                2031.895,
+                2033.105,
+                2034.316,
+                2035.526,
+                2036.737,
+                2037.947,
+                2039.158,
+                2040.368,
+                2041.579,
+                2042.789,
+                2044.000,
             ],
             [
-                2.000,
                 2.000,
                 2.000,
                 2.000,
@@ -1762,6 +1840,138 @@ def farming_attraction_factor(x=None):
     )
 
 
+def farm_to_fork_effect_on_industry(x=None):
+    """
+    Real Name: farm_to_fork_effect_on_industry
+    Original Eqn: TIME
+    Units: dmnl
+    Limits: (None, None)
+    Type: lookup
+    Subs: None
+
+
+    """
+    return (
+        lookup(
+            time(),
+            [
+                2021.000,
+                2022.150,
+                2023.300,
+                2024.450,
+                2025.600,
+                2026.750,
+                2027.900,
+                2029.050,
+                2030.200,
+                2031.350,
+                2032.500,
+                2033.650,
+                2034.800,
+                2035.950,
+                2037.100,
+                2038.250,
+                2039.400,
+                2040.550,
+                2041.700,
+                2042.850,
+                2044.000,
+            ],
+            [
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+            ],
+        )
+        if x is None
+        else lookup(
+            x,
+            [
+                2021.000,
+                2022.150,
+                2023.300,
+                2024.450,
+                2025.600,
+                2026.750,
+                2027.900,
+                2029.050,
+                2030.200,
+                2031.350,
+                2032.500,
+                2033.650,
+                2034.800,
+                2035.950,
+                2037.100,
+                2038.250,
+                2039.400,
+                2040.550,
+                2041.700,
+                2042.850,
+                2044.000,
+            ],
+            [
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+            ],
+        )
+    )
+
+
+def related_agricultural_jobs_on_industry():
+    """
+    Real Name: related_agricultural_jobs_on_industry
+    Original Eqn: (farms/max_mean_related_agri_jobs_on_industry)*MAX(1, STEP (farm_to_fork_effect_on_industry/4, 2021))* AKIS_effect
+    Units: job
+    Limits: (None, None)
+    Type: component
+    Subs: None
+
+
+    """
+    return (
+        (farms() / max_mean_related_agri_jobs_on_industry())
+        * max(1, step(__data["time"], farm_to_fork_effect_on_industry() / 4, 2021))
+        * akis_effect()
+    )
+
+
 def social_innovation__potential_initiatives():
     """
     Real Name: social_innovation_/_potential_initiatives
@@ -1779,7 +1989,7 @@ def social_innovation__potential_initiatives():
 def average_farm_area():
     """
     Real Name: average_farm_area
-    Original Eqn: 8.4
+    Original Eqn: 200
     Units: ha/farm
     Limits: (None, None)
     Type: constant
@@ -1787,7 +1997,7 @@ def average_farm_area():
 
 
     """
-    return 8.4
+    return 200
 
 
 def agricultural_land():
@@ -1807,7 +2017,7 @@ def agricultural_land():
 def agriculture_profitability():
     """
     Real Name: agriculture_profitability
-    Original Eqn: mean_local_income_per_farm*(1+CAP_direct_payment)
+    Original Eqn: mean_local_income_per_farm
     Units: €/farm
     Limits: (None, None)
     Type: component
@@ -1816,25 +2026,7 @@ def agriculture_profitability():
     0 - 105 aprox
 
     """
-    return mean_local_income_per_farm() * (1 + cap_direct_payment())
-
-
-def cap_direct_payment():
-    """
-    Real Name: CAP_direct_payment
-    Original Eqn: CAP_mean_proportion_of_direct_payment_to_FNVA- STEP(CAP_reform_direct_payments_decrease_2021, 2021)+ STEP ("Eco-schemes_effect_on_direct_payment", 2021)
-    Units: dmnl
-    Limits: (None, None)
-    Type: component
-    Subs: None
-
-
-    """
-    return (
-        cap_mean_proportion_of_direct_payment_to_fnva()
-        - step(__data["time"], cap_reform_direct_payments_decrease_2021(), 2021)
-        + step(__data["time"], ecoschemes_effect_on_direct_payment(), 2021)
-    )
+    return mean_local_income_per_farm()
 
 
 def agriculture_jobs():
@@ -1882,7 +2074,7 @@ def effect_of_tourism_on_diversification(x=None):
 def akis_effect():
     """
     Real Name: AKIS_effect
-    Original Eqn: AKIS_evolution*0.22
+    Original Eqn: AKIS_evolution*0.18
     Units: dmnl
     Limits: (None, None)
     Type: component
@@ -1890,115 +2082,13 @@ def akis_effect():
 
     0,7-1,2 over time
     """
-    return akis_evolution() * 0.22
-
-
-def cap_reform_direct_payments_decrease_2021():
-    """
-    Real Name: CAP_reform_direct_payments_decrease_2021
-    Original Eqn: 0.05
-    Units: dmnl
-    Limits: (None, None)
-    Type: constant
-    Subs: None
-
-
-    """
-    return 0.05
-
-
-def cap_mean_proportion_of_direct_payment_to_fnva():
-    """
-    Real Name: CAP_mean_proportion_of_direct_payment_to_FNVA
-    Original Eqn: 0.3
-    Units: dmnl
-    Limits: (None, None)
-    Type: constant
-    Subs: None
-
-    FNVA farm net value added
-    """
-    return 0.3
-
-
-def ecoschemes_effect_on_direct_payment(x=None):
-    """
-    Real Name: Eco-schemes_effect_on_direct_payment
-    Original Eqn: "CAP_Eco-Schemes"
-    Units: dmnl
-    Limits: (None, None)
-    Type: lookup
-    Subs: None
-
-
-    """
-    return (
-        lookup(
-            cap_ecoschemes(),
-            [
-                0.000,
-                0.500,
-                1.000,
-                1.500,
-                2.000,
-                2.500,
-                3.000,
-                3.500,
-                4.000,
-                4.500,
-                5.000,
-            ],
-            [
-                0.000,
-                0.003,
-                0.006,
-                0.010,
-                0.014,
-                0.019,
-                0.024,
-                0.029,
-                0.036,
-                0.042,
-                0.050,
-            ],
-        )
-        if x is None
-        else lookup(
-            x,
-            [
-                0.000,
-                0.500,
-                1.000,
-                1.500,
-                2.000,
-                2.500,
-                3.000,
-                3.500,
-                4.000,
-                4.500,
-                5.000,
-            ],
-            [
-                0.000,
-                0.003,
-                0.006,
-                0.010,
-                0.014,
-                0.019,
-                0.024,
-                0.029,
-                0.036,
-                0.042,
-                0.050,
-            ],
-        )
-    )
+    return akis_evolution() * 0.18
 
 
 def initial_mean_income_per_farm():
     """
     Real Name: initial_mean_income_per_farm
-    Original Eqn: 20000
+    Original Eqn: 280000
     Units: €/farm
     Limits: (None, None)
     Type: constant
@@ -2006,7 +2096,7 @@ def initial_mean_income_per_farm():
 
 
     """
-    return 20000
+    return 280000
 
 
 def technical_obsolescence_time():
@@ -2047,7 +2137,7 @@ def agricultural_obsolescence_covered():
 def mean_jobs_per_farm():
     """
     Real Name: mean_jobs_per_farm
-    Original Eqn: 2
+    Original Eqn: 45
     Units: job/farm
     Limits: (None, None)
     Type: constant
@@ -2055,7 +2145,35 @@ def mean_jobs_per_farm():
 
 
     """
-    return 2
+    return 45
+
+
+def max_mean_related_agri_jobs_on_services():
+    """
+    Real Name: max_mean_related_agri_jobs_on_services
+    Original Eqn: 0.3
+    Units: farm/job
+    Limits: (None, None)
+    Type: constant
+    Subs: None
+
+
+    """
+    return 0.3
+
+
+def max_mean_related_agri_jobs_on_industry():
+    """
+    Real Name: max_mean_related_agri_jobs_on_industry
+    Original Eqn: 0.03
+    Units: farm/job
+    Limits: (None, None)
+    Type: constant
+    Subs: None
+
+
+    """
+    return 0.03
 
 
 def max_improvement_per_diversification():
@@ -2075,7 +2193,7 @@ def max_improvement_per_diversification():
 def initial_number_of_farms():
     """
     Real Name: initial_number_of_farms
-    Original Eqn: 271750
+    Original Eqn: 45
     Units: farm
     Limits: (None, None)
     Type: constant
@@ -2083,21 +2201,21 @@ def initial_number_of_farms():
 
 
     """
-    return 271750
+    return 45
 
 
 def final_technical_obsolescence_time():
     """
     Real Name: final_technical_obsolescence_time
-    Original Eqn: 10
+    Original Eqn: 7
     Units: year
-    Limits: (2.0, 7.0)
+    Limits: (1.0, 7.0)
     Type: constant
     Subs: None
 
 
     """
-    return 10
+    return 7
 
 
 def time_for_slope():
@@ -2117,7 +2235,7 @@ def time_for_slope():
 def normal_technical_obsolescence_time():
     """
     Real Name: normal_technical_obsolescence_time
-    Original Eqn: 10
+    Original Eqn: 7
     Units: year
     Limits: (None, None)
     Type: constant
@@ -2125,7 +2243,7 @@ def normal_technical_obsolescence_time():
 
 
     """
-    return 10
+    return 7
 
 
 def akis_evolution(x=None):
@@ -2144,25 +2262,25 @@ def akis_evolution(x=None):
             time(),
             [
                 2021.000,
-                2022.000,
-                2023.000,
-                2024.000,
-                2025.000,
-                2026.000,
-                2027.000,
-                2028.000,
-                2029.000,
-                2030.000,
-                2031.000,
-                2032.000,
-                2033.000,
-                2034.000,
-                2035.000,
-                2036.000,
-                2037.000,
-                2038.000,
-                2039.000,
-                2040.000,
+                2022.211,
+                2023.421,
+                2024.632,
+                2025.842,
+                2027.053,
+                2028.263,
+                2029.474,
+                2030.684,
+                2031.895,
+                2033.105,
+                2034.316,
+                2035.526,
+                2036.737,
+                2037.947,
+                2039.158,
+                2040.368,
+                2041.579,
+                2042.789,
+                2044.000,
             ],
             [
                 3.000,
@@ -2192,25 +2310,25 @@ def akis_evolution(x=None):
             x,
             [
                 2021.000,
-                2022.000,
-                2023.000,
-                2024.000,
-                2025.000,
-                2026.000,
-                2027.000,
-                2028.000,
-                2029.000,
-                2030.000,
-                2031.000,
-                2032.000,
-                2033.000,
-                2034.000,
-                2035.000,
-                2036.000,
-                2037.000,
-                2038.000,
-                2039.000,
-                2040.000,
+                2022.211,
+                2023.421,
+                2024.632,
+                2025.842,
+                2027.053,
+                2028.263,
+                2029.474,
+                2030.684,
+                2031.895,
+                2033.105,
+                2034.316,
+                2035.526,
+                2036.737,
+                2037.947,
+                2039.158,
+                2040.368,
+                2041.579,
+                2042.789,
+                2044.000,
             ],
             [
                 3.000,
@@ -2233,6 +2351,145 @@ def akis_evolution(x=None):
                 3.000,
                 3.000,
                 3.000,
+            ],
+        )
+    )
+
+
+def related_agricultural_jobs_effect_on_services():
+    """
+    Real Name: related_agricultural_jobs_effect_on_services
+    Original Eqn: (farms/max_mean_related_agri_jobs_on_services)*MAX(1, STEP(("CAP_Eco-Schemes"+farm_to_fork_effect_on_services)/8, 2021)) * AKIS_effect
+    Units: job
+    Limits: (None, None)
+    Type: component
+    Subs: None
+
+
+    """
+    return (
+        (farms() / max_mean_related_agri_jobs_on_services())
+        * max(
+            1,
+            step(
+                __data["time"],
+                (cap_ecoschemes() + farm_to_fork_effect_on_services()) / 8,
+                2021,
+            ),
+        )
+        * akis_effect()
+    )
+
+
+def cap_ecoschemes(x=None):
+    """
+    Real Name: CAP_Eco-Schemes
+    Original Eqn: TIME
+    Units: dmnl
+    Limits: (None, None)
+    Type: lookup
+    Subs: None
+
+    0-5 over time
+    """
+    return (
+        lookup(
+            time(),
+            [
+                2021.000,
+                2022.150,
+                2023.300,
+                2024.450,
+                2025.600,
+                2026.750,
+                2027.900,
+                2029.050,
+                2030.200,
+                2031.350,
+                2032.500,
+                2033.650,
+                2034.800,
+                2035.950,
+                2037.100,
+                2038.250,
+                2039.400,
+                2040.550,
+                2041.700,
+                2042.850,
+                2044.000,
+            ],
+            [
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+            ],
+        )
+        if x is None
+        else lookup(
+            x,
+            [
+                2021.000,
+                2022.150,
+                2023.300,
+                2024.450,
+                2025.600,
+                2026.750,
+                2027.900,
+                2029.050,
+                2030.200,
+                2031.350,
+                2032.500,
+                2033.650,
+                2034.800,
+                2035.950,
+                2037.100,
+                2038.250,
+                2039.400,
+                2040.550,
+                2041.700,
+                2042.850,
+                2044.000,
+            ],
+            [
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
+                2.000,
             ],
         )
     )
@@ -2362,7 +2619,7 @@ def working_lifetime_duration_for_nsw():
 def initial_fraction_vt():
     """
     Real Name: initial_fraction_VT
-    Original Eqn: 0.13
+    Original Eqn: 0.25
     Units: dmnl
     Limits: (None, None)
     Type: constant
@@ -2370,13 +2627,13 @@ def initial_fraction_vt():
 
 
     """
-    return 0.13
+    return 0.25
 
 
 def vt_fraction_objective():
     """
     Real Name: VT_fraction_objective
-    Original Eqn: 13
+    Original Eqn: 25
     Units: dmnl
     Limits: (15.0, 30.0)
     Type: constant
@@ -2384,13 +2641,13 @@ def vt_fraction_objective():
 
 
     """
-    return 13
+    return 25
 
 
 def initial_fraction_university_students():
     """
     Real Name: initial_fraction_university_students
-    Original Eqn: 0.26
+    Original Eqn: 0.4
     Units: dmnl
     Limits: (None, None)
     Type: constant
@@ -2398,13 +2655,13 @@ def initial_fraction_university_students():
 
 
     """
-    return 0.26
+    return 0.4
 
 
 def university_students_objective():
     """
     Real Name: university_students_objective
-    Original Eqn: 26
+    Original Eqn: 40
     Units: dmnl
     Limits: (5.0, 20.0)
     Type: constant
@@ -2412,26 +2669,12 @@ def university_students_objective():
 
 
     """
-    return 26
+    return 40
 
 
 def graduate_migrating_ratio():
     """
     Real Name: graduate_migrating_ratio
-    Original Eqn: 0.6
-    Units: dmnl
-    Limits: (None, None)
-    Type: constant
-    Subs: None
-
-
-    """
-    return 0.6
-
-
-def vt_migrating_ratio():
-    """
-    Real Name: VT_migrating_ratio
     Original Eqn: 0.3
     Units: dmnl
     Limits: (None, None)
@@ -2441,6 +2684,20 @@ def vt_migrating_ratio():
 
     """
     return 0.3
+
+
+def vt_migrating_ratio():
+    """
+    Real Name: VT_migrating_ratio
+    Original Eqn: 0.02
+    Units: dmnl
+    Limits: (None, None)
+    Type: constant
+    Subs: None
+
+
+    """
+    return 0.02
 
 
 def unskilled_migrating_ratio():
@@ -2493,7 +2750,7 @@ def total_regional_employment():
 def workforce_as_ratio_of_wap():
     """
     Real Name: workforce_as_ratio_of_WAP
-    Original Eqn: 1.31
+    Original Eqn: 0.75
     Units: job/person
     Limits: (None, None)
     Type: constant
@@ -2501,7 +2758,7 @@ def workforce_as_ratio_of_wap():
 
 
     """
-    return 1.31
+    return 0.75
 
 
 def structural_unemployment(x=None):
@@ -2610,7 +2867,7 @@ def relative_employment_gap():
 def nvs_step_remote_workers():
     """
     Real Name: _step_remote_workers
-    Original Eqn: STEP (remote_workers_potential_2030, 2021)
+    Original Eqn: STEP(remote_workers_potential_2034, 2021)
     Units: job
     Limits: (None, None)
     Type: component
@@ -2618,7 +2875,7 @@ def nvs_step_remote_workers():
 
 
     """
-    return step(__data["time"], remote_workers_potential_2030(), 2021)
+    return step(__data["time"], remote_workers_potential_2034(), 2021)
 
 
 _delayn_remote_workers = DelayN(
@@ -2634,7 +2891,7 @@ _delayn_remote_workers = DelayN(
 def remote_workers():
     """
     Real Name: remote_workers
-    Original Eqn: DELAY1(_step_remote_workers, years_for_remote_workers_trend)*broadband_infrastructure/100
+    Original Eqn: DELAY1(_step_remote_workers, years_for_remote_workers_trend) * broadband_infrastructure/100
     Units: job
     Limits: (None, None)
     Type: component
@@ -2662,7 +2919,7 @@ def primary_jobs_viability_ratio():
 def new_industrial_job_viability_ratio():
     """
     Real Name: new_industrial_job_viability_ratio
-    Original Eqn: 0.65
+    Original Eqn: 0.75
     Units: dmnl
     Limits: (None, None)
     Type: constant
@@ -2670,13 +2927,13 @@ def new_industrial_job_viability_ratio():
 
 
     """
-    return 0.65
+    return 0.75
 
 
-def total_workforce():
+def related_agricultural_jobs_effect_on_industry():
     """
-    Real Name: total_workforce
-    Original Eqn: regional_WA*workforce_as_ratio_of_WAP* (1-structural_unemployment)
+    Real Name: related_agricultural_jobs_effect_on_industry
+    Original Eqn: related_agricultural_jobs_on_industry
     Units: job
     Limits: (None, None)
     Type: component
@@ -2684,7 +2941,23 @@ def total_workforce():
 
 
     """
-    return regional_wa() * workforce_as_ratio_of_wap() * (1 - structural_unemployment())
+    return related_agricultural_jobs_on_industry()
+
+
+def total_workforce():
+    """
+    Real Name: total_workforce
+    Original Eqn: (Regional_WA*workforce_as_ratio_of_WAP)*(1-structural_unemployment)
+    Units: job
+    Limits: (None, None)
+    Type: component
+    Subs: None
+
+
+    """
+    return (regional_wa() * workforce_as_ratio_of_wap()) * (
+        1 - structural_unemployment()
+    )
 
 
 def total_employment():
@@ -2704,7 +2977,7 @@ def total_employment():
 def previous_population():
     """
     Real Name: Previous_population
-    Original Eqn: PREVIOUS(total_rural_population, 4590000)
+    Original Eqn: PREVIOUS(total_rural_population, initial_rural_population)
     Units: person
     Limits: (None, None)
     Type: component
@@ -2713,7 +2986,10 @@ def previous_population():
 
     """
     return previous(
-        lambda: total_rural_population(), 4590000, __data["time"], __data["scope"]
+        lambda: total_rural_population(),
+        initial_rural_population(),
+        __data["time"],
+        __data["scope"],
     )
 
 
@@ -2734,7 +3010,7 @@ def difference_of_population():
 def ratio_population_services():
     """
         Real Name: ratio_population_services
-        Original Eqn: 0.04
+        Original Eqn: 0.02
         Units: job/person/year
         Limits: (None, None)
         Type: constant
@@ -2743,7 +3019,7 @@ def ratio_population_services():
         Value?
     4%?
     """
-    return 0.04
+    return 0.02
 
 
 def endogenous_primary_job_creation_ratio():
@@ -2788,10 +3064,10 @@ def endogenous_service_jobs_creation_ratio():
     return endogenous_service_job_creation()
 
 
-def remote_workers_potential_2030():
+def remote_workers_potential_2034():
     """
-    Real Name: remote_workers_potential_2030
-    Original Eqn: 350000
+    Real Name: remote_workers_potential_2034
+    Original Eqn: 1500
     Units: job
     Limits: (None, None)
     Type: constant
@@ -2799,13 +3075,13 @@ def remote_workers_potential_2030():
 
 
     """
-    return 350000
+    return 1500
 
 
 def total_services_job():
     """
     Real Name: total_services_job
-    Original Eqn: population_services+service_jobs +jobs_per_tourism
+    Original Eqn: population_services+related_agricultural_jobs_effect_on_services+service_jobs +jobs_per_tourism
     Units: job
     Limits: (None, None)
     Type: component
@@ -2813,7 +3089,12 @@ def total_services_job():
 
 
     """
-    return population_services() + service_jobs() + jobs_per_tourism()
+    return (
+        population_services()
+        + related_agricultural_jobs_effect_on_services()
+        + service_jobs()
+        + jobs_per_tourism()
+    )
 
 
 def new_services_viability_ratio():
@@ -2833,7 +3114,7 @@ def new_services_viability_ratio():
 def total_industrial_jobs():
     """
     Real Name: total_industrial_jobs
-    Original Eqn: Industrial_jobs
+    Original Eqn: related_agricultural_jobs_effect_on_industry+Industrial_jobs
     Units: job
     Limits: (None, None)
     Type: component
@@ -2841,7 +3122,7 @@ def total_industrial_jobs():
 
 
     """
-    return industrial_jobs()
+    return related_agricultural_jobs_effect_on_industry() + industrial_jobs()
 
 
 def resulting_average_life_for_industrial_business():
@@ -2879,7 +3160,7 @@ def resulting_average_life_for_services():
 def years_for_remote_workers_trend():
     """
     Real Name: years_for_remote_workers_trend
-    Original Eqn: 10
+    Original Eqn: 7
     Units: year
     Limits: (None, None)
     Type: constant
@@ -2887,13 +3168,13 @@ def years_for_remote_workers_trend():
 
 
     """
-    return 10
+    return 7
 
 
 def average_life_of_a_primary_sector_business():
     """
     Real Name: average_life_of_a_primary_sector_business
-    Original Eqn: 13
+    Original Eqn: 18
     Units: year
     Limits: (None, None)
     Type: constant
@@ -2901,7 +3182,7 @@ def average_life_of_a_primary_sector_business():
 
 
     """
-    return 13
+    return 18
 
 
 def drop_in_the_service_average_life_due_to_covid(x=None):
@@ -2920,26 +3201,26 @@ def drop_in_the_service_average_life_due_to_covid(x=None):
             time(),
             [
                 2021.000,
-                2021.950,
-                2022.900,
-                2023.850,
-                2024.800,
-                2025.750,
-                2026.700,
-                2027.650,
-                2028.600,
-                2029.550,
-                2030.500,
-                2031.450,
-                2032.400,
-                2033.350,
-                2034.300,
-                2035.250,
-                2036.200,
-                2037.150,
-                2038.100,
-                2039.050,
-                2040.000,
+                2022.150,
+                2023.300,
+                2024.450,
+                2025.600,
+                2026.750,
+                2027.900,
+                2029.050,
+                2030.200,
+                2031.350,
+                2032.500,
+                2033.650,
+                2034.800,
+                2035.950,
+                2037.100,
+                2038.250,
+                2039.400,
+                2040.550,
+                2041.700,
+                2042.850,
+                2044.000,
             ],
             [
                 0.000,
@@ -2970,26 +3251,26 @@ def drop_in_the_service_average_life_due_to_covid(x=None):
             x,
             [
                 2021.000,
-                2021.950,
-                2022.900,
-                2023.850,
-                2024.800,
-                2025.750,
-                2026.700,
-                2027.650,
-                2028.600,
-                2029.550,
-                2030.500,
-                2031.450,
-                2032.400,
-                2033.350,
-                2034.300,
-                2035.250,
-                2036.200,
-                2037.150,
-                2038.100,
-                2039.050,
-                2040.000,
+                2022.150,
+                2023.300,
+                2024.450,
+                2025.600,
+                2026.750,
+                2027.900,
+                2029.050,
+                2030.200,
+                2031.350,
+                2032.500,
+                2033.650,
+                2034.800,
+                2035.950,
+                2037.100,
+                2038.250,
+                2039.400,
+                2040.550,
+                2041.700,
+                2042.850,
+                2044.000,
             ],
             [
                 0.000,
@@ -3021,29 +3302,32 @@ def drop_in_the_service_average_life_due_to_covid(x=None):
 def jobs_per_tourism():
     """
     Real Name: jobs_per_tourism
-    Original Eqn: tourist_visitors/visitors_per_tourism_workplace
+    Original Eqn: tourist_visitors*workplaces_for_visitors_former_visitors_per_tourism_workplace
     Units: job
     Limits: (None, None)
     Type: component
     Subs: None
 
-
+    Before it was dividing!!
     """
-    return tourist_visitors() / visitors_per_tourism_workplace()
+    return (
+        tourist_visitors()
+        * workplaces_for_visitors_former_visitors_per_tourism_workplace()
+    )
 
 
-def visitors_per_tourism_workplace():
+def workplaces_for_visitors_former_visitors_per_tourism_workplace():
     """
-    Real Name: visitors_per_tourism_workplace
-    Original Eqn: 200
-    Units: person/job/year
+    Real Name: workplaces_for_visitors_former_visitors_per_tourism_workplace
+    Original Eqn: 0.003
+    Units: job*year/person
     Limits: (None, None)
     Type: constant
     Subs: None
 
 
     """
-    return 200
+    return 0.003
 
 
 def services_ratio():
@@ -3063,7 +3347,7 @@ def services_ratio():
 def primary_ratio():
     """
     Real Name: primary_ratio
-    Original Eqn: total_primary_sector/total_employment
+    Original Eqn: (agriculture_jobs+Rest_of_primary_sector_jobs)/total_employment
     Units: dmnl
     Limits: (None, None)
     Type: component
@@ -3071,7 +3355,7 @@ def primary_ratio():
 
 
     """
-    return total_primary_sector() / total_employment()
+    return (agriculture_jobs() + rest_of_primary_sector_jobs()) / total_employment()
 
 
 def industrial_ratio():
@@ -3091,7 +3375,7 @@ def industrial_ratio():
 def average_life_of_a_service_business():
     """
     Real Name: average_life_of_a_service_business
-    Original Eqn: 15
+    Original Eqn: 8
     Units: year
     Limits: (None, None)
     Type: constant
@@ -3099,13 +3383,13 @@ def average_life_of_a_service_business():
 
 
     """
-    return 15
+    return 8
 
 
 def average_life_of_an_industrial_business():
     """
     Real Name: average_life_of_an_industrial_business
-    Original Eqn: 20
+    Original Eqn: 25
     Units: year
     Limits: (None, None)
     Type: constant
@@ -3113,7 +3397,7 @@ def average_life_of_an_industrial_business():
 
 
     """
-    return 20
+    return 25
 
 
 def drop_in_the_industrial_average_life_due_to_covid(x=None):
@@ -3132,26 +3416,26 @@ def drop_in_the_industrial_average_life_due_to_covid(x=None):
             time(),
             [
                 2021.000,
-                2021.950,
-                2022.900,
-                2023.850,
-                2024.800,
-                2025.750,
-                2026.700,
-                2027.650,
-                2028.600,
-                2029.550,
-                2030.500,
-                2031.450,
-                2032.400,
-                2033.350,
-                2034.300,
-                2035.250,
-                2036.200,
-                2037.150,
-                2038.100,
-                2039.050,
-                2040.000,
+                2022.150,
+                2023.300,
+                2024.450,
+                2025.600,
+                2026.750,
+                2027.900,
+                2029.050,
+                2030.200,
+                2031.350,
+                2032.500,
+                2033.650,
+                2034.800,
+                2035.950,
+                2037.100,
+                2038.250,
+                2039.400,
+                2040.550,
+                2041.700,
+                2042.850,
+                2044.000,
             ],
             [
                 0.000,
@@ -3182,26 +3466,26 @@ def drop_in_the_industrial_average_life_due_to_covid(x=None):
             x,
             [
                 2021.000,
-                2021.950,
-                2022.900,
-                2023.850,
-                2024.800,
-                2025.750,
-                2026.700,
-                2027.650,
-                2028.600,
-                2029.550,
-                2030.500,
-                2031.450,
-                2032.400,
-                2033.350,
-                2034.300,
-                2035.250,
-                2036.200,
-                2037.150,
-                2038.100,
-                2039.050,
-                2040.000,
+                2022.150,
+                2023.300,
+                2024.450,
+                2025.600,
+                2026.750,
+                2027.900,
+                2029.050,
+                2030.200,
+                2031.350,
+                2032.500,
+                2033.650,
+                2034.800,
+                2035.950,
+                2037.100,
+                2038.250,
+                2039.400,
+                2040.550,
+                2041.700,
+                2042.850,
+                2044.000,
             ],
             [
                 0.000,
@@ -3230,10 +3514,24 @@ def drop_in_the_industrial_average_life_due_to_covid(x=None):
     )
 
 
+def population_services_ratio():
+    """
+    Real Name: population_services_ratio
+    Original Eqn: 0.04
+    Units: job/person
+    Limits: (None, None)
+    Type: constant
+    Subs: None
+
+
+    """
+    return 0.04
+
+
 def regional_wa():
     """
-    Real Name: regional_WA
-    Original Eqn: WORKING_AGE_RURAL_POPULATION-commuters
+    Real Name: Regional_WA
+    Original Eqn: WORKING_AGE_RURAL_POPULATION- commuters
     Units: person
     Limits: (None, None)
     Type: component
@@ -3242,20 +3540,6 @@ def regional_wa():
 
     """
     return working_age_rural_population() - commuters()
-
-
-def total_primary_sector():
-    """
-    Real Name: total_primary_sector
-    Original Eqn: agriculture_jobs+Rest_of_primary_sector_jobs
-    Units: job
-    Limits: (None, None)
-    Type: component
-    Subs: None
-
-
-    """
-    return agriculture_jobs() + rest_of_primary_sector_jobs()
 
 
 def natural_land_variation():
@@ -3292,60 +3576,60 @@ def potential_visitors_as_a_function_of_natural_capital(x=None):
         lookup(
             natural_capital(),
             [
-                0.000,
-                30000.000,
-                60000.000,
-                90000.000,
-                120000.000,
-                150000.000,
-                180000.000,
-                210000.000,
-                240000.000,
-                270000.000,
-                300000.000,
+                20000.000,
+                23500.000,
+                27000.000,
+                30500.000,
+                34000.000,
+                37500.000,
+                41000.000,
+                44500.000,
+                48000.000,
+                51500.000,
+                55000.000,
             ],
             [
-                267714.037,
-                719448.398,
-                1897034.927,
-                4768116.881,
-                10757656.855,
-                20000000.000,
-                29242343.145,
-                35231883.119,
-                38102965.073,
-                39280551.602,
-                39732285.963,
+                33464.255,
+                89931.050,
+                237129.366,
+                596014.610,
+                1344707.107,
+                2500000.000,
+                3655292.893,
+                4403985.390,
+                4762870.634,
+                4910068.950,
+                4966535.745,
             ],
         )
         if x is None
         else lookup(
             x,
             [
-                0.000,
-                30000.000,
-                60000.000,
-                90000.000,
-                120000.000,
-                150000.000,
-                180000.000,
-                210000.000,
-                240000.000,
-                270000.000,
-                300000.000,
+                20000.000,
+                23500.000,
+                27000.000,
+                30500.000,
+                34000.000,
+                37500.000,
+                41000.000,
+                44500.000,
+                48000.000,
+                51500.000,
+                55000.000,
             ],
             [
-                267714.037,
-                719448.398,
-                1897034.927,
-                4768116.881,
-                10757656.855,
-                20000000.000,
-                29242343.145,
-                35231883.119,
-                38102965.073,
-                39280551.602,
-                39732285.963,
+                33464.255,
+                89931.050,
+                237129.366,
+                596014.610,
+                1344707.107,
+                2500000.000,
+                3655292.893,
+                4403985.390,
+                4762870.634,
+                4910068.950,
+                4966535.745,
             ],
         )
     )
@@ -3379,17 +3663,17 @@ def ratio_effect_of_agriculture_on_natural_capital(x=None):
                 5.000,
             ],
             [
-                -0.197,
-                -0.193,
-                -0.181,
-                -0.152,
-                -0.092,
-                0.000,
-                0.092,
-                0.152,
-                0.181,
-                0.193,
-                0.197,
+                -0.196,
+                -0.189,
+                -0.172,
+                -0.128,
+                -0.039,
+                0.100,
+                0.239,
+                0.328,
+                0.372,
+                0.389,
+                0.396,
             ],
         )
         if x is None
@@ -3409,17 +3693,17 @@ def ratio_effect_of_agriculture_on_natural_capital(x=None):
                 5.000,
             ],
             [
-                -0.197,
-                -0.193,
-                -0.181,
-                -0.152,
-                -0.092,
-                0.000,
-                0.092,
-                0.152,
-                0.181,
-                0.193,
-                0.197,
+                -0.196,
+                -0.189,
+                -0.172,
+                -0.128,
+                -0.039,
+                0.100,
+                0.239,
+                0.328,
+                0.372,
+                0.389,
+                0.396,
             ],
         )
     )
@@ -3428,7 +3712,7 @@ def ratio_effect_of_agriculture_on_natural_capital(x=None):
 def natural_land_objective():
     """
     Real Name: natural_land_objective
-    Original Eqn: 267977
+    Original Eqn: 40000
     Units: ha
     Limits: (400000.0, 550000.0)
     Type: constant
@@ -3436,7 +3720,7 @@ def natural_land_objective():
 
 
     """
-    return 267977
+    return 40000
 
 
 _delayn_tourist_visitors = DelayN(
@@ -3509,20 +3793,20 @@ def effect_of_tourism_on_natural_capital(x=None):
             relative_tourist_visits(),
             [
                 0.000,
-                0.089,
-                0.179,
-                0.268,
-                0.357,
-                0.446,
-                0.536,
-                0.625,
-                0.714,
-                0.804,
-                0.893,
-                0.982,
-                1.071,
-                1.161,
-                1.250,
+                0.571,
+                1.143,
+                1.714,
+                2.286,
+                2.857,
+                3.429,
+                4.000,
+                4.571,
+                5.143,
+                5.714,
+                6.286,
+                6.857,
+                7.429,
+                8.000,
             ],
             [
                 0.004,
@@ -3547,20 +3831,20 @@ def effect_of_tourism_on_natural_capital(x=None):
             x,
             [
                 0.000,
-                0.089,
-                0.179,
-                0.268,
-                0.357,
-                0.446,
-                0.536,
-                0.625,
-                0.714,
-                0.804,
-                0.893,
-                0.982,
-                1.071,
-                1.161,
-                1.250,
+                0.571,
+                1.143,
+                1.714,
+                2.286,
+                2.857,
+                3.429,
+                4.000,
+                4.571,
+                5.143,
+                5.714,
+                6.286,
+                6.857,
+                7.429,
+                8.000,
             ],
             [
                 0.004,
@@ -3625,17 +3909,17 @@ def natural_capital_perception(x=None):
                 2.000,
             ],
             [
-                0.033,
-                0.090,
-                0.237,
-                0.596,
-                1.345,
+                0.001,
+                0.003,
+                0.021,
+                0.125,
+                0.691,
                 2.500,
-                3.655,
-                4.404,
-                4.763,
-                4.910,
-                4.967,
+                4.309,
+                4.875,
+                4.979,
+                4.997,
+                4.999,
             ],
         )
         if x is None
@@ -3655,17 +3939,17 @@ def natural_capital_perception(x=None):
                 2.000,
             ],
             [
-                0.033,
-                0.090,
-                0.237,
-                0.596,
-                1.345,
+                0.001,
+                0.003,
+                0.021,
+                0.125,
+                0.691,
                 2.500,
-                3.655,
-                4.404,
-                4.763,
-                4.910,
-                4.967,
+                4.309,
+                4.875,
+                4.979,
+                4.997,
+                4.999,
             ],
         )
     )
@@ -3742,7 +4026,7 @@ def effect_of_agriculture_on_natural_capital():
 def normal_attraction_ratio():
     """
     Real Name: normal_attraction_ratio
-    Original Eqn: 0.05
+    Original Eqn: 0.1
     Units: dmnl/year
     Limits: (None, None)
     Type: constant
@@ -3750,41 +4034,41 @@ def normal_attraction_ratio():
 
 
     """
-    return 0.05
+    return 0.1
 
 
 def attraction_ratio_objective():
     """
     Real Name: attraction_ratio_objective
-    Original Eqn: 12
+    Original Eqn: 10
     Units: dmnl/year
-    Limits: (5.0, 20.0)
+    Limits: (10.0, 20.0)
     Type: constant
     Subs: None
 
 
     """
-    return 12
+    return 10
 
 
 def time_to_complete_campaign():
     """
     Real Name: time_to_complete_campaign
-    Original Eqn: 5
+    Original Eqn: 8
     Units: year
-    Limits: (4.0, 10.0)
+    Limits: (2.0, 20.0)
     Type: constant
     Subs: None
 
 
     """
-    return 5
+    return 8
 
 
 def tourist_campaign():
     """
     Real Name: tourist_campaign
-    Original Eqn: normal_attraction_ratio+ STEP ((attraction_ratio_objective/100)-normal_attraction_ratio, 2011)
+    Original Eqn: normal_attraction_ratio+ STEP ((attraction_ratio_objective/100)-normal_attraction_ratio, 2021)
     Units: dmnl/year
     Limits: (None, None)
     Type: component
@@ -3795,14 +4079,14 @@ def tourist_campaign():
     return normal_attraction_ratio() + step(
         __data["time"],
         (attraction_ratio_objective() / 100) - normal_attraction_ratio(),
-        2011,
+        2021,
     )
 
 
 def initial_natural_land():
     """
     Real Name: initial_natural_land
-    Original Eqn: 267977
+    Original Eqn: 40000
     Units: ha
     Limits: (None, None)
     Type: constant
@@ -3810,7 +4094,7 @@ def initial_natural_land():
 
 
     """
-    return 267977
+    return 40000
 
 
 _initial_initial_natural_capital = Initial(
@@ -3883,7 +4167,7 @@ def school_age_duration():
 def working_age_duration():
     """
     Real Name: working_age_duration
-    Original Eqn: 45
+    Original Eqn: 55
     Units: year
     Limits: (None, None)
     Type: constant
@@ -3891,7 +4175,7 @@ def working_age_duration():
 
 
     """
-    return 45
+    return 55
 
 
 def children_death_rate():
@@ -3954,158 +4238,18 @@ def post_school_death_rate():
     return 0.00002475
 
 
-def birth_rate(x=None):
+def birth_rate():
     """
     Real Name: birth_rate
-    Original Eqn: TIME
+    Original Eqn: 0.01668
     Units: dmnl/year
     Limits: (None, None)
-    Type: lookup
+    Type: constant
     Subs: None
 
 
     """
-    return (
-        lookup(
-            time(),
-            [
-                2010.000,
-                2011.000,
-                2012.000,
-                2013.000,
-                2014.000,
-                2015.000,
-                2016.000,
-                2017.000,
-                2018.000,
-                2019.000,
-                2020.000,
-                2021.000,
-                2022.000,
-                2023.000,
-                2024.000,
-                2025.000,
-                2026.000,
-                2027.000,
-                2028.000,
-                2029.000,
-                2030.000,
-                2031.000,
-                2032.000,
-                2033.000,
-                2034.000,
-                2035.000,
-                2036.000,
-                2037.000,
-                2038.000,
-                2039.000,
-                2040.000,
-            ],
-            [
-                0.009,
-                0.009,
-                0.009,
-                0.008,
-                0.008,
-                0.008,
-                0.008,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-            ],
-        )
-        if x is None
-        else lookup(
-            x,
-            [
-                2010.000,
-                2011.000,
-                2012.000,
-                2013.000,
-                2014.000,
-                2015.000,
-                2016.000,
-                2017.000,
-                2018.000,
-                2019.000,
-                2020.000,
-                2021.000,
-                2022.000,
-                2023.000,
-                2024.000,
-                2025.000,
-                2026.000,
-                2027.000,
-                2028.000,
-                2029.000,
-                2030.000,
-                2031.000,
-                2032.000,
-                2033.000,
-                2034.000,
-                2035.000,
-                2036.000,
-                2037.000,
-                2038.000,
-                2039.000,
-                2040.000,
-            ],
-            [
-                0.009,
-                0.009,
-                0.009,
-                0.008,
-                0.008,
-                0.008,
-                0.008,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-                0.007,
-            ],
-        )
-    )
+    return 0.01668
 
 
 def infant_duration():
@@ -4246,7 +4390,7 @@ def wa_migration_ratio():
 def fertility_rate():
     """
     Real Name: fertility_rate
-    Original Eqn: 1.338
+    Original Eqn: 2.74
     Units: dmnl
     Limits: (None, None)
     Type: constant
@@ -4254,13 +4398,13 @@ def fertility_rate():
 
 
     """
-    return 1.338
+    return 2.74
 
 
 def max_wa_population_living_rural_per_year():
     """
     Real Name: max_WA_population_living_rural_per_year
-    Original Eqn: 0.07
+    Original Eqn: 0.04
     Units: dmnl/year
     Limits: (None, None)
     Type: constant
@@ -4268,13 +4412,13 @@ def max_wa_population_living_rural_per_year():
 
 
     """
-    return 0.07
+    return 0.04
 
 
 def max_post_school_leaving_per_year():
     """
     Real Name: max_post_school_leaving_per_year
-    Original Eqn: 0.05
+    Original Eqn: 0.16
     Units: dmnl/year
     Limits: (None, None)
     Type: constant
@@ -4282,7 +4426,7 @@ def max_post_school_leaving_per_year():
 
 
     """
-    return 0.05
+    return 0.16
 
 
 _smooth_smooth_life_expectancy = Smooth(
@@ -4311,7 +4455,7 @@ def smooth_life_expectancy():
 def life_expectancy():
     """
     Real Name: life_expectancy
-    Original Eqn: 83
+    Original Eqn: 83.15
     Units: year
     Limits: (None, None)
     Type: constant
@@ -4319,7 +4463,7 @@ def life_expectancy():
 
 
     """
-    return 83
+    return 83.15
 
 
 def proportion_of_newcomers():
@@ -4380,28 +4524,28 @@ def health_centers_accessibility(x=None):
             mobility_infrastructures(),
             [
                 0.000,
-                50.000,
-                100.000,
                 150.000,
-                200.000,
-                250.000,
                 300.000,
-                350.000,
-                400.000,
                 450.000,
-                500.000,
+                600.000,
+                750.000,
+                900.000,
+                1050.000,
+                1200.000,
+                1350.000,
+                1500.000,
             ],
             [
                 0.000,
-                0.148,
-                0.333,
-                0.565,
-                0.856,
-                1.221,
-                1.678,
-                2.251,
-                2.970,
-                3.871,
+                0.478,
+                0.960,
+                1.448,
+                1.940,
+                2.438,
+                2.940,
+                3.447,
+                3.960,
+                4.477,
                 5.000,
             ],
         )
@@ -4410,28 +4554,28 @@ def health_centers_accessibility(x=None):
             x,
             [
                 0.000,
-                50.000,
-                100.000,
                 150.000,
-                200.000,
-                250.000,
                 300.000,
-                350.000,
-                400.000,
                 450.000,
-                500.000,
+                600.000,
+                750.000,
+                900.000,
+                1050.000,
+                1200.000,
+                1350.000,
+                1500.000,
             ],
             [
                 0.000,
-                0.148,
-                0.333,
-                0.565,
-                0.856,
-                1.221,
-                1.678,
-                2.251,
-                2.970,
-                3.871,
+                0.478,
+                0.960,
+                1.448,
+                1.940,
+                2.438,
+                2.940,
+                3.447,
+                3.960,
+                4.477,
                 5.000,
             ],
         )
@@ -4454,28 +4598,28 @@ def vt_centers_accessibility(x=None):
             mobility_infrastructures(),
             [
                 0.000,
-                50.000,
-                100.000,
                 150.000,
-                200.000,
-                250.000,
                 300.000,
-                350.000,
-                400.000,
                 450.000,
-                500.000,
+                600.000,
+                750.000,
+                900.000,
+                1050.000,
+                1200.000,
+                1350.000,
+                1500.000,
             ],
             [
                 0.000,
-                1.934,
-                3.126,
-                3.860,
-                4.313,
-                4.592,
-                4.764,
-                4.870,
-                4.935,
-                4.975,
+                0.902,
+                1.678,
+                2.343,
+                2.915,
+                3.407,
+                3.829,
+                4.191,
+                4.503,
+                4.770,
                 5.000,
             ],
         )
@@ -4484,28 +4628,28 @@ def vt_centers_accessibility(x=None):
             x,
             [
                 0.000,
-                50.000,
-                100.000,
                 150.000,
-                200.000,
-                250.000,
                 300.000,
-                350.000,
-                400.000,
                 450.000,
-                500.000,
+                600.000,
+                750.000,
+                900.000,
+                1050.000,
+                1200.000,
+                1350.000,
+                1500.000,
             ],
             [
                 0.000,
-                1.934,
-                3.126,
-                3.860,
-                4.313,
-                4.592,
-                4.764,
-                4.870,
-                4.935,
-                4.975,
+                0.902,
+                1.678,
+                2.343,
+                2.915,
+                3.407,
+                3.829,
+                4.191,
+                4.503,
+                4.770,
                 5.000,
             ],
         )
@@ -4528,28 +4672,28 @@ def university_accessibility(x=None):
             mobility_infrastructures(),
             [
                 0.000,
-                50.000,
-                100.000,
                 150.000,
-                200.000,
-                250.000,
                 300.000,
-                350.000,
-                400.000,
                 450.000,
-                500.000,
+                600.000,
+                750.000,
+                900.000,
+                1050.000,
+                1200.000,
+                1350.000,
+                1500.000,
             ],
             [
                 0.000,
-                1.862,
-                3.038,
-                3.780,
-                4.249,
-                4.544,
-                4.731,
-                4.849,
-                4.923,
-                4.970,
+                0.902,
+                1.678,
+                2.343,
+                2.915,
+                3.407,
+                3.829,
+                4.191,
+                4.503,
+                4.770,
                 5.000,
             ],
         )
@@ -4558,28 +4702,28 @@ def university_accessibility(x=None):
             x,
             [
                 0.000,
-                50.000,
-                100.000,
                 150.000,
-                200.000,
-                250.000,
                 300.000,
-                350.000,
-                400.000,
                 450.000,
-                500.000,
+                600.000,
+                750.000,
+                900.000,
+                1050.000,
+                1200.000,
+                1350.000,
+                1500.000,
             ],
             [
                 0.000,
-                1.862,
-                3.038,
-                3.780,
-                4.249,
-                4.544,
-                4.731,
-                4.849,
-                4.923,
-                4.970,
+                0.902,
+                1.678,
+                2.343,
+                2.915,
+                3.407,
+                3.829,
+                4.191,
+                4.503,
+                4.770,
                 5.000,
             ],
         )
@@ -4634,20 +4778,20 @@ def social_capital(x=None):
             ],
             [
                 1.000,
-                2.315,
-                3.199,
-                3.793,
-                4.192,
-                4.460,
-                4.641,
-                4.762,
-                4.843,
-                4.898,
-                4.935,
-                4.960,
-                4.976,
-                4.987,
-                4.995,
+                1.267,
+                1.533,
+                1.800,
+                2.067,
+                2.333,
+                2.600,
+                2.867,
+                3.133,
+                3.400,
+                3.667,
+                3.933,
+                4.200,
+                4.467,
+                4.733,
                 5.000,
             ],
         )
@@ -4674,20 +4818,20 @@ def social_capital(x=None):
             ],
             [
                 1.000,
-                2.315,
-                3.199,
-                3.793,
-                4.192,
-                4.460,
-                4.641,
-                4.762,
-                4.843,
-                4.898,
-                4.935,
-                4.960,
-                4.976,
-                4.987,
-                4.995,
+                1.267,
+                1.533,
+                1.800,
+                2.067,
+                2.333,
+                2.600,
+                2.867,
+                3.133,
+                3.400,
+                3.667,
+                3.933,
+                4.200,
+                4.467,
+                4.733,
                 5.000,
             ],
         )
@@ -4724,28 +4868,28 @@ def city_and_regional_connections_access(x=None):
             mobility_infrastructures(),
             [
                 0.000,
-                50.000,
-                100.000,
-                150.000,
                 200.000,
-                250.000,
-                300.000,
-                350.000,
                 400.000,
-                450.000,
-                500.000,
+                600.000,
+                800.000,
+                1000.000,
+                1200.000,
+                1400.000,
+                1600.000,
+                1800.000,
+                2000.000,
             ],
             [
                 0.000,
-                1.679,
-                2.805,
-                3.559,
-                4.065,
-                4.404,
-                4.631,
-                4.784,
-                4.886,
-                4.954,
+                0.595,
+                1.166,
+                1.715,
+                2.242,
+                2.749,
+                3.236,
+                3.704,
+                4.153,
+                4.585,
                 5.000,
             ],
         )
@@ -4754,28 +4898,28 @@ def city_and_regional_connections_access(x=None):
             x,
             [
                 0.000,
-                50.000,
-                100.000,
-                150.000,
                 200.000,
-                250.000,
-                300.000,
-                350.000,
                 400.000,
-                450.000,
-                500.000,
+                600.000,
+                800.000,
+                1000.000,
+                1200.000,
+                1400.000,
+                1600.000,
+                1800.000,
+                2000.000,
             ],
             [
                 0.000,
-                1.679,
-                2.805,
-                3.559,
-                4.065,
-                4.404,
-                4.631,
-                4.784,
-                4.886,
-                4.954,
+                0.595,
+                1.166,
+                1.715,
+                2.242,
+                2.749,
+                3.236,
+                3.704,
+                4.153,
+                4.585,
                 5.000,
             ],
         )
@@ -4903,15 +5047,15 @@ def potential_initiatives_active_time():
 def population_covered_objective():
     """
     Real Name: population_covered_objective
-    Original Eqn: 98
+    Original Eqn: 4
     Units: dmnl
-    Limits: (65.0, 100.0)
+    Limits: (4.0, 100.0)
     Type: constant
     Subs: None
 
 
     """
-    return 98
+    return 4
 
 
 def broadband_infrastructures_depletion_time():
@@ -4972,104 +5116,31 @@ def endogenous_service_job_creation():
 
 def time_to_implement_initiatives():
     """
-    Real Name: time_to_implement_initiatives
-    Original Eqn: 1
-    Units: year
-    Limits: (None, None)
-    Type: constant
-    Subs: None
+        Real Name: time_to_implement_initiatives
+        Original Eqn: 1.5
+        Units: year
+        Limits: (None, None)
+        Type: constant
+        Subs: None
 
-
+        for the success of 30% specified by Israel
+    1/30 = 3,33
     """
-    return 1
+    return 1.5
 
 
 def infrastructures_objective():
     """
     Real Name: infrastructures_objective
-    Original Eqn: 313
+    Original Eqn: 1000
     Units: km
-    Limits: (9000.0, 20000.0)
+    Limits: (1000.0, 2000.0)
     Type: constant
     Subs: None
 
 
     """
-    return 313
-
-
-def community_and_public_services_accessibility(x=None):
-    """
-    Real Name: community_and_public_services_accessibility
-    Original Eqn: mobility_infrastructures
-    Units: dmnl
-    Limits: (None, None)
-    Type: lookup
-    Subs: None
-
-
-    """
-    return (
-        lookup(
-            mobility_infrastructures(),
-            [
-                0.000,
-                50.000,
-                100.000,
-                150.000,
-                200.000,
-                250.000,
-                300.000,
-                350.000,
-                400.000,
-                450.000,
-                500.000,
-            ],
-            [
-                0.000,
-                0.230,
-                0.412,
-                0.556,
-                0.671,
-                0.761,
-                0.833,
-                0.890,
-                0.936,
-                0.972,
-                1.000,
-            ],
-        )
-        if x is None
-        else lookup(
-            x,
-            [
-                0.000,
-                50.000,
-                100.000,
-                150.000,
-                200.000,
-                250.000,
-                300.000,
-                350.000,
-                400.000,
-                450.000,
-                500.000,
-            ],
-            [
-                0.000,
-                0.230,
-                0.412,
-                0.556,
-                0.671,
-                0.761,
-                0.833,
-                0.890,
-                0.936,
-                0.972,
-                1.000,
-            ],
-        )
-    )
+    return 1000
 
 
 def time_to_build_effective_shared_knowledge(x=None):
@@ -5175,16 +5246,16 @@ def effect_of_social_innovation_in_creating_initiatives_ratio(x=None):
             ],
             [
                 0.000,
-                0.010,
-                0.017,
-                0.021,
+                0.008,
+                0.014,
+                0.018,
+                0.020,
+                0.022,
+                0.023,
                 0.024,
-                0.026,
-                0.028,
-                0.029,
-                0.029,
-                0.030,
-                0.030,
+                0.024,
+                0.025,
+                0.025,
             ],
         )
         if x is None
@@ -5205,16 +5276,16 @@ def effect_of_social_innovation_in_creating_initiatives_ratio(x=None):
             ],
             [
                 0.000,
-                0.010,
-                0.017,
-                0.021,
+                0.008,
+                0.014,
+                0.018,
+                0.020,
+                0.022,
+                0.023,
                 0.024,
-                0.026,
-                0.028,
-                0.029,
-                0.029,
-                0.030,
-                0.030,
+                0.024,
+                0.025,
+                0.025,
             ],
         )
     )
@@ -5248,17 +5319,17 @@ def effect_of_broadband_in_creating_potential_initiatives(x=None):
                 100.000,
             ],
             [
-                0.007,
-                0.018,
-                0.047,
-                0.119,
-                0.269,
-                0.500,
-                0.731,
+                0.000,
+                0.336,
+                0.561,
+                0.712,
+                0.813,
                 0.881,
-                0.953,
-                0.982,
-                0.993,
+                0.926,
+                0.957,
+                0.977,
+                0.991,
+                1.000,
             ],
         )
         if x is None
@@ -5278,17 +5349,17 @@ def effect_of_broadband_in_creating_potential_initiatives(x=None):
                 100.000,
             ],
             [
-                0.007,
-                0.018,
-                0.047,
-                0.119,
-                0.269,
-                0.500,
-                0.731,
+                0.000,
+                0.336,
+                0.561,
+                0.712,
+                0.813,
                 0.881,
-                0.953,
-                0.982,
-                0.993,
+                0.926,
+                0.957,
+                0.977,
+                0.991,
+                1.000,
             ],
         )
     )
@@ -5297,7 +5368,7 @@ def effect_of_broadband_in_creating_potential_initiatives(x=None):
 def year_initiating_infrastructures_plan():
     """
     Real Name: year_initiating_infrastructures_plan
-    Original Eqn: 2021
+    Original Eqn: 2022
     Units: year
     Limits: (2021.0, 2040.0)
     Type: constant
@@ -5305,13 +5376,13 @@ def year_initiating_infrastructures_plan():
 
 
     """
-    return 2021
+    return 2022
 
 
 def year_initiating_broadband_plan():
     """
     Real Name: year_initiating_broadband_plan
-    Original Eqn: 2011
+    Original Eqn: 2022
     Units: year
     Limits: (2021.0, 2040.0)
     Type: constant
@@ -5319,7 +5390,7 @@ def year_initiating_broadband_plan():
 
 
     """
-    return 2011
+    return 2022
 
 
 def shared_knowledge_loss_time():
@@ -5351,100 +5422,100 @@ def community_climate(x=None):
         lookup(
             time(),
             [
-                2010.000,
-                2011.500,
-                2013.000,
-                2014.500,
-                2016.000,
-                2017.500,
-                2019.000,
-                2020.500,
-                2022.000,
-                2023.500,
-                2025.000,
-                2026.500,
-                2028.000,
-                2029.500,
-                2031.000,
-                2032.500,
-                2034.000,
-                2035.500,
-                2037.000,
-                2038.500,
-                2040.000,
+                2014.000,
+                2015.500,
+                2017.000,
+                2018.500,
+                2020.000,
+                2021.500,
+                2023.000,
+                2024.500,
+                2026.000,
+                2027.500,
+                2029.000,
+                2030.500,
+                2032.000,
+                2033.500,
+                2035.000,
+                2036.500,
+                2038.000,
+                2039.500,
+                2041.000,
+                2042.500,
+                2044.000,
             ],
             [
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
+                4.043,
+                4.043,
+                4.016,
+                4.016,
+                4.043,
+                4.096,
+                4.176,
+                4.176,
+                4.176,
+                4.176,
+                4.176,
+                4.176,
+                4.202,
+                4.229,
+                4.229,
+                4.255,
+                4.255,
+                4.255,
+                4.255,
+                4.229,
+                4.282,
             ],
         )
         if x is None
         else lookup(
             x,
             [
-                2010.000,
-                2011.500,
-                2013.000,
-                2014.500,
-                2016.000,
-                2017.500,
-                2019.000,
-                2020.500,
-                2022.000,
-                2023.500,
-                2025.000,
-                2026.500,
-                2028.000,
-                2029.500,
-                2031.000,
-                2032.500,
-                2034.000,
-                2035.500,
-                2037.000,
-                2038.500,
-                2040.000,
+                2014.000,
+                2015.500,
+                2017.000,
+                2018.500,
+                2020.000,
+                2021.500,
+                2023.000,
+                2024.500,
+                2026.000,
+                2027.500,
+                2029.000,
+                2030.500,
+                2032.000,
+                2033.500,
+                2035.000,
+                2036.500,
+                2038.000,
+                2039.500,
+                2041.000,
+                2042.500,
+                2044.000,
             ],
             [
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
-                3.000,
+                4.043,
+                4.043,
+                4.016,
+                4.016,
+                4.043,
+                4.096,
+                4.176,
+                4.176,
+                4.176,
+                4.176,
+                4.176,
+                4.176,
+                4.202,
+                4.229,
+                4.229,
+                4.255,
+                4.255,
+                4.255,
+                4.255,
+                4.229,
+                4.282,
             ],
         )
     )
@@ -5453,7 +5524,7 @@ def community_climate(x=None):
 def max_km_year_infrastructures():
     """
     Real Name: max_km_year_infrastructures
-    Original Eqn: 500
+    Original Eqn: 100
     Units: km/year
     Limits: (None, None)
     Type: constant
@@ -5461,7 +5532,7 @@ def max_km_year_infrastructures():
 
 
     """
-    return 500
+    return 100
 
 
 def broadband_gap():
@@ -5481,7 +5552,7 @@ def broadband_gap():
 def average_jobs_per_service_initiative():
     """
     Real Name: average_jobs_per_service_initiative
-    Original Eqn: 5
+    Original Eqn: 7
     Units: job/initiative
     Limits: (None, None)
     Type: constant
@@ -5489,7 +5560,7 @@ def average_jobs_per_service_initiative():
 
 
     """
-    return 5
+    return 7
 
 
 def average_jobs_per_primary_initiative():
@@ -5509,7 +5580,7 @@ def average_jobs_per_primary_initiative():
 def average_jobs_per_industrial_initiative():
     """
     Real Name: average_jobs_per_industrial_initiative
-    Original Eqn: 10
+    Original Eqn: 5
     Units: job/initiative
     Limits: (None, None)
     Type: constant
@@ -5517,7 +5588,7 @@ def average_jobs_per_industrial_initiative():
 
 
     """
-    return 10
+    return 5
 
 
 def broadband_effect_on_retention(x=None):
@@ -5535,23 +5606,23 @@ def broadband_effect_on_retention(x=None):
         lookup(
             broadband_infrastructure_population_covered(),
             [
-                63.000,
-                65.000,
-                70.400,
-                74.100,
-                77.800,
-                81.500,
-                85.200,
-                88.900,
-                92.600,
-                96.300,
+                15.000,
+                23.500,
+                32.000,
+                40.500,
+                49.000,
+                57.500,
+                66.000,
+                74.500,
+                83.000,
+                91.500,
                 100.000,
             ],
             [
-                0.830,
-                0.970,
-                0.984,
-                0.987,
+                0.900,
+                0.951,
+                0.976,
+                0.988,
                 0.994,
                 0.997,
                 0.999,
@@ -5565,23 +5636,23 @@ def broadband_effect_on_retention(x=None):
         else lookup(
             x,
             [
-                63.000,
-                65.000,
-                70.400,
-                74.100,
-                77.800,
-                81.500,
-                85.200,
-                88.900,
-                92.600,
-                96.300,
+                15.000,
+                23.500,
+                32.000,
+                40.500,
+                49.000,
+                57.500,
+                66.000,
+                74.500,
+                83.000,
+                91.500,
                 100.000,
             ],
             [
-                0.830,
-                0.970,
-                0.984,
-                0.987,
+                0.900,
+                0.951,
+                0.976,
+                0.988,
                 0.994,
                 0.997,
                 0.999,
@@ -5711,7 +5782,7 @@ def infrastructures_gap():
 def initial_mobility_infrastructures():
     """
     Real Name: initial_mobility_infrastructures
-    Original Eqn: 313
+    Original Eqn: 1000
     Units: km
     Limits: (None, None)
     Type: constant
@@ -5719,13 +5790,13 @@ def initial_mobility_infrastructures():
 
 
     """
-    return 313
+    return 1000
 
 
 def initial_population_covered():
     """
     Real Name: initial_population_covered
-    Original Eqn: 79
+    Original Eqn: 3.2
     Units: dmnl
     Limits: (None, None)
     Type: constant
@@ -5733,7 +5804,7 @@ def initial_population_covered():
 
 
     """
-    return 79
+    return 3.2
 
 
 def infrastructure_campaign():
@@ -5755,7 +5826,7 @@ def time_for_infrastructure_campaign_extension():
     Real Name: time_for_infrastructure_campaign_extension
     Original Eqn: 10
     Units: year
-    Limits: (2.0, 10.0)
+    Limits: (2.0, 20.0)
     Type: constant
     Subs: None
 
@@ -5781,21 +5852,21 @@ def broadband_campaign():
 def time_to_complete_broadband_campaign():
     """
     Real Name: time_to_complete_broadband_campaign
-    Original Eqn: 5
+    Original Eqn: 10
     Units: year
-    Limits: (2.0, 10.0)
+    Limits: (2.0, 20.0)
     Type: constant
     Subs: None
 
 
     """
-    return 5
+    return 10
 
 
 def initial_institutional_support():
     """
     Real Name: initial_institutional_support
-    Original Eqn: 0.35
+    Original Eqn: 0.5
     Units: dmnl/year
     Limits: (None, None)
     Type: constant
@@ -5803,7 +5874,7 @@ def initial_institutional_support():
 
 
     """
-    return 0.35
+    return 0.5
 
 
 def inst_support_evolution(x=None):
@@ -5822,15 +5893,15 @@ def inst_support_evolution(x=None):
             time(),
             [
                 2021.000,
-                2023.111,
-                2025.222,
-                2027.333,
-                2029.444,
-                2031.556,
-                2033.667,
-                2035.778,
-                2037.889,
-                2040.000,
+                2023.556,
+                2026.111,
+                2028.667,
+                2031.222,
+                2033.778,
+                2036.333,
+                2038.889,
+                2041.444,
+                2044.000,
             ],
             [0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000],
         )
@@ -5839,15 +5910,15 @@ def inst_support_evolution(x=None):
             x,
             [
                 2021.000,
-                2023.111,
-                2025.222,
-                2027.333,
-                2029.444,
-                2031.556,
-                2033.667,
-                2035.778,
-                2037.889,
-                2040.000,
+                2023.556,
+                2026.111,
+                2028.667,
+                2031.222,
+                2033.778,
+                2036.333,
+                2038.889,
+                2041.444,
+                2044.000,
             ],
             [0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000],
         )
@@ -5857,7 +5928,7 @@ def inst_support_evolution(x=None):
 def ps_moving():
     """
     Real Name: PS_moving
-    Original Eqn: IF employment_gap_1>0 THEN (employment_gap_1*people_applying_employment_gap)* (housing_accessibility_factor_for_young+ natural_capital_factor_for_young) ELSE 0
+    Original Eqn: IF employment_gap_1>5000 THEN (employment_gap_1*people_applying_employment_gap)* (housing_accessibility_factor_for_young+ natural_capital_factor_for_young) ELSE 0
     Units: person/year
     Limits: (None, None)
     Type: component
@@ -5866,7 +5937,7 @@ def ps_moving():
     NCWFY + HAWFY = 0,5 (of the employment gap)
     """
     return if_then_else(
-        employment_gap_1() > 0,
+        employment_gap_1() > 5000,
         lambda: (employment_gap_1() * people_applying_employment_gap())
         * (
             housing_accessibility_factor_for_young()
@@ -5879,7 +5950,7 @@ def ps_moving():
 def wa_moving():
     """
         Real Name: WA_moving
-        Original Eqn: IF employment_gap_1>0 THEN (employment_gap_1*people_applying_employment_gap*(housing_accessibility_factor_for_WA+natural_capital_factor_for_WA+cultural_appeal_factor_for_WA+public_services_factor_for_WA_attraction))+ potential_commuters_moving ELSE potential_commuters_moving
+        Original Eqn: IF employment_gap_1>5000 THEN ((employment_gap_1*people_applying_employment_gap*(housing_accessibility_factor_for_WA+natural_capital_factor_for_WA+cultural_appeal_factor_for_WA+public_services_factor_for_WA_attraction))+ (potential_commuters_moving)) ELSE potential_commuters_moving
         Units: person/year
         Limits: (None, None)
         Type: component
@@ -5889,18 +5960,20 @@ def wa_moving():
     TOTAL = 1,02
     """
     return if_then_else(
-        employment_gap_1() > 0,
+        employment_gap_1() > 5000,
         lambda: (
-            employment_gap_1()
-            * people_applying_employment_gap()
-            * (
-                housing_accessibility_factor_for_wa()
-                + natural_capital_factor_for_wa()
-                + cultural_appeal_factor_for_wa()
-                + public_services_factor_for_wa_attraction()
+            (
+                employment_gap_1()
+                * people_applying_employment_gap()
+                * (
+                    housing_accessibility_factor_for_wa()
+                    + natural_capital_factor_for_wa()
+                    + cultural_appeal_factor_for_wa()
+                    + public_services_factor_for_wa_attraction()
+                )
             )
-        )
-        + potential_commuters_moving(),
+            + (potential_commuters_moving())
+        ),
         lambda: potential_commuters_moving(),
     )
 
@@ -5938,14 +6011,14 @@ def housing_accessibility(x=None):
     return (
         lookup(
             total_population_in_relation_with_initial_population(),
-            [0.900, 1.000, 1.100, 1.200, 1.300, 1.400, 1.500, 1.600, 1.700, 1.800],
-            [5.000, 4.948, 4.866, 4.739, 4.541, 4.232, 3.751, 2.999, 1.828, 0.000],
+            [0.700, 0.756, 0.811, 0.867, 0.922, 0.978, 1.033, 1.089, 1.144, 1.200],
+            [4.930, 4.823, 4.569, 4.024, 3.080, 1.920, 0.976, 0.431, 0.177, 0.070],
         )
         if x is None
         else lookup(
             x,
-            [0.900, 1.000, 1.100, 1.200, 1.300, 1.400, 1.500, 1.600, 1.700, 1.800],
-            [5.000, 4.948, 4.866, 4.739, 4.541, 4.232, 3.751, 2.999, 1.828, 0.000],
+            [0.700, 0.756, 0.811, 0.867, 0.922, 0.978, 1.033, 1.089, 1.144, 1.200],
+            [4.930, 4.823, 4.569, 4.024, 3.080, 1.920, 0.976, 0.431, 0.177, 0.070],
         )
     )
 
@@ -5953,7 +6026,7 @@ def housing_accessibility(x=None):
 def maximum_elderly_population_moving():
     """
     Real Name: maximum_elderly_population_moving
-    Original Eqn: 163000
+    Original Eqn: 50
     Units: person/year
     Limits: (None, None)
     Type: constant
@@ -5961,7 +6034,7 @@ def maximum_elderly_population_moving():
 
 
     """
-    return 163000
+    return 50
 
 
 def natural_capital_weight_for_young():
@@ -5981,7 +6054,7 @@ def natural_capital_weight_for_young():
 def cultural_appeal_weight_for_wa():
     """
     Real Name: cultural_appeal_weight_for_WA
-    Original Eqn: 0.27
+    Original Eqn: 0
     Units: dmnl
     Limits: (0.0, 1.0)
     Type: constant
@@ -5989,12 +6062,68 @@ def cultural_appeal_weight_for_wa():
 
 
     """
-    return 0.27
+    return 0
 
 
 def natural_capital_weight_for_wa():
     """
     Real Name: natural_capital_weight_for_WA
+    Original Eqn: 0.1
+    Units: dmnl
+    Limits: (0.0, 1.0)
+    Type: constant
+    Subs: None
+
+
+    """
+    return 0.1
+
+
+def housing_accessibility_weight_for_wa():
+    """
+    Real Name: housing_accessibility_weight_for_WA
+    Original Eqn: 0.7
+    Units: dmnl
+    Limits: (0.0, 1.0)
+    Type: constant
+    Subs: None
+
+
+    """
+    return 0.7
+
+
+def medical_and_care_services_weight():
+    """
+    Real Name: medical_and_care_services_weight
+    Original Eqn: 0
+    Units: dmnl
+    Limits: (0.0, 1.0)
+    Type: constant
+    Subs: None
+
+
+    """
+    return 0
+
+
+def cultural_appeal_weight_for_elderly():
+    """
+    Real Name: cultural_appeal_weight_for_elderly
+    Original Eqn: 0.1
+    Units: dmnl
+    Limits: (0.0, 1.0)
+    Type: constant
+    Subs: None
+
+
+    """
+    return 0.1
+
+
+def natural_capital_weight_for_elderly():
+    """
+    Real Name: natural_capital_weight_for_elderly
     Original Eqn: 0.3
     Units: dmnl
     Limits: (0.0, 1.0)
@@ -6006,66 +6135,10 @@ def natural_capital_weight_for_wa():
     return 0.3
 
 
-def housing_accessibility_weight_for_wa():
-    """
-    Real Name: housing_accessibility_weight_for_WA
-    Original Eqn: 0.37
-    Units: dmnl
-    Limits: (0.0, 1.0)
-    Type: constant
-    Subs: None
-
-
-    """
-    return 0.37
-
-
-def medical_and_care_services_weight():
-    """
-    Real Name: medical_and_care_services_weight
-    Original Eqn: 0.43
-    Units: dmnl
-    Limits: (0.0, 1.0)
-    Type: constant
-    Subs: None
-
-
-    """
-    return 0.43
-
-
-def cultural_appeal_weight_for_elderly():
-    """
-    Real Name: cultural_appeal_weight_for_elderly
-    Original Eqn: 0.17
-    Units: dmnl
-    Limits: (0.0, 1.0)
-    Type: constant
-    Subs: None
-
-
-    """
-    return 0.17
-
-
-def natural_capital_weight_for_elderly():
-    """
-    Real Name: natural_capital_weight_for_elderly
-    Original Eqn: 0.23
-    Units: dmnl
-    Limits: (0.0, 1.0)
-    Type: constant
-    Subs: None
-
-
-    """
-    return 0.23
-
-
 def housing_accessibility_weight_for_elderly():
     """
     Real Name: housing_accessibility_weight_for_elderly
-    Original Eqn: 0.17
+    Original Eqn: 0.6
     Units: dmnl
     Limits: (0.0, 1.0)
     Type: constant
@@ -6073,7 +6146,7 @@ def housing_accessibility_weight_for_elderly():
 
 
     """
-    return 0.17
+    return 0.6
 
 
 def housing_accessibility_factor_for_young():
@@ -6304,7 +6377,7 @@ def additional_attraction_from_2021():
 def normal_max_attraction_ratio_for_commuters():
     """
     Real Name: normal_max_attraction_ratio_for_commuters
-    Original Eqn: 0.07
+    Original Eqn: 0.04
     Units: dmnl/year
     Limits: (None, None)
     Type: constant
@@ -6312,7 +6385,7 @@ def normal_max_attraction_ratio_for_commuters():
 
 
     """
-    return 0.07
+    return 0.04
 
 
 def public_services_factor_for_wa_attraction():
@@ -6347,9 +6420,163 @@ def public_services_weight_in_wa_attraction():
     return 0.2
 
 
-def time_to_retire():
+def community_and_public_services_accessibility(x=None):
     """
-    Real Name: time_to_retire
+    Real Name: community_and_public_services_accessibility
+    Original Eqn: TIME
+    Units: dmnl
+    Limits: (None, None)
+    Type: lookup
+    Subs: None
+
+
+    """
+    return (
+        lookup(
+            time(),
+            [
+                2010.000,
+                2011.000,
+                2012.000,
+                2013.000,
+                2014.000,
+                2015.000,
+                2016.000,
+                2017.000,
+                2018.000,
+                2019.000,
+                2020.000,
+                2021.000,
+                2022.000,
+                2023.000,
+                2024.000,
+                2025.000,
+                2026.000,
+                2027.000,
+                2028.000,
+                2029.000,
+                2030.000,
+                2031.000,
+                2032.000,
+                2033.000,
+                2034.000,
+                2035.000,
+                2036.000,
+                2037.000,
+                2038.000,
+                2039.000,
+                2040.000,
+            ],
+            [
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+            ],
+        )
+        if x is None
+        else lookup(
+            x,
+            [
+                2010.000,
+                2011.000,
+                2012.000,
+                2013.000,
+                2014.000,
+                2015.000,
+                2016.000,
+                2017.000,
+                2018.000,
+                2019.000,
+                2020.000,
+                2021.000,
+                2022.000,
+                2023.000,
+                2024.000,
+                2025.000,
+                2026.000,
+                2027.000,
+                2028.000,
+                2029.000,
+                2030.000,
+                2031.000,
+                2032.000,
+                2033.000,
+                2034.000,
+                2035.000,
+                2036.000,
+                2037.000,
+                2038.000,
+                2039.000,
+                2040.000,
+            ],
+            [
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+                0.000,
+            ],
+        )
+    )
+
+
+def time_for_commuters_retirement():
+    """
+    Real Name: time_for_commuters_retirement
     Original Eqn: 30
     Units: year
     Limits: (None, None)
@@ -6414,7 +6641,7 @@ def elderly_leaving_ratio():
 def maximum_ratio_elderly_population_leaving():
     """
     Real Name: maximum_ratio_elderly_population_leaving
-    Original Eqn: 0.07
+    Original Eqn: 0.42
     Units: dmnl/year
     Limits: (None, None)
     Type: constant
@@ -6422,96 +6649,12 @@ def maximum_ratio_elderly_population_leaving():
 
 
     """
-    return 0.07
+    return 0.42
 
 
 def higher_education_weight():
     """
     Real Name: higher_education_weight
-    Original Eqn: 0.23
-    Units: dmnl
-    Limits: (0.0, 1.0)
-    Type: constant
-    Subs: None
-
-
-    """
-    return 0.23
-
-
-def broadband_weight_for_young():
-    """
-    Real Name: broadband_weight_for_young
-    Original Eqn: 0.23
-    Units: dmnl
-    Limits: (0.0, 1.0)
-    Type: constant
-    Subs: None
-
-
-    """
-    return 0.23
-
-
-def housing_accessibility_weight_for_young():
-    """
-    Real Name: housing_accessibility_weight_for_young
-    Original Eqn: 0.13
-    Units: dmnl
-    Limits: (0.0, 1.0)
-    Type: constant
-    Subs: None
-
-
-    """
-    return 0.13
-
-
-def social_capital_weight_for_young():
-    """
-    Real Name: social_capital_weight_for_young
-    Original Eqn: 0.23
-    Units: dmnl
-    Limits: (0.0, 1.0)
-    Type: constant
-    Subs: None
-
-
-    """
-    return 0.23
-
-
-def broadband_weight_for_wa():
-    """
-    Real Name: broadband_weight_for_WA
-    Original Eqn: 0.2
-    Units: dmnl
-    Limits: (None, None)
-    Type: constant
-    Subs: None
-
-
-    """
-    return 0.2
-
-
-def cr_connections_weight():
-    """
-    Real Name: c&r_connections_weight
-    Original Eqn: 0.27
-    Units: dmnl
-    Limits: (0.0, 1.0)
-    Type: constant
-    Subs: None
-
-
-    """
-    return 0.27
-
-
-def social_capital_weight_for_wa():
-    """
-    Real Name: social_capital_weight_for_WA
     Original Eqn: 0.3
     Units: dmnl
     Limits: (0.0, 1.0)
@@ -6523,24 +6666,10 @@ def social_capital_weight_for_wa():
     return 0.3
 
 
-def medical_and_care_weight():
+def broadband_weight_for_young():
     """
-    Real Name: medical_and_care_weight
-    Original Eqn: 0.43
-    Units: dmnl
-    Limits: (None, None)
-    Type: constant
-    Subs: None
-
-
-    """
-    return 0.43
-
-
-def social_capital_weight_for_elderly():
-    """
-    Real Name: social_capital_weight_for_elderly
-    Original Eqn: 0.57
+    Real Name: broadband_weight_for_young
+    Original Eqn: 0.2
     Units: dmnl
     Limits: (0.0, 1.0)
     Type: constant
@@ -6548,13 +6677,41 @@ def social_capital_weight_for_elderly():
 
 
     """
-    return 0.57
+    return 0.2
 
 
-def employment_weight_for_young():
+def housing_accessibility_weight_for_young():
     """
-    Real Name: employment_weight_for_young
-    Original Eqn: 0.17
+    Real Name: housing_accessibility_weight_for_young
+    Original Eqn: 0
+    Units: dmnl
+    Limits: (0.0, 1.0)
+    Type: constant
+    Subs: None
+
+
+    """
+    return 0
+
+
+def social_capital_weight_for_young():
+    """
+    Real Name: social_capital_weight_for_young
+    Original Eqn: 0.1
+    Units: dmnl
+    Limits: (0.0, 1.0)
+    Type: constant
+    Subs: None
+
+
+    """
+    return 0.1
+
+
+def broadband_weight_for_wa():
+    """
+    Real Name: broadband_weight_for_WA
+    Original Eqn: 0.1
     Units: dmnl
     Limits: (None, None)
     Type: constant
@@ -6562,13 +6719,83 @@ def employment_weight_for_young():
 
 
     """
-    return 0.17
+    return 0.1
 
 
-def effect_of_employment_in_ps_staying_ratio(x=None):
+def cr_connections_weight():
     """
-    Real Name: effect_of_employment_in_PS_staying_ratio
-    Original Eqn: relative_employment_gap
+    Real Name: c&r_connections_weight
+    Original Eqn: 0.2
+    Units: dmnl
+    Limits: (0.0, 1.0)
+    Type: constant
+    Subs: None
+
+
+    """
+    return 0.2
+
+
+def social_capital_weight_for_wa():
+    """
+    Real Name: social_capital_weight_for_WA
+    Original Eqn: 0
+    Units: dmnl
+    Limits: (0.0, 1.0)
+    Type: constant
+    Subs: None
+
+
+    """
+    return 0
+
+
+def medical_and_care_weight():
+    """
+    Real Name: medical_and_care_weight
+    Original Eqn: 1
+    Units: dmnl
+    Limits: (None, None)
+    Type: constant
+    Subs: None
+
+
+    """
+    return 1
+
+
+def social_capital_weight_for_elderly():
+    """
+    Real Name: social_capital_weight_for_elderly
+    Original Eqn: 0
+    Units: dmnl
+    Limits: (0.0, 1.0)
+    Type: constant
+    Subs: None
+
+
+    """
+    return 0
+
+
+def employment_weight_for_young():
+    """
+    Real Name: employment_weight_for_young
+    Original Eqn: 0.4
+    Units: dmnl
+    Limits: (None, None)
+    Type: constant
+    Subs: None
+
+
+    """
+    return 0.4
+
+
+def effect_of_employment_in_ps_retention(x=None):
+    """
+    Real Name: effect_of_employment_in_PS_retention
+    Original Eqn: HISTORY(relative_employment_gap, TIME-3)
     Units: dmnl
     Limits: (None, None)
     Type: lookup
@@ -6578,31 +6805,36 @@ def effect_of_employment_in_ps_staying_ratio(x=None):
     """
     return (
         lookup(
-            relative_employment_gap(),
+            history(
+                lambda: relative_employment_gap(),
+                time() - 3,
+                __data["time"],
+                __data["scope"],
+            ),
             [
-                -0.600,
-                -0.525,
-                -0.450,
-                -0.375,
-                -0.300,
-                -0.225,
-                -0.150,
-                -0.075,
-                0.000,
-                0.075,
-                0.150,
+                -0.500,
+                -0.350,
+                -0.200,
+                -0.050,
+                0.100,
+                0.250,
+                0.400,
+                0.550,
+                0.700,
+                0.850,
+                1.000,
             ],
             [
                 0.000,
-                2.807,
-                4.039,
-                4.579,
-                4.816,
-                4.920,
-                4.966,
-                4.986,
-                4.994,
-                4.998,
+                2.644,
+                3.891,
+                4.479,
+                4.756,
+                4.886,
+                4.948,
+                4.977,
+                4.991,
+                4.997,
                 5.000,
             ],
         )
@@ -6610,29 +6842,29 @@ def effect_of_employment_in_ps_staying_ratio(x=None):
         else lookup(
             x,
             [
-                -0.600,
-                -0.525,
-                -0.450,
-                -0.375,
-                -0.300,
-                -0.225,
-                -0.150,
-                -0.075,
-                0.000,
-                0.075,
-                0.150,
+                -0.500,
+                -0.350,
+                -0.200,
+                -0.050,
+                0.100,
+                0.250,
+                0.400,
+                0.550,
+                0.700,
+                0.850,
+                1.000,
             ],
             [
                 0.000,
-                2.807,
-                4.039,
-                4.579,
-                4.816,
-                4.920,
-                4.966,
-                4.986,
-                4.994,
-                4.998,
+                2.644,
+                3.891,
+                4.479,
+                4.756,
+                4.886,
+                4.948,
+                4.977,
+                4.991,
+                4.997,
                 5.000,
             ],
         )
@@ -6702,7 +6934,7 @@ def social_capital_factor_for_young():
 def employment_factor_for_young():
     """
     Real Name: employment_factor_for_young
-    Original Eqn: (employment_weight_for_young/5)*effect_of_employment_in_PS_staying_ratio
+    Original Eqn: (employment_weight_for_young/5)*effect_of_employment_in_PS_retention
     Units: dmnl
     Limits: (None, None)
     Type: component
@@ -6710,9 +6942,7 @@ def employment_factor_for_young():
 
 
     """
-    return (
-        employment_weight_for_young() / 5
-    ) * effect_of_employment_in_ps_staying_ratio()
+    return (employment_weight_for_young() / 5) * effect_of_employment_in_ps_retention()
 
 
 def broadband_factor_for_wa():
@@ -6807,7 +7037,7 @@ def retention_factor():
 def effect_of_employment_in_wa_leaving_ratio(x=None):
     """
     Real Name: effect_of_employment_in_WA_leaving_ratio
-    Original Eqn: relative_employment_gap
+    Original Eqn: HISTORY (relative_employment_gap, TIME-3)
     Units: dmnl
     Limits: (None, None)
     Type: lookup
@@ -6817,62 +7047,67 @@ def effect_of_employment_in_wa_leaving_ratio(x=None):
     """
     return (
         lookup(
-            relative_employment_gap(),
+            history(
+                lambda: relative_employment_gap(),
+                time() - 3,
+                __data["time"],
+                __data["scope"],
+            ),
             [
+                -1.000,
+                -0.800,
                 -0.600,
-                -0.525,
-                -0.450,
-                -0.375,
-                -0.300,
-                -0.225,
-                -0.150,
-                -0.075,
+                -0.400,
+                -0.200,
                 0.000,
-                0.075,
-                0.150,
+                0.200,
+                0.400,
+                0.600,
+                0.800,
+                1.000,
             ],
             [
-                0.500,
-                0.282,
-                0.159,
-                0.089,
-                0.050,
-                0.028,
-                0.016,
+                0.497,
+                0.491,
+                0.476,
+                0.440,
+                0.366,
+                0.250,
+                0.134,
+                0.060,
+                0.024,
                 0.009,
-                0.005,
                 0.003,
-                0.002,
             ],
         )
         if x is None
         else lookup(
             x,
             [
+                -1.000,
+                -0.800,
                 -0.600,
-                -0.525,
-                -0.450,
-                -0.375,
-                -0.300,
-                -0.225,
-                -0.150,
-                -0.075,
+                -0.400,
+                -0.200,
                 0.000,
-                0.075,
-                0.150,
+                0.200,
+                0.400,
+                0.600,
+                0.800,
+                1.000,
             ],
             [
-                0.500,
-                0.282,
-                0.159,
-                0.089,
-                0.050,
-                0.028,
-                0.016,
+                0.497,
+                0.491,
+                0.476,
+                0.440,
+                0.366,
+                0.250,
+                0.134,
+                0.060,
+                0.024,
                 0.009,
-                0.005,
                 0.003,
-                0.002,
             ],
         )
     )
@@ -6881,7 +7116,7 @@ def effect_of_employment_in_wa_leaving_ratio(x=None):
 def public_services_weight_for_wa_retention():
     """
     Real Name: public_services_weight_for_WA_retention
-    Original Eqn: 0.23
+    Original Eqn: 0.7
     Units: dmnl
     Limits: (None, None)
     Type: constant
@@ -6889,7 +7124,7 @@ def public_services_weight_for_wa_retention():
 
 
     """
-    return 0.23
+    return 0.7
 
 
 def public_services_retention():
@@ -6912,7 +7147,7 @@ def public_services_retention():
 def increasing_farms():
     """
     Real Name: increasing_farms
-    Original Eqn: potential_new_farms*farming_attraction_factor
+    Original Eqn: INT (potential_new_farms*farming_attraction_factor)
     Units: farm/year
     Limits: (None, None)
     Type: component
@@ -6920,13 +7155,13 @@ def increasing_farms():
 
 
     """
-    return potential_new_farms() * farming_attraction_factor()
+    return int(potential_new_farms() * farming_attraction_factor())
 
 
 def decreasing_farms():
     """
     Real Name: decreasing_farms
-    Original Eqn: (farms*abandonment_ratio)+retirement_not_covered
+    Original Eqn: INT ((farms*abandonment_ratio)+retirement_not_covered)
     Units: farm/year
     Limits: (None, None)
     Type: component
@@ -6934,7 +7169,7 @@ def decreasing_farms():
 
 
     """
-    return (farms() * abandonment_ratio()) + retirement_not_covered()
+    return int((farms() * abandonment_ratio()) + retirement_not_covered())
 
 
 def improving_income_per_farm():
@@ -7326,7 +7561,7 @@ def aging_3():
 def children_net_migration():
     """
     Real Name: children_net_migration
-    Original Eqn: working_age_net_migration*0.5*fertility_rate*2/3
+    Original Eqn: working_age_net_migration*0.5*fertility_rate*2/3*1/10
     Units: person/year
     Limits: (None, None)
     Type: component
@@ -7334,7 +7569,7 @@ def children_net_migration():
 
 
     """
-    return working_age_net_migration() * 0.5 * fertility_rate() * 2 / 3
+    return working_age_net_migration() * 0.5 * fertility_rate() * 2 / 3 * 1 / 10
 
 
 def rural_children_deaths():
@@ -7470,7 +7705,7 @@ def aging():
 def infant_net_migration():
     """
     Real Name: infant_net_migration
-    Original Eqn: working_age_net_migration*0.5*fertility_rate/3
+    Original Eqn: working_age_net_migration*0.5*fertility_rate/3*1/5
     Units: person/year
     Limits: (None, None)
     Type: component
@@ -7478,7 +7713,7 @@ def infant_net_migration():
 
 
     """
-    return working_age_net_migration() * 0.5 * fertility_rate() / 3
+    return working_age_net_migration() * 0.5 * fertility_rate() / 3 * 1 / 5
 
 
 def rural_infant_deaths():
@@ -7646,7 +7881,7 @@ def planning_initiatives():
     """
     Real Name: planning_initiatives
     Original Eqn: potential_initiatives*institutional_support
-    Units: initiative/year
+    Units: initiative/Years
     Limits: (None, None)
     Type: component
     Subs: None
@@ -7674,7 +7909,7 @@ def becoming_stablished_jobs():
     """
     Real Name: becoming_stablished_jobs
     Original Eqn: implemented_initiatives/time_to_implement_initiatives
-    Units: initiative/year
+    Units: initiative/Years
     Limits: (None, None)
     Type: component
     Subs: None
@@ -7767,7 +8002,7 @@ def increasing_potential_commuters():
 def commuters_retiring():
     """
     Real Name: commuters_retiring
-    Original Eqn: commuters/time_to_retire
+    Original Eqn: commuters/time_for_commuters_retirement
     Units: person/year
     Limits: (None, None)
     Type: component
@@ -7775,7 +8010,7 @@ def commuters_retiring():
 
 
     """
-    return commuters() / time_to_retire()
+    return commuters() / time_for_commuters_retirement()
 
 
 def working_age_rural_population():
@@ -7864,7 +8099,7 @@ def vt_students():
 
 _integ_vt_students = Integ(
     lambda: entering_vt() - becoming_vt_professional(),
-    lambda: 41697 * 0.13 * 3,
+    lambda: 3300 * 0.25,
     "_integ_vt_students",
 )
 
@@ -7885,7 +8120,7 @@ def university_students():
 
 _integ_university_students = Integ(
     lambda: entering_university() - becoming_graduated_professional(),
-    lambda: 41697 * 0.26 * 5,
+    lambda: 3300 * 0.4,
     "_integ_university_students",
 )
 
@@ -7908,7 +8143,7 @@ _integ_unskilled_workers = Integ(
     lambda: early_working_entrance()
     - nsw_retitiring()
     - apfx_not_specialized_workers_leaving(),
-    lambda: 1484399,
+    lambda: 3300 * 0.35,
     "_integ_unskilled_workers",
 )
 
@@ -7929,7 +8164,7 @@ def vt_professionals():
 
 _integ_vt_professionals = Integ(
     lambda: becoming_vt_professional() - vtw_retiring() - vt_professionals_leaving(),
-    lambda: 328415,
+    lambda: 21700 * 0.15,
     "_integ_vt_professionals",
 )
 
@@ -7952,7 +8187,7 @@ _integ_graduated_professionals = Integ(
     lambda: becoming_graduated_professional()
     - graduated_migration_net_flow()
     - gradw_retiring(),
-    lambda: 650918,
+    lambda: 21700 * 0.05,
     "_integ_graduated_professionals",
 )
 
@@ -7973,7 +8208,7 @@ def rest_of_primary_sector_jobs():
 
 _integ_rest_of_primary_sector_jobs = Integ(
     lambda: creation_of_primary_jobs() - destruction_of_primary_jobs(),
-    lambda: 120500,
+    lambda: 816,
     "_integ_rest_of_primary_sector_jobs",
 )
 
@@ -7994,9 +8229,12 @@ def industrial_jobs():
 
 _integ_industrial_jobs = Integ(
     lambda: creation_of_industrial_jobs() - destruction_of_industrial_jobs(),
-    lambda: 470400,
+    lambda: 14087 + 257,
     "_integ_industrial_jobs",
 )
+
+
+_initial_service_jobs = Initial(lambda: population_services(), "_initial_service_jobs")
 
 
 def service_jobs():
@@ -8015,7 +8253,7 @@ def service_jobs():
 
 _integ_service_jobs = Integ(
     lambda: creation_of_services_jobs() - destruction_of_services_jobs(),
-    lambda: (1848000 - 9243) * (1 - 0.1),
+    lambda: 3879 - _initial_service_jobs() + 257,
     "_integ_service_jobs",
 )
 
@@ -8035,9 +8273,12 @@ def population_services():
 
 
 _integ_population_services = Integ(
-    lambda: change_in_population_services(),
-    lambda: (1848000 - 9243) * 0.1,
-    "_integ_population_services",
+    lambda: change_in_population_services(), lambda: 970, "_integ_population_services"
+)
+
+
+_initial_natural_capital = Initial(
+    lambda: agricultural_land(), "_initial_natural_capital"
 )
 
 
@@ -8057,7 +8298,7 @@ def natural_capital():
 
 _integ_natural_capital = Integ(
     lambda: natural_capital_net_variation(),
-    lambda: initial_natural_land() - 1160,
+    lambda: initial_natural_land() + (_initial_natural_capital() * 0.24),
     "_integ_natural_capital",
 )
 
@@ -8078,7 +8319,7 @@ def school_age_population():
 
 _integ_school_age_population = Integ(
     lambda: children_net_migration() + aging() - aging_1() - rural_children_deaths(),
-    lambda: 416976,
+    lambda: 7290,
     "_integ_school_age_population",
 )
 
@@ -8099,7 +8340,7 @@ def working_age_population():
 
 _integ_working_age_population = Integ(
     lambda: working_age_net_migration() + aging_2() - aging_3() - working_age_deaths(),
-    lambda: 2463734,
+    lambda: 31410,
     "_integ_working_age_population",
 )
 
@@ -8120,7 +8361,7 @@ def elderly_population():
 
 _integ_elderly_population = Integ(
     lambda: aging_3() + elderly_net_migration() - elderly_deaths(),
-    lambda: 1300384,
+    lambda: 2570,
     "_integ_elderly_population",
 )
 
@@ -8144,7 +8385,7 @@ _integ_post_school_population = Integ(
     + aging_1()
     - aging_2()
     - rural_post_school_age_deaths(),
-    lambda: 235913,
+    lambda: 3300,
     "_integ_post_school_population",
 )
 
@@ -8165,7 +8406,7 @@ def infants():
 
 _integ_infants = Integ(
     lambda: births() + infant_net_migration() - aging() - rural_infant_deaths(),
-    lambda: 188783,
+    lambda: 3950,
     "_integ_infants",
 )
 
@@ -8186,7 +8427,7 @@ def newcomers():
 
 _integ_newcomers = Integ(
     lambda: newcomers_arrival() - newcomers_integration(),
-    lambda: 15000,
+    lambda: 2000,
     "_integ_newcomers",
 )
 
@@ -8251,29 +8492,8 @@ _integ_potential_initiatives = Integ(
     lambda: creating_potential_initiatives()
     - planning_initiatives()
     - dismissing_potential_initiatives(),
-    lambda: 45000,
+    lambda: 70,
     "_integ_potential_initiatives",
-)
-
-
-def implemented_initiatives():
-    """
-    Real Name: implemented_initiatives
-    Original Eqn: planning_initiatives - becoming_stablished_jobs
-    Units: initiative
-    Limits: (None, None)
-    Type: component
-    Subs: None
-
-
-    """
-    return _integ_implemented_initiatives()
-
-
-_integ_implemented_initiatives = Integ(
-    lambda: planning_initiatives() - becoming_stablished_jobs(),
-    lambda: 20000,
-    "_integ_implemented_initiatives",
 )
 
 
@@ -8298,6 +8518,27 @@ _integ_shared_knowledge = Integ(
 )
 
 
+def implemented_initiatives():
+    """
+    Real Name: implemented_initiatives
+    Original Eqn: planning_initiatives - becoming_stablished_jobs
+    Units: initiative
+    Limits: (None, None)
+    Type: component
+    Subs: None
+
+
+    """
+    return _integ_implemented_initiatives()
+
+
+_integ_implemented_initiatives = Integ(
+    lambda: planning_initiatives() - becoming_stablished_jobs(),
+    lambda: 53,
+    "_integ_implemented_initiatives",
+)
+
+
 def potential_commuters():
     """
     Real Name: potential_commuters
@@ -8314,7 +8555,7 @@ def potential_commuters():
 
 _integ_potential_commuters = Integ(
     lambda: increasing_potential_commuters() - potential_commuters_moving(),
-    lambda: 10000,
+    lambda: 120000,
     "_integ_potential_commuters",
 )
 
@@ -8335,6 +8576,6 @@ def commuters():
 
 _integ_commuters = Integ(
     lambda: potential_commuters_moving() - commuters_retiring(),
-    lambda: 8000,
+    lambda: 1000,
     "_integ_commuters",
 )

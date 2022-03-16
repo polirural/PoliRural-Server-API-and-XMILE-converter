@@ -2486,13 +2486,8 @@ commuters</eqn>
 	</model>
 	<model name="NATURAL_CAPITAL">
 		<variables>
-			<aux name="autpfx_init_agricultural_land">
-				<eqn>INIT (agricultural_land)</eqn>
-				<units>ha/year</units>
-			</aux>
 			<stock name="Natural\nCapital" access="output" isee:autocreated="true">
-				<eqn>initial_natural_land+
-(autpfx_init_agricultural_land*0.24)</eqn>
+				<eqn>initial_natural_land + (INIT(agricultural_land)*0.24)</eqn>
 				<inflow>natural_capital_net_variation</inflow>
 				<non_negative/>
 				<units>ha</units>

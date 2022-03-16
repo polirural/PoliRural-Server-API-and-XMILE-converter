@@ -325,9 +325,12 @@ total_workforce</eqn>
 				<eqn>employment_gap/total_workforce</eqn>
 				<units>dmnl</units>
 			</aux>
+			<aux name="_step_remote_workers">
+				<eqn>STEP (remote_workers_potential_2030, 2021)</eqn>
+				<units>job</units>
+			</aux>
 			<aux name="remote_workers">
-				<eqn>DELAY1(STEP (remote_workers_potential_2030, 2021), years_for_remote_workers_trend)*
-broadband_infrastructure/100</eqn>
+				<eqn>DELAY1(_step_remote_workers, years_for_remote_workers_trend)*broadband_infrastructure/100</eqn>
 				<units>job</units>
 			</aux>
 			<aux name="primary_jobs_viability_ratio">
