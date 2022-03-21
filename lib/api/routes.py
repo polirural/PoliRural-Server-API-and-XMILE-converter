@@ -10,6 +10,7 @@ from lib.api.db import db, any_json_object, Store, Users, auth_request_model
 from lib.api.auth import auth
 from lib.api.pysdutil import load_model, create_lookup
 
+
 @ns_auth.route("/login")
 @ns_auth.doc("""Do login""")
 class AuthLogin(Resource):
@@ -17,7 +18,8 @@ class AuthLogin(Resource):
     def post(self):
         params = request.get_json()
         print(params)
-        user = Users.query.filter_by(username=params["username"], password=params["password"]).first()
+        user = Users.query.filter_by(
+            username=params["username"], password=params["password"]).first()
         if not user:
             return err_response("No user", "No user found")
         else:
@@ -25,6 +27,7 @@ class AuthLogin(Resource):
             print(user_res)
             del user_res["password"]
             return user_res
+
 
 @ns_static.route("/static/<string:filename>", methods=["GET"])
 @ns_static.doc("Static files")
@@ -40,9 +43,22 @@ class ExecuteModel(Resource):
     # @auth.login_required
     @ns_sdm.doc("Run a model with model parameters")
     def post(self, model_name):
+        """Execute a PySD model
 
-        sem.acquire()
+        Args:
+            model_name (str): Model name
+
+        Raises:
+            Exception: No or wrong model specified, model error etc.
+
+        Returns:
+            str|JSON: A JSON string containing an array of result objects
+        """
         try:
+            sem.acquire()
+            if model_name == 'undefined' or not model_name:
+                raise Exception(
+                    "No or wrong model name specified: %s" % (model_name))
             # First load or retrieve model
             pysd_model = load_model(model_name, True)
             pysd_model.set_initial_condition('current')
@@ -65,8 +81,8 @@ class ExecuteModel(Resource):
             data.reset_index(inplace=True)
             return Response(data.to_json(orient='records'), mimetype="application/json")
         except Exception as ex:
-            return { "message": str(ex), "details": traceback.format_exc()}, 400
-        finally:            
+            return {"message": str(ex), "details": traceback.format_exc()}, 400
+        finally:
             sem.release()
 
     # Serve model documentation
@@ -85,21 +101,15 @@ class ModelDocumentation(Resource):
         Returns:
             [type]: [description]
         """
-        # sem.acquire()
         try:
-            params = request.get_json()  # data is empty
-            sem.acquire()
+            if model_name == "undefined" or not model_name:
+                raise Exception("No or wrong model name specified %s" % (model_name))
             pysd_model = load_model(model_name)
             data = pysd_model.doc()
-            sem.release()
             data.reset_index(inplace=True)
             return Response(data.to_json(orient='records'), mimetype="application/json")
         except Exception as ex:
-            return { "message": str(ex), "details": traceback.format_exc()}, 400
-        finally:
-            # sem.release()
-            pass
-
+            return {"message": str(ex), "details": traceback.format_exc()}, 400
 
 @ns_sdm.route("/storage/<string:model>/<string:key>", methods=['GET', 'POST', 'DELETE'])
 @ns_sdm.doc("Key value store")
