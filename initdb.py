@@ -40,5 +40,5 @@ for key in ['runar', 'antoni']:
 for key in ['vidzeme', 'hame', 'galilee']:
     add_user(key, key, UserRoles.ADMIN)
 
-for key in ['demo', 'patrick', 'pavel']:
+for key in ['demo', 'patrick', 'pavel', 'test']:
     add_user(key, key, UserRoles.VIEWER)
