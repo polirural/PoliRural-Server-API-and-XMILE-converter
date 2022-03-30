@@ -9,6 +9,7 @@ from lib.api.server import ns_sdm, ns_static, sem, ns_auth
 from lib.api.db import db, any_json_object, Store, Users, auth_request_model
 from lib.api.auth import auth
 from lib.api.pysdutil import load_model, create_lookup
+from werkzeug.security import generate_password_hash
 
 
 @ns_auth.route("/login")
@@ -16,17 +17,20 @@ from lib.api.pysdutil import load_model, create_lookup
 class AuthLogin(Resource):
     @ns_auth.expect(auth_request_model)
     def post(self):
-        params = request.get_json()
-        print(params)
-        user = Users.query.filter_by(
-            username=params["username"], password=params["password"]).first()
-        if not user:
-            return err_response("No user", "No user found")
-        else:
-            user_res = user.as_dict()
-            print(user_res)
-            del user_res["password"]
-            return user_res
+        try:
+            params = request.get_json()
+            print(params)
+            user = Users.query.filter_by(
+                username=params["username"]).first()
+            if not user or not user.check_password(params["password"]):            
+                raise Exception("No matching username/password found")
+            else:
+                user_res = user.as_dict()
+                del user_res["password"]
+                print(user_res)
+                return user_res
+        except Exception as ex:
+                return err_response("Authentication error", str(ex))
 
 
 @ns_static.route("/static/<string:filename>", methods=["GET"])

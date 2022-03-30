@@ -1,18 +1,18 @@
 from flask_httpauth import HTTPBasicAuth
-from werkzeug.security import generate_password_hash
 from lib.api.db import db, Users
 auth = HTTPBasicAuth()
 
-users = {
-    "runar": generate_password_hash("runar"),
-    "antoni": generate_password_hash("antoni"),
-    "guest": generate_password_hash("guest")
-}
+from enum import Enum
+
+class UserRoles(Enum):
+    SUPERADMIN="superadmin"
+    ADMIN="admin"
+    VIEWER="viewer"
 
 @auth.verify_password
 def verify_password(username, password):
-    user = Users.query.filter_by(username = username, password=password).first()
-    if not user:
+    user = Users.query.filter_by(username = username).first()
+    if not user or not user.check_password(password):
         return None
     else:
         return user.username, user.role

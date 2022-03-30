@@ -4,6 +4,7 @@ from sqlalchemy import (JSON)
 from config import SQLALCHEMY_CONNSTR
 from flask_restx import fields
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 server.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_CONNSTR
 server.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -35,6 +36,12 @@ class Users(db.Model, CustomModel):
     username = db.Column(db.String, primary_key=True)
     password = db.Column(db.String, nullable=False)
     role = db.Column(JSON, nullable=True)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)    
 
     def __repr__(self):
         return '<User %r>' % self.username
