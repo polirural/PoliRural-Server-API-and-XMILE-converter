@@ -1,4 +1,5 @@
 import traceback
+import logging
 
 from flask import Response, request, send_from_directory, jsonify
 from flask_restx import Resource
@@ -19,6 +20,7 @@ class AuthLogin(Resource):
     def post(self):
         try:
             params = request.get_json()
+            logging.debug(params)
             print(params)
             user = Users.query.filter_by(
                 username=params["username"]).first()
@@ -27,7 +29,7 @@ class AuthLogin(Resource):
             else:
                 user_res = user.as_dict()
                 del user_res["password"]
-                print(user_res)
+                logging(user_res)
                 return user_res
         except Exception as ex:
                 return err_response("Authentication error", str(ex))
