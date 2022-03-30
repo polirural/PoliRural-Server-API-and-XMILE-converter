@@ -8,6 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 server.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_CONNSTR
 server.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+server.config['SECRET_KEY'] = 'iruhgfaæmpæmfæpqmo8731t4huoøbøv%&(/)&(/PBDbkalsf'
 
 db = SQLAlchemy(server)
 
