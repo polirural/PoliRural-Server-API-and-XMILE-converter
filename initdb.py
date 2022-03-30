@@ -9,7 +9,6 @@ print(config.SQLALCHEMY_CONNSTR)
 
 def add_user(username, password, role):
     try:
-        password = generate_password_hash(password)
         n = Users.query.filter_by(username=username).first()
         if n == None:
             n = Users(username=username, role=[role.value])
