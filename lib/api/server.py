@@ -21,13 +21,13 @@ api = Api(
 
 ns_sdm = api.namespace(
     '%ssdm' % (APP_BASE_PATH),
-    description='System dynamics operations',
+    description='System dynamics model execution and documentation operations',
     decorators=[cross_origin()]
 )
 
 ns_auth = api.namespace(
     '%sauth' % (APP_BASE_PATH),
-    description='Authenticatoin operations',
+    description='Authentication and user management operations',
     decorators=[cross_origin()]
 )
 

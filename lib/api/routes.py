@@ -7,7 +7,7 @@ from flask_restx import Resource
 from config import STATIC_PATH
 from lib.api.util import err_response, empty_response, val_response
 from lib.api.server import ns_sdm, ns_static, sem, ns_auth
-from lib.api.db import db, any_json_object, Store, Users, auth_request_model
+from lib.api.db import db, any_json_object, Store, Users, auth_request_model, auth_register_model
 from lib.api.auth import auth
 from lib.api.pysdutil import load_model, create_lookup
 from werkzeug.security import generate_password_hash
@@ -31,6 +31,29 @@ class AuthLogin(Resource):
         except Exception as ex:
                 return err_response("Authentication error", str(ex))
 
+@ns_auth.route("/register")
+@ns_auth.doc("""Register new user""")
+class AuthRegister(Resource):
+    @ns_auth.expect(auth_register_model)
+    def post(self):
+        try:
+            params = request.get_json()
+            user = Users.query.filter_by(
+                username=params["username"]).first()
+            if user:            
+                raise Exception("Username is already taken")
+            else:
+                user = Users(username=params["username"], role=[params["role"]])
+                user.set_password(params["password"])
+                db.session.add(user)
+                db.session.flush()
+                db.session.commit()
+                user_res = user.as_dict()
+                del user_res["password"]
+                return user_res
+        except Exception as ex:
+                db.session.rollback()
+                return err_response("Error registering user", str(ex))
 
 @ns_static.route("/static/<string:filename>", methods=["GET"])
 @ns_static.doc("Static files")

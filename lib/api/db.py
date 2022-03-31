@@ -52,6 +52,11 @@ auth_request_model = api.model('AuthRequest', {
     'username': fields.String,
     'password': fields.String
 })
+auth_register_model = api.model('AuthRegisterRequest', {
+    'username': fields.String,
+    'password': fields.String,
+    'role': fields.String
+})
 
 auth_response_model = api.model('AuthResponse', {
     'username': fields.String,
