@@ -7,11 +7,10 @@ from flask_restx import Resource
 from config import STATIC_PATH
 from lib.api.util import err_response, empty_response, val_response
 from lib.api.server import ns_sdm, ns_static, sem, ns_auth
-from lib.api.db import db, any_json_object, Store, Users, auth_request_model, auth_register_model
+from lib.api.db import db, any_json_object, Store, Users, auth_request_model, auth_register_model, auth_username_request_model
 from lib.api.auth import auth
 from lib.api.pysdutil import load_model, create_lookup
 from werkzeug.security import generate_password_hash
-
 
 @ns_auth.route("/login")
 @ns_auth.doc("""Do login""")
@@ -54,6 +53,41 @@ class AuthRegister(Resource):
         except Exception as ex:
                 db.session.rollback()
                 return err_response("Error registering user", str(ex))
+
+@ns_auth.route("/user-list")
+@ns_auth.doc("""List registerred users""")
+class AuthUserList(Resource):
+    
+    @auth.login_required(role="superadmin")
+    def get(self):
+        try:
+            users = Users.query.all()
+            r = []
+            for user in users:
+                au = user.as_dict()
+                del au["password"]
+                r.append(au)
+            return r
+        except Exception as ex:
+            db.session.rollback()
+            return err_response("Error getting user list", str(ex))
+
+@ns_auth.route("/delete-user/<username>")
+@ns_auth.doc("""Delete an existing user""")
+class AuthDeleteUser(Resource):    
+    # @ns_auth.expect(auth_username_request_model)
+    @auth.login_required(role="superadmin")
+    def delete(self, username):
+        try:
+            user = Users.query.filter_by(
+                username=username).first()
+            if user:
+                db.session.delete(user)
+                db.session.commit()
+            return {}, 200
+        except Exception as ex:
+            db.session.rollback()
+            return err_response("Error deleting user", str(ex))
 
 @ns_static.route("/static/<string:filename>", methods=["GET"])
 @ns_static.doc("Static files")

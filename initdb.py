@@ -6,7 +6,6 @@ import config
 
 print(config.SQLALCHEMY_CONNSTR)
 
-
 def add_user(username, password, role):
     try:
         n = Users.query.filter_by(username=username).first()
@@ -41,3 +40,18 @@ for key in ['vidzeme', 'hame', 'galilee']:
 
 for key in ['demo', 'patrick', 'pavel', 'test']:
     add_user(key, key, UserRoles.VIEWER)
+
+for key in [
+  "apulia",
+  "central_greece",
+  "central_bohemia",
+  "flanders",
+  "galilee",
+  "gevgelija",
+  "hame",
+  "monaghan",
+  "segobriga",
+  "slovakia",
+  "vidzeme"]:
+    add_user(key, key, UserRoles.VIEWER)
+    add_user("%s_admin" % key, "%s1234" % key, UserRoles.ADMIN)

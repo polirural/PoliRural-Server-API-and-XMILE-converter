@@ -1,0 +1,861 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmile version="1.0" xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" xmlns:isee="http://iseesystems.com/XMILE">
+	<header>
+		<smile version="1.0" namespace="std, isee"/>
+		<name>Flanders Land Use2</name>
+		<uuid>7234f805-6ead-494c-af47-db110bd27ebe</uuid>
+		<vendor>isee systems, inc.</vendor>
+		<product version="2.1.4" isee:build_number="2496" isee:saved_by_v1="true" lang="en">Stella Architect</product>
+	</header>
+	<sim_specs isee:sim_duration="1.5" isee:simulation_delay="0.05" isee:restore_on_start="false" method="Euler" time_units="Year" isee:instantaneous_flows="false" isee:loop_scores="true" isee:loop_exhaustive_allowed="1000">
+		<start>2010</start>
+		<stop>2040</stop>
+		<dt reciprocal="true">4</dt>
+	</sim_specs>
+	<isee:prefs show_module_prefix="true" live_update_on_drag="true" show_restore_buttons="false" layer="model" interface_scale_ui="true" interface_max_page_width="10000" interface_max_page_height="10000" interface_min_page_width="0" interface_min_page_height="0" rerun_on_structure_change="false" saved_runs="5" keep="false" rifp="true"/>
+	<isee:multiplayer_settings include_chat="true" allow_observers="false" advance_time_increment="1" max_advance_time_in_ms="0" observer_start_page="home_page" enabled="false"/>
+	<isee:time_formats default_format="Builtin">
+		<isee:time_format name="Builtin" type="adaptive"/>
+	</isee:time_formats>
+	<default_format/>
+	<model_units>
+		<unit name="Dimensionless">
+			<eqn>1</eqn>
+			<alias>dmnl</alias>
+			<alias>unitless</alias>
+			<alias>fraction</alias>
+		</unit>
+		<unit name="Hectares">
+			<eqn/>
+			<alias>ha</alias>
+			<alias>hectare</alias>
+		</unit>
+		<unit name="Years">
+			<eqn/>
+			<alias>yr</alias>
+			<alias>year</alias>
+		</unit>
+	</model_units>
+	<model>
+		<variables>
+			<stock name="arable land\nfarms">
+				<eqn>10416</eqn>
+				<inflow>increasing_arable_land_farms</inflow>
+				<inflow>arable_land_new_owners</inflow>
+				<outflow>&quot;retirement_+_abandonment&quot;</outflow>
+				<non_negative/>
+				<units>farm</units>
+			</stock>
+			<flow name="increasing\narable land\nfarms">
+				<eqn>IF (arable_land_farms_profitability &gt;=0.9) AND(agricultural_land_availability&gt;0)
+AND (arable_land_farms_profitability&gt;intensive_farms_profitability)
+THEN
+INT(agricultural_land_availability*max_transformation_per_year/arable_land_farms_average_size)
+ELSE 0</eqn>
+				<non_negative/>
+				<units>farm/Year</units>
+			</flow>
+			<stock name="arable land\nstandby farms">
+				<eqn>10416*0.15</eqn>
+				<inflow>&quot;retirement_+_abandonment&quot;</inflow>
+				<outflow>arable_land_abandonment</outflow>
+				<outflow>arable_land_new_owners</outflow>
+				<outflow>new_uses</outflow>
+				<outflow>to_other_farm_owners</outflow>
+				<non_negative/>
+				<units>farm</units>
+			</stock>
+			<flow name="retirement +\nabandonment">
+				<eqn>IF arable_land_farms_profitability&gt;=0.6 THEN
+retirement_ratio*arable_land_farms
+ELSE 
+(retirement_ratio*arable_land_farms)+
+((1-arable_land_farms_profitability)*arable_land_farms*max_transformation_per_year)</eqn>
+				<non_negative/>
+				<units>farm/Year</units>
+			</flow>
+			<flow name="arable land\nabandonment">
+				<eqn>arable_land_standby_farms/time_before_abandonment</eqn>
+				<non_negative/>
+				<units>farm/Year</units>
+			</flow>
+			<flow name="arable land\nnew owners">
+				<eqn>IF arable_land_farms_profitability&gt;0.7 THEN
+&quot;retirement_+_abandonment&quot;*
+(access_to_newcomers-average_environmental_permissions_denials)
+ELSE 0</eqn>
+				<non_negative/>
+				<units>farm/Year</units>
+			</flow>
+			<flow name="new uses">
+				<eqn>IF arable_land_farms_profitability&lt;0.5 THEN
+arable_land_standby_farms*new_uses_ratio
+ELSE 0</eqn>
+				<non_negative/>
+				<units>farm/Year</units>
+			</flow>
+			<flow name="to other\nfarm\nowners">
+				<eqn>IF arable_land_farms_profitability&gt;0.5  
+THEN
+arable_land_standby_farms*max_transformation_per_year
+ELSE 0</eqn>
+				<non_negative/>
+				<units>farm/Year</units>
+			</flow>
+			<aux name="initial\nfarms' average\nsize">
+				<eqn>21.77</eqn>
+				<units>ha/farm</units>
+			</aux>
+			<aux name="current\nagricultural\nland">
+				<eqn>arable_land+intensive_farm_land</eqn>
+				<units>ha</units>
+			</aux>
+			<aux name="maximum\nagricultural\nland">
+				<eqn>622738</eqn>
+				<units>ha</units>
+			</aux>
+			<aux name="average environmental\npermissions denials">
+				<eqn>0.063</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="arable land farms\nprofitability">
+				<eqn>(size_effect_on_profitability+CAP_effect_on_arable_land_farms_profitability)/2</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="new uses\nratio">
+				<eqn>0.15</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<stock name="converted\nfarms">
+				<eqn>10416*0.15*0.15</eqn>
+				<inflow>new_uses</inflow>
+				<inflow>new_uses_2</inflow>
+				<non_negative/>
+				<units>farm</units>
+			</stock>
+			<stock name="intensive\nfarms">
+				<eqn>17915</eqn>
+				<inflow>increasing_intensive_farms</inflow>
+				<inflow>intensive_farm_new_owners</inflow>
+				<outflow>&quot;intensive_farms_retirement_+_abandonment&quot;</outflow>
+				<non_negative/>
+				<units>farm</units>
+			</stock>
+			<flow name="increasing\nintensive farms">
+				<eqn>IF agricultural_land_availability&gt;0 AND (intensive_farms_profitability &gt;=1) 
+AND (intensive_farms_profitability&gt;arable_land_farms_profitability)
+THEN
+INT(agricultural_land_availability*max_transformation_per_year/intensive_farm_average_size)
+ELSE 0</eqn>
+				<non_negative/>
+				<units>farm/Year</units>
+			</flow>
+			<stock name="intensive\nstandby farms">
+				<eqn>17915*0.15</eqn>
+				<inflow>&quot;intensive_farms_retirement_+_abandonment&quot;</inflow>
+				<outflow>intensive_farms_abandonment</outflow>
+				<outflow>new_uses_2</outflow>
+				<outflow>to_other_intensive_farms_owners</outflow>
+				<outflow>intensive_farm_new_owners</outflow>
+				<non_negative/>
+				<units>farm</units>
+			</stock>
+			<flow name="intensive farms\nabandonment">
+				<eqn>intensive_standby_farms/time_before_abandonment</eqn>
+				<non_negative/>
+				<units>farm/Year</units>
+			</flow>
+			<flow name="new uses 2">
+				<eqn>IF intensive_farms_profitability&lt;0.7 THEN
+intensive_standby_farms*new_uses_ratio
+ELSE 0</eqn>
+				<non_negative/>
+				<units>farm/Year</units>
+			</flow>
+			<flow name="intensive\nfarms retirement\n+ abandonment">
+				<eqn>IF intensive_farms_profitability&gt;=1 THEN
+intensive_farms*retirement_ratio
+ELSE
+(intensive_farms*retirement_ratio)+
+((1-intensive_farms_profitability)*intensive_farms*max_transformation_per_year)</eqn>
+				<non_negative/>
+				<units>farm/Year</units>
+			</flow>
+			<flow name="to other\nintensive farms\nowners">
+				<eqn>IF intensive_farms_profitability&gt;0.7 AND intensive_farms_profitability&lt;0.9 THEN
+intensive_standby_farms*max_transformation_per_year
+ELSE 0</eqn>
+				<non_negative/>
+				<units>farm/Year</units>
+			</flow>
+			<aux name="agricultural\nland availability">
+				<eqn>MAX(0, maximum_agricultural_land-current_agricultural_land)</eqn>
+				<units>ha</units>
+			</aux>
+			<aux name="intensive farms\nprofitability">
+				<eqn>(energy_price_effect_on_profitability+CAP_effect_on_intensive_farm_profitability)/2</eqn>
+				<units>dmnl</units>
+			</aux>
+			<flow name="intensive farm\nnew owners">
+				<eqn>IF intensive_farms_profitability&gt;0.9 THEN
+&quot;intensive_farms_retirement_+_abandonment&quot;*
+(1-average_environmental_permissions_denials)*
+access_to_newcomers
+ELSE 0</eqn>
+				<non_negative/>
+				<units>farm/Year</units>
+			</flow>
+			<aux name="arable land">
+				<eqn>arable_land_farms*arable_land_farms_average_size</eqn>
+				<units>ha</units>
+			</aux>
+			<aux name="energy price\nindex">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2010" max="2040"/>
+					<yscale min="0" max="10"/>
+					<ypts>1,1.16,1.21,1.235,1.126,1.18,1.311,1.508,1.60375,1.6995,1.79525,1.891,1.967,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="energy price\neffect on\nprofitability">
+				<eqn>energy_price_index</eqn>
+				<gf>
+					<xscale min="0.8" max="10"/>
+					<yscale min="0" max="1.2"/>
+					<ypts>1.2,0.96639290437846,0.778262704694196,0.62675629629905,0.504744031264938,0.40648420861818,0.327352879125419,0.263626249678887,0.212305447581317,0.170975398419565,0.137691176546623,0.110886480008482,0.0892999228930841,0.0719156765378501,0.0579156662664623,0.0466410741102168,0.0375613358939195</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="CAP direct\npayments\nevolution">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2010" max="2040"/>
+					<yscale min="0" max="1"/>
+					<ypts>0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.2,0.175,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="Eco-schemes\nevolution">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2023" max="2040"/>
+					<yscale min="0" max="0.05"/>
+					<ypts>0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025,0.025</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="CAP effect\non arable land\nfarms profitability">
+				<eqn>CAP_direct_payments_evolution+&quot;Eco-schemes_evolution&quot;</eqn>
+				<gf>
+					<xscale min="0" max="0.5"/>
+					<yscale min="0" max="1"/>
+					<ypts>0,0.285488086543384,0.492794985682873,0.643330690871745,0.752642048239854,0.832018385133925,0.889657435735991,0.931511976828523,0.961904611540026,0.983974193969917,1</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="CAP effect\non intensive farm\nprofitability">
+				<eqn>&quot;Eco-schemes_evolution&quot;+CAP_direct_payments_evolution</eqn>
+				<gf>
+					<xscale min="0" max="0.5"/>
+					<yscale min="0" max="1"/>
+					<ypts>0.894,0.91,0.922,0.937,0.952,0.962,0.967,0.967,0.972,0.977,0.98</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="size effect\non profitability">
+				<eqn>arable_land_farms_average_size</eqn>
+				<gf type="extrapolate">
+					<xscale min="0" max="200"/>
+					<yscale min="0" max="1.2"/>
+					<ypts>0,0.712629725952244,1.00205852885125,1.11960769765082,1.16734934239062,1.18673922549858,1.19461426979145,1.19781265537579,1.19911165382783,1.19963923154912,1.19985350297613,1.19994052758422,1.19997587192536,1.19999022674382,1.19999605683731,1.19999842468265,1.1999993863639,1.19999977694296,1.19999993557349,1.2</ypts>
+				</gf>
+				<units>dmnl</units>
+			</aux>
+			<aux name="retirement\nratio">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2010" max="2040"/>
+					<yscale min="0" max="1"/>
+					<ypts>0.15,0.14,0.135,0.135,0.135,0.135,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15</ypts>
+				</gf>
+				<units>dmnl/year</units>
+			</aux>
+			<stock name="arable land farms\naverage size">
+				<eqn>initial_farms&apos;_average_size</eqn>
+				<inflow>increasing_average_size</inflow>
+				<non_negative/>
+				<units>ha/farm</units>
+			</stock>
+			<flow name="increasing\naverage size">
+				<eqn>to_other_farm_owners*arable_land_farms_average_size/arable_land_farms</eqn>
+				<non_negative/>
+				<units>ha/farm/Year</units>
+			</flow>
+			<aux name="access to\nnewcomers">
+				<doc>this is 0,5 as an example. It could be another value or even be changing in time</doc>
+				<eqn>0.8</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="time before\nabandonment">
+				<eqn>4</eqn>
+				<units>year</units>
+			</aux>
+			<aux name="intensive\nfarm land">
+				<eqn>intensive_farms*intensive_farm_average_size</eqn>
+				<units>ha</units>
+			</aux>
+			<stock name="intensive farm\naverage size">
+				<eqn>initial_farms&apos;_average_size</eqn>
+				<inflow>increasing_intensive_farm_size</inflow>
+				<non_negative/>
+				<units>ha/farm</units>
+			</stock>
+			<flow name="increasing\nintensive farm\nsize">
+				<eqn>to_other_intensive_farms_owners*intensive_farm_average_size/intensive_farms</eqn>
+				<non_negative/>
+				<units>ha/farm/Year</units>
+			</flow>
+			<aux name="max transformation\nper year">
+				<eqn>0.2</eqn>
+				<units>dmnl/year</units>
+			</aux>
+			<aux name="farms average\nsize">
+				<eqn>(arable_land_farms_average_size*0.73)+(intensive_farm_average_size*0.27)</eqn>
+				<units>ha/farm</units>
+			</aux>
+		</variables>
+		<views>
+			<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
+				<text_box color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<isee:loop_indicator color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<numeric_display color="blue" background="white" font_size="9pt" isee:transparent="false"/>
+				<graph color="black" background="white" font_size="12pt" axis_color="#666666" grid_color="#C8C8C8" isee:graph_area_color="white" legend_position="bottom" isee:transparent="false" isee:hide_border="false" axis_title_font_style="normal" axis_title_font_weight="normal" axis_title_text_decoration="none" axis_title_text_align="center" axis_title_vertical_text_align="center" axis_title_font_color="black" axis_title_font_family="Arial" axis_title_font_size="12pt" axis_title_text_padding="2" axis_title_text_border_color="black" axis_title_text_border_width="thin" axis_title_text_border_style="none" axis_label_font_style="normal" axis_label_font_weight="normal" axis_label_text_decoration="none" axis_label_text_align="center" axis_label_vertical_text_align="center" axis_label_font_color="black" axis_label_font_family="Arial" axis_label_font_size="9pt" axis_label_text_padding="2" axis_label_text_border_color="black" axis_label_text_border_width="thin" axis_label_text_border_style="none">
+					<isee:series_styles>
+						<isee:series_style color="blue" thickness="1"/>
+						<isee:series_style color="red" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="fuchsia" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="#008F44" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#FF7F00" thickness="1"/>
+						<isee:series_style color="#7F00FF" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="#0CA0FF" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="lime" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#FF007F" thickness="1"/>
+						<isee:series_style color="aqua" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="#F586FF" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="black" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#C8C8C8" thickness="1"/>
+					</isee:series_styles>
+				</graph>
+				<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous" header_font_style="normal" header_font_weight="normal" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="12pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
+				<button color="black" background="#E0E0E0" font_size="12pt" border_width="thin" border_style="solid" transparent="false" corner_radius="0" isee:flat="false" icon_side="top" isee:highlight_on_hover="false" isee:highlight_color="#959595"/>
+				<isee:annotation color="black" background="#E0E0E0" font_size="12pt" border_width="thin" border_style="solid" transparent="false" corner_radius="0" isee:flat="false" icon_side="top" isee:highlight_on_hover="false" isee:highlight_color="#959595" popup_corner_radius="0" popup_background_color="#FFFECF"/>
+				<slider color="#66CC66" background="#E0E0E0" font_size="12pt" num_ticks="3" label_side="top" wrap_title="true" vertical="false" isee:fancy_appearance="false" isee:show_hover_tip="when_deciding" input_expands="true" input_width="100"/>
+				<isee:dual_slider color="black" background="white" font_size="12pt" num_ticks="3" label_side="top" wrap_title="true" isee:show_hover_tip="when_deciding" input_expands="true" input_width="100"/>
+				<isee:sim_speed_slider color="black" background="white"/>
+				<isee:time_slider color="#E95F74" background="silver"/>
+				<isee:pie_input color="black" background="white" font_size="12pt" legend_position="bottom" isee:transparent="false"/>
+				<knob color="#66CC66" background="#E0E0E0" font_size="12pt" label_side="bottom" wrap_title="true"/>
+				<numeric_input color="black" background="#E0E0E0" font_size="12pt" label_side="left" wrap_title="true" input_expands="false" input_width="100"/>
+				<switch color="black" background="#E0E0E0" font_size="12pt" label_side="top" wrap_title="true" isee:appearance="switch" isee:on_color="green"/>
+				<options color="black" background="white" appearance="radio-buttons" arrangement="vertical"/>
+				<graphical_input color="black" background="#E0E0E0" font_size="12pt" isee:show_hover_tip="true"/>
+				<group_input color="black" background="#E0E0E0" font_size="12pt"/>
+				<lamp color="black" background="white" font_size="9pt"/>
+				<gauge color="black" background="white" font_size="9pt" needle_color="#F09F72" bar_color="#EEEEEE" bar_progress_color="black" appearance="radial" num_major_ticks="11" num_minor_ticks="11" show_numeric_value="true"/>
+				<isee:spatial_map color="black" background="white" font_size="12pt"/>
+				<isee:animation_object color="black" background="white" font_size="12pt"/>
+				<isee:navigation_widget color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt" border_color="#999999" border_width="thin" border_style="solid" item_spacing="6" appearance="tabs" corner_radius="4" selected_item_color="black" selected_item_background="white" item_background="#DDDDDD"/>
+				<isee:shape color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt" border_width="thin" border_style="solid" opacity="1" transparent_background="true"/>
+				<isee:selector color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<isee:iframe color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt" border_width="thin" border_style="solid"/>
+				<isee:financial_table color="black" background="#E0E0E0" text_align="right" font_size="12pt" hide_border="false" auto_fit="true" first_column_width="250" other_column_width="100" header_font_style="normal" header_font_weight="bold" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="14pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
+			</style>
+			<view isee:show_pages="false" background="white" page_width="826" page_height="579" isee:scroll_x="19.375" zoom="160" isee:popup_graphs_are_comparative="true" isee:enable_non_negative_highlights="false" type="stock_flow">
+				<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
+					<stock color="blue" background="white" font_color="blue" font_size="9pt" label_side="top">
+						<shape type="rectangle" width="45" height="35"/>
+					</stock>
+					<flow color="blue" background="white" font_color="blue" font_size="9pt" label_side="bottom"/>
+					<isee:placeholder color="#228B22" background="white" font_color="#228B22" font_size="9pt" label_side="bottom"/>
+					<module color="blue" background="white" font_color="blue" font_size="9pt" label_side="top">
+						<shape type="rectangle" width="55" height="45"/>
+					</module>
+					<aux color="blue" background="white" font_color="blue" font_size="9pt" label_side="bottom">
+						<shape type="circle" radius="18"/>
+					</aux>
+					<group color="red" background="white" font_color="red" font_size="9pt"/>
+					<connector color="#FF007F" background="white" font_color="#FF007F" font_size="9pt" isee:thickness="1"/>
+					<text_box color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+					<isee:loop_indicator color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+					<numeric_display color="blue" background="white" font_size="9pt" isee:transparent="false"/>
+					<graph color="black" background="white" font_size="12pt" axis_color="#666666" grid_color="#C8C8C8" isee:graph_area_color="white" legend_position="bottom" isee:transparent="false" isee:hide_border="false" axis_title_font_style="normal" axis_title_font_weight="normal" axis_title_text_decoration="none" axis_title_text_align="center" axis_title_vertical_text_align="center" axis_title_font_color="black" axis_title_font_family="Arial" axis_title_font_size="12pt" axis_title_text_padding="2" axis_title_text_border_color="black" axis_title_text_border_width="thin" axis_title_text_border_style="none" axis_label_font_style="normal" axis_label_font_weight="normal" axis_label_text_decoration="none" axis_label_text_align="center" axis_label_vertical_text_align="center" axis_label_font_color="black" axis_label_font_family="Arial" axis_label_font_size="9pt" axis_label_text_padding="2" axis_label_text_border_color="black" axis_label_text_border_width="thin" axis_label_text_border_style="none">
+						<isee:series_styles>
+							<isee:series_style color="blue" thickness="1"/>
+							<isee:series_style color="red" thickness="1" pen_style="dot_dashed"/>
+							<isee:series_style color="fuchsia" thickness="1" pen_style="dotted"/>
+							<isee:series_style color="#008F44" thickness="1" pen_style="dashed"/>
+							<isee:series_style color="#FF7F00" thickness="1"/>
+							<isee:series_style color="#7F00FF" thickness="1" pen_style="dot_dashed"/>
+							<isee:series_style color="#0CA0FF" thickness="1" pen_style="dotted"/>
+							<isee:series_style color="lime" thickness="1" pen_style="dashed"/>
+							<isee:series_style color="#FF007F" thickness="1"/>
+							<isee:series_style color="aqua" thickness="1" pen_style="dot_dashed"/>
+							<isee:series_style color="#F586FF" thickness="1" pen_style="dotted"/>
+							<isee:series_style color="black" thickness="1" pen_style="dashed"/>
+							<isee:series_style color="#C8C8C8" thickness="1"/>
+						</isee:series_styles>
+					</graph>
+					<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous" header_font_style="normal" header_font_weight="normal" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="12pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
+				</style>
+				<stock label_side="center" x="435.139" y="125.972" width="51.1111" height="38.3333" name="arable land\nfarms"/>
+				<flow label_side="top" x="401.945" y="142.847" name="increasing\narable land\nfarms">
+					<pts>
+						<pt x="368.75" y="142.847"/>
+						<pt x="435.139" y="142.847"/>
+					</pts>
+				</flow>
+				<stock label_side="center" x="560.625" y="122.466" width="67.9167" height="42.5694" name="arable land\nstandby farms"/>
+				<flow x="517.438" y="143.472" name="retirement +\nabandonment">
+					<pts>
+						<pt x="486.25" y="143.472"/>
+						<pt x="560.625" y="143.472"/>
+					</pts>
+				</flow>
+				<flow x="665.326" y="143.333" name="arable land\nabandonment">
+					<pts>
+						<pt x="628.542" y="143.333"/>
+						<pt x="726.111" y="143.333"/>
+					</pts>
+				</flow>
+				<flow x="520.695" y="76.5972" name="arable land\nnew owners">
+					<pts>
+						<pt x="581.25" y="122.466"/>
+						<pt x="581.25" y="76.5972"/>
+						<pt x="460.139" y="76.5972"/>
+						<pt x="460.139" y="125.972"/>
+					</pts>
+				</flow>
+				<flow label_side="right" x="615.833" y="197.962" name="new uses">
+					<pts>
+						<pt x="615.833" y="165.035"/>
+						<pt x="615.833" y="242.889"/>
+					</pts>
+				</flow>
+				<flow x="527.938" y="199.018" name="to other\nfarm\nowners">
+					<pts>
+						<pt x="573.75" y="165.035"/>
+						<pt x="573.75" y="199.018"/>
+						<pt x="458.125" y="199.018"/>
+					</pts>
+				</flow>
+				<aux label_side="top" x="44.8607" y="88.8609" name="initial\nfarms' average\nsize"/>
+				<aux label_side="right" label_angle="45" x="133.75" y="245.444" name="current\nagricultural\nland"/>
+				<aux x="232.222" y="245.444" name="maximum\nagricultural\nland"/>
+				<connector uid="4" angle="318.601">
+					<from>maximum_agricultural_land</from>
+					<to>agricultural_land_availability</to>
+				</connector>
+				<connector uid="5" angle="218.418">
+					<from>arable_land_farms</from>
+					<to>arable_land</to>
+				</connector>
+				<aux label_side="right" x="633.833" y="40.2222" name="average environmental\npermissions denials"/>
+				<connector uid="7" angle="225.342">
+					<from>average_environmental_permissions_denials</from>
+					<to>arable_land_new_owners</to>
+				</connector>
+				<aux label_side="top" x="395.556" y="46.8509" name="arable land farms\nprofitability"/>
+				<connector uid="12" angle="43.2074">
+					<from>arable_land_farms_profitability</from>
+					<to>arable_land_new_owners</to>
+				</connector>
+				<connector uid="13" angle="325.335">
+					<from>arable_land_standby_farms</from>
+					<to>new_uses</to>
+				</connector>
+				<aux x="680.896" y="257.111" name="new uses\nratio"/>
+				<connector uid="14" angle="137.726">
+					<from>new_uses_ratio</from>
+					<to>new_uses</to>
+				</connector>
+				<stock label_side="center" x="599.764" y="242.889" width="52.2222" height="42.7778" name="converted\nfarms"/>
+				<stock label_side="center" x="441.389" y="346.389" width="55" height="40.5556" name="intensive\nfarms"/>
+				<flow x="400.695" y="364.444" name="increasing\nintensive farms">
+					<pts>
+						<pt x="360" y="364.444"/>
+						<pt x="441.389" y="364.444"/>
+					</pts>
+				</flow>
+				<stock label_side="center" x="568.333" y="348.611" width="61.6667" height="47.2222" name="intensive\nstandby farms"/>
+				<flow x="662.166" y="370" name="intensive farms\nabandonment">
+					<pts>
+						<pt x="630" y="370"/>
+						<pt x="718.333" y="370"/>
+					</pts>
+				</flow>
+				<flow label_side="right" x="615.833" y="323.139" name="new uses 2">
+					<pts>
+						<pt x="615.833" y="348.611"/>
+						<pt x="615.833" y="285.667"/>
+					</pts>
+				</flow>
+				<connector uid="15" angle="241.613">
+					<from>new_uses_ratio</from>
+					<to>new_uses_2</to>
+				</connector>
+				<connector uid="16" angle="42.5342">
+					<from>intensive_standby_farms</from>
+					<to>new_uses_2</to>
+				</connector>
+				<flow x="526.361" y="367.778" name="intensive\nfarms retirement\n+ abandonment">
+					<pts>
+						<pt x="496.389" y="367.778"/>
+						<pt x="568.333" y="367.778"/>
+					</pts>
+				</flow>
+				<flow x="546.722" y="445" name="to other\nintensive farms\nowners">
+					<pts>
+						<pt x="599.444" y="395.833"/>
+						<pt x="599.444" y="445"/>
+						<pt x="470" y="445"/>
+					</pts>
+				</flow>
+				<connector uid="17" angle="219.807">
+					<from>arable_land_farms_profitability</from>
+					<to>increasing_arable_land_farms</to>
+				</connector>
+				<aux label_side="right" x="282.888" y="290.111" name="agricultural\nland availability"/>
+				<connector uid="18" angle="290.687">
+					<from>current_agricultural_land</from>
+					<to>agricultural_land_availability</to>
+				</connector>
+				<connector uid="19" angle="330.751">
+					<from>agricultural_land_availability</from>
+					<to>increasing_intensive_farms</to>
+				</connector>
+				<connector uid="20" angle="38.1169">
+					<from>agricultural_land_availability</from>
+					<to>increasing_arable_land_farms</to>
+				</connector>
+				<aux x="315.417" y="375.889" name="intensive farms\nprofitability"/>
+				<connector uid="21" angle="356.046">
+					<from>intensive_farms_profitability</from>
+					<to>increasing_intensive_farms</to>
+				</connector>
+				<flow x="524.445" y="299.444" name="intensive farm\nnew owners">
+					<pts>
+						<pt x="580" y="348.611"/>
+						<pt x="580" y="299.444"/>
+						<pt x="468.889" y="299.444"/>
+						<pt x="468.889" y="346.389"/>
+					</pts>
+				</flow>
+				<aux x="229.194" y="199.018" name="arable land"/>
+				<connector uid="23" angle="158.009">
+					<from>arable_land</from>
+					<to>current_agricultural_land</to>
+				</connector>
+				<aux x="205.639" y="342.194" name="energy price\nindex"/>
+				<aux label_side="top" x="273" y="372.222" name="energy price\neffect on\nprofitability"/>
+				<connector uid="28" angle="335.974">
+					<from>energy_price_index</from>
+					<to>energy_price_effect_on_profitability</to>
+				</connector>
+				<connector uid="29" angle="18.2347">
+					<from>energy_price_effect_on_profitability</from>
+					<to>intensive_farms_profitability</to>
+				</connector>
+				<connector uid="30" angle="51.859">
+					<from>intensive_farms_profitability</from>
+					<to>intensive_farm_new_owners</to>
+				</connector>
+				<connector uid="31" angle="327.381">
+					<from>intensive_farms_profitability</from>
+					<to>&quot;intensive_farms_retirement_+_abandonment&quot;</to>
+				</connector>
+				<aux label_side="left" x="96" y="115.847" width="18" height="18" name="CAP direct\npayments\nevolution"/>
+				<aux label_side="left" x="99.4447" y="245.444" name="Eco-schemes\nevolution"/>
+				<aux label_side="top" x="211.194" y="53.4722" name="CAP effect\non arable land\nfarms profitability"/>
+				<connector uid="34" angle="59.1418">
+					<from>CAP_direct_payments_evolution</from>
+					<to>CAP_effect_on_arable_land_farms_profitability</to>
+				</connector>
+				<connector uid="35" angle="93.0448">
+					<from>&quot;Eco-schemes_evolution&quot;</from>
+					<to>CAP_effect_on_arable_land_farms_profitability</to>
+				</connector>
+				<aux x="141.111" y="404.556" name="CAP effect\non intensive farm\nprofitability"/>
+				<connector uid="36" angle="276.271">
+					<from>&quot;Eco-schemes_evolution&quot;</from>
+					<to>CAP_effect_on_intensive_farm_profitability</to>
+				</connector>
+				<connector uid="37" angle="216.493">
+					<from>CAP_direct_payments_evolution</from>
+					<to>CAP_effect_on_intensive_farm_profitability</to>
+				</connector>
+				<connector uid="38" angle="9.33947">
+					<from>CAP_effect_on_intensive_farm_profitability</from>
+					<to>intensive_farms_profitability</to>
+				</connector>
+				<aux label_side="left" x="315.417" y="58.5972" name="size effect\non profitability"/>
+				<connector uid="40" angle="5.52461">
+					<from>size_effect_on_profitability</from>
+					<to>arable_land_farms_profitability</to>
+				</connector>
+				<connector uid="41" angle="25.35">
+					<from>CAP_effect_on_arable_land_farms_profitability</from>
+					<to>arable_land_farms_profitability</to>
+				</connector>
+				<aux x="674.056" y="85.7083" name="retirement\nratio"/>
+				<connector uid="42" angle="172.312">
+					<from>retirement_ratio</from>
+					<to>&quot;retirement_+_abandonment&quot;</to>
+				</connector>
+				<connector uid="43" angle="148.214">
+					<from>
+						<alias uid="44"/>
+					</from>
+					<to>&quot;intensive_farms_retirement_+_abandonment&quot;</to>
+				</connector>
+				<connector uid="45" angle="19.1667">
+					<from>arable_land_farms</from>
+					<to>&quot;retirement_+_abandonment&quot;</to>
+				</connector>
+				<connector uid="46" angle="26.5654">
+					<from>intensive_farms</from>
+					<to>&quot;intensive_farms_retirement_+_abandonment&quot;</to>
+				</connector>
+				<connector uid="47" angle="341.02">
+					<from>arable_land_farms_profitability</from>
+					<to>&quot;retirement_+_abandonment&quot;</to>
+				</connector>
+				<stock label_side="center" x="238.194" y="93.2914" width="76.6667" height="40.5556" name="arable land farms\naverage size"/>
+				<flow x="202.152" y="115.556" name="increasing\naverage size">
+					<pts>
+						<pt x="166.111" y="115.556"/>
+						<pt x="238.194" y="115.556"/>
+					</pts>
+				</flow>
+				<connector uid="49" angle="150.179">
+					<from>arable_land_farms_average_size</from>
+					<to>increasing_average_size</to>
+				</connector>
+				<connector uid="50" angle="206.687">
+					<from>arable_land_farms</from>
+					<to>increasing_average_size</to>
+				</connector>
+				<connector uid="51" angle="207.747">
+					<from>to_other_farm_owners</from>
+					<to>increasing_average_size</to>
+				</connector>
+				<connector uid="52" angle="54.7227">
+					<from>arable_land_farms_average_size</from>
+					<to>size_effect_on_profitability</to>
+				</connector>
+				<connector uid="53" angle="241.016">
+					<from>arable_land_farms_average_size</from>
+					<to>arable_land</to>
+				</connector>
+				<connector uid="54" angle="326.602">
+					<from>arable_land_farms_average_size</from>
+					<to>increasing_arable_land_farms</to>
+				</connector>
+				<aux x="577.105" y="22.2222" name="access to\nnewcomers"/>
+				<connector uid="55" angle="212.954">
+					<from>access_to_newcomers</from>
+					<to>arable_land_new_owners</to>
+				</connector>
+				<connector uid="58" angle="138.406">
+					<from>
+						<alias uid="57"/>
+					</from>
+					<to>to_other_farm_owners</to>
+				</connector>
+				<connector uid="59" angle="10.8031">
+					<from>arable_land_standby_farms</from>
+					<to>arable_land_abandonment</to>
+				</connector>
+				<aux x="715.556" y="197.962" name="time before\nabandonment"/>
+				<connector uid="60" angle="109.959">
+					<from>time_before_abandonment</from>
+					<to>arable_land_abandonment</to>
+				</connector>
+				<connector uid="61" angle="210.459">
+					<from>arable_land_standby_farms</from>
+					<to>to_other_farm_owners</to>
+				</connector>
+				<connector uid="63" angle="36.4669">
+					<from>
+						<alias uid="57"/>
+					</from>
+					<to>new_uses</to>
+				</connector>
+				<connector uid="64" angle="10.7679">
+					<from>
+						<alias uid="65"/>
+					</from>
+					<to>intensive_farm_new_owners</to>
+				</connector>
+				<connector uid="67" angle="268">
+					<from>
+						<alias uid="66"/>
+					</from>
+					<to>increasing_intensive_farms</to>
+				</connector>
+				<aux x="255.555" y="422.556" name="intensive\nfarm land"/>
+				<connector uid="27" angle="172.875">
+					<from>intensive_farm_land</from>
+					<to>current_agricultural_land</to>
+				</connector>
+				<stock label_side="center" x="362.889" y="453.222" width="72.7778" height="37.7778" name="intensive farm\naverage size"/>
+				<flow x="318.111" y="471.667" name="increasing\nintensive farm\nsize">
+					<pts>
+						<pt x="273.333" y="471.667"/>
+						<pt x="362.889" y="471.667"/>
+					</pts>
+				</flow>
+				<connector uid="68" angle="169.575">
+					<from>intensive_farm_average_size</from>
+					<to>increasing_intensive_farm_size</to>
+				</connector>
+				<connector uid="69" angle="232.948">
+					<from>to_other_intensive_farms_owners</from>
+					<to>increasing_intensive_farm_size</to>
+				</connector>
+				<connector uid="70" angle="209.638">
+					<from>intensive_farms</from>
+					<to>increasing_intensive_farm_size</to>
+				</connector>
+				<connector uid="71" angle="134.36">
+					<from>intensive_farm_average_size</from>
+					<to>intensive_farm_land</to>
+				</connector>
+				<connector uid="72" angle="99.3427">
+					<from>intensive_farm_average_size</from>
+					<to>increasing_intensive_farms</to>
+				</connector>
+				<connector uid="73" angle="227.121">
+					<from>intensive_farms</from>
+					<to>intensive_farm_land</to>
+				</connector>
+				<connector uid="75" angle="264.559">
+					<from>
+						<alias uid="74"/>
+					</from>
+					<to>increasing_arable_land_farms</to>
+				</connector>
+				<connector uid="76" angle="271.888">
+					<from>time_before_abandonment</from>
+					<to>intensive_farms_abandonment</to>
+				</connector>
+				<connector uid="77" angle="10.5013">
+					<from>intensive_standby_farms</from>
+					<to>intensive_farms_abandonment</to>
+				</connector>
+				<connector uid="79" angle="263.224">
+					<from>
+						<alias uid="80"/>
+					</from>
+					<to>intensive_farm_new_owners</to>
+				</connector>
+				<connector uid="81" angle="90">
+					<from>
+						<alias uid="82"/>
+					</from>
+					<to>new_uses_2</to>
+				</connector>
+				<connector uid="83" angle="241.189">
+					<from>
+						<alias uid="82"/>
+					</from>
+					<to>to_other_intensive_farms_owners</to>
+				</connector>
+				<connector uid="84" angle="238.622">
+					<from>intensive_standby_farms</from>
+					<to>to_other_intensive_farms_owners</to>
+				</connector>
+				<aux x="300.111" y="191.333" name="max transformation\nper year"/>
+				<connector uid="87" angle="25.4605">
+					<from>max_transformation_per_year</from>
+					<to>increasing_arable_land_farms</to>
+				</connector>
+				<connector uid="88" angle="140.998">
+					<from>
+						<alias uid="89"/>
+					</from>
+					<to>increasing_intensive_farms</to>
+				</connector>
+				<connector uid="90" angle="350.179">
+					<from>max_transformation_per_year</from>
+					<to>&quot;retirement_+_abandonment&quot;</to>
+				</connector>
+				<connector uid="91" angle="32.6206">
+					<from>
+						<alias uid="89"/>
+					</from>
+					<to>&quot;intensive_farms_retirement_+_abandonment&quot;</to>
+				</connector>
+				<connector uid="92" angle="342.394">
+					<from>max_transformation_per_year</from>
+					<to>to_other_farm_owners</to>
+				</connector>
+				<connector uid="93" angle="9.01991">
+					<from>
+						<alias uid="89"/>
+					</from>
+					<to>to_other_intensive_farms_owners</to>
+				</connector>
+				<aux x="202.152" y="476.667" name="farms average\nsize"/>
+				<connector uid="95" angle="16.1573">
+					<from>
+						<alias uid="94"/>
+					</from>
+					<to>farms_average_size</to>
+				</connector>
+				<connector uid="96" angle="222.796">
+					<from>intensive_farm_average_size</from>
+					<to>farms_average_size</to>
+				</connector>
+				<connector uid="97" angle="87.2118">
+					<from>&quot;retirement_+_abandonment&quot;</from>
+					<to>arable_land_new_owners</to>
+				</connector>
+				<connector uid="98" angle="81.3802">
+					<from>&quot;intensive_farms_retirement_+_abandonment&quot;</from>
+					<to>intensive_farm_new_owners</to>
+				</connector>
+				<alias color="blue" background="white" font_style="italic" uid="44" x="616.875" y="420.444" width="18" height="18">
+					<shape type="circle" radius="18"/>
+					<of>retirement_ratio</of>
+				</alias>
+				<alias font_style="italic" uid="57" x="558.222" y="224.889" width="18" height="18">
+					<of>arable_land_farms_profitability</of>
+				</alias>
+				<alias font_style="italic" label_side="top" uid="65" x="410.945" y="272.444" width="18" height="18">
+					<of>average_environmental_permissions_denials</of>
+				</alias>
+				<alias font_style="italic" uid="66" x="381.194" y="276" width="18" height="18">
+					<of>arable_land_farms_profitability</of>
+				</alias>
+				<alias font_style="italic" label_side="right" uid="74" x="423.389" y="37.8509" width="18" height="18">
+					<of>intensive_farms_profitability</of>
+				</alias>
+				<alias font_style="italic" label_side="left" uid="80" x="519.722" y="254.444" width="18" height="18">
+					<of>access_to_newcomers</of>
+				</alias>
+				<alias font_style="italic" uid="82" x="691.556" y="420.444" width="18" height="18">
+					<of>intensive_farms_profitability</of>
+				</alias>
+				<alias color="blue" background="white" font_style="italic" uid="89" x="456" y="467.667" width="18" height="18">
+					<shape type="circle" radius="18"/>
+					<of>max_transformation_per_year</of>
+				</alias>
+				<alias font_style="italic" label_side="center" uid="94" x="32.2222" y="460.278" width="76.6667" height="40.5556">
+					<of>arable_land_farms_average_size</of>
+				</alias>
+			</view>
+		</views>
+	</model>
+</xmile>
+

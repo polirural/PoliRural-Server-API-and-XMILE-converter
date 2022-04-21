@@ -23,27 +23,38 @@ for model in [
     pysd_model = pysd.load(f'models/{model[0]}.py', missing_values="warning")
     stocks = pysd_model.run()
     stocks = stocks[[
-        "ELDERLY_POPULATION",
         "farms",
-        #"institutional_support",
-        #"mean_local_income_per_farm",
-        #"mobility_infrastructures",
         "Natural_Capital",
         "NEWCOMERS",
         "broadband_infrastructure_population_covered",
-        "POST_SCHOOL_POPULATION",
         "proportion_of_newcomers",
-        "SCHOOL_AGE_POPULATION",
         "shared_knowledge",
         "social_innovation",
-        #"total_employment",
         "tourist_visitors",
         "workforce_specialization",
+        "INFANTS",
+        "ELDERLY_POPULATION",
+        "SCHOOL_AGE_POPULATION",
+        "POST_SCHOOL_POPULATION",
         "WORKING_AGE_POPULATION",
-        "WORKING_AGE_RURAL_POPULATION"
+        "WORKING_AGE_RURAL_POPULATION",
+        "total_rural_population"
     ]]
     stocks["MODEL"] = model[1]
-    dfo = dfo.append(stocks)
-    stocks.index.rename('TIME_STEP', inplace=True)
+    
+    stocks["proportion_INFANTS"] = stocks["INFANTS"] / stocks["total_rural_population"]
+    stocks["proportion_ELDERLY_POPULATION"] = stocks["ELDERLY_POPULATION"] / stocks["total_rural_population"]
+    stocks["proportion_SCHOOL_AGE_POPULATION"] = stocks["SCHOOL_AGE_POPULATION"] / stocks["total_rural_population"]
+    stocks["proportion_POST_SCHOOL_POPULATION"] = stocks["POST_SCHOOL_POPULATION"] / stocks["total_rural_population"]
+    stocks["proportion_WORKING_AGE_POPULATION"] = stocks["WORKING_AGE_POPULATION"] / stocks["total_rural_population"]
+    stocks["proportion_NEWCOMERS"] = stocks["NEWCOMERS"] / stocks["total_rural_population"]
+    
+    stocks["TIME_STEP"] = stocks.index
+    stocks.insert(0, 'TIME_STEP', stocks.pop('TIME_STEP'))
 
-dfo.to_csv("./tmp/all_data.csv", index_label="TIME_STEP")
+    dfo = dfo.append(stocks)
+    # stocks.index.rename('TIME_STEP', inplace=True)
+
+dfo = dfo[(dfo["TIME_STEP"] >= 2015) & (dfo["TIME_STEP"] <= 2040)]
+
+dfo.to_csv("./tmp/all_data.csv", index=False)

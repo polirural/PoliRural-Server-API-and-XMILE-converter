@@ -15,8 +15,16 @@ def verify_password(username, password):
     if not user or not user.check_password(password):
         return None
     else:
-        return user.username, user.role
+        return user.username
 
 @auth.error_handler
 def auth_error(status):
     return {"error": "Authentication required"}, status
+
+@auth.get_user_roles
+def get_user_roles(username):
+    user = Users.query.filter_by(username = username).first()
+    if not user:
+        return None
+    else:
+        return user.role
