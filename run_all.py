@@ -6,6 +6,27 @@ import logging
 dfo = pd.DataFrame()
 logging.basicConfig(level=logging.DEBUG)
 
+#   calcAggregatedIndex(regionData) {
+#     let weightedSum = 0;
+#     let sumWeight = 0;
+#     for (const key of Object.keys(regionData) as any) {
+#       if (key === 'MODEL' || key === 'TIME_STEP') {
+#         continue;
+#       }
+#       const factorValues = regionData[key];
+#       let sumValue = 0;
+#       let n = 0;
+#       for (const ds of factorValues.datasets) {
+#         sumValue += ds.value;
+#         n += 1;
+#       }
+#       weightedSum += sumValue * factorValues['weight'];
+#       sumWeight += n * factorValues['weight'];
+#     }
+#     return weightedSum / sumWeight;
+#   }
+
+
 for model in [
         ["apulia_v2_p", "Apulia"],
         ["central_bohemia_p", "Central Bohemia"],

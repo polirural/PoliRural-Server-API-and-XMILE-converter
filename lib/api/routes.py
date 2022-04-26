@@ -9,7 +9,7 @@ from lib.api.util import err_response, empty_response, val_response
 from lib.api.server import ns_sdm, ns_static, sem, ns_auth
 from lib.api.db import db, any_json_object, Store, Users, auth_request_model, auth_register_model, auth_username_request_model
 from lib.api.auth import auth
-from lib.api.pysdutil import load_model, create_lookup
+from lib.api.pysdutil import load_model, create_lookup, load_xmile
 from werkzeug.security import generate_password_hash
 
 @ns_auth.route("/login")
@@ -168,6 +168,26 @@ class ModelDocumentation(Resource):
             data = pysd_model.doc()
             data.reset_index(inplace=True)
             return Response(data.to_json(orient='records'), mimetype="application/json")
+        except Exception as ex:
+            return {"message": str(ex), "details": traceback.format_exc()}, 400
+
+@ns_sdm.route("/model/<string:model_name>/xmile", methods=['GET'])
+class ModelXmile(Resource):
+
+    @ns_sdm.doc("Get XMILE as JSON")
+    def get(self, model_name):
+        """Serve model XMILE as JSON
+
+        Args:
+            model_name ([type]): [description]
+
+        Returns:
+            [type]: [description]
+        """
+        try:
+            if model_name == "undefined" or not model_name:
+                raise Exception("No or wrong model name specified %s" % (model_name))
+            return Response(load_xmile(model_name), mimetype="application/json")
         except Exception as ex:
             return {"message": str(ex), "details": traceback.format_exc()}, 400
 
