@@ -21,6 +21,7 @@
 
     <xsl:template match="xmile:variables">
         <xsl:apply-templates select="xmile:aux[xmile:gf]"/>
+        <!-- <xsl:apply-templates select="xmile:aux"/> -->
     </xsl:template>
 
     <xsl:template match="xmile:aux">

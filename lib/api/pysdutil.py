@@ -4,6 +4,7 @@ import numpy as np
 import pysd
 import json
 from lxml import etree
+import re
 
 # Make a model registry
 model_registry = {}
@@ -56,14 +57,36 @@ def load_xmile(model_name):
     Returns:
         model: Pysd model
     """
+    # Setup/register namespaces
+    etree.register_namespace(
+        'xmile', 'http://docs.oasis-open.org/xmile/ns/XMILE/v1.0')
+    etree.register_namespace('isee', 'http://iseesystems.com/XMILE')
+    ns = {
+        'xmile': 'http://docs.oasis-open.org/xmile/ns/XMILE/v1.0',
+        'isee': 'http://iseesystems.com/XMILE',
+    }    
     tree = etree.parse("{}/{}.xmile".format(MODEL_PATH, model_name))
     xslt_root = etree.parse("xml2json.xsl")
     transform = etree.XSLT(xslt_root)
+    
+    params = {}
+    auxs = tree.xpath("//xmile:aux[xmile:eqn]", namespaces=ns)
+    for aux in auxs:
+        eqn = aux.xpath("xmile:eqn", namespaces=ns)
+        # print(eqn)
+        m = re.fullmatch("[\d\\.\*\s\/+\-]*", eqn[0].text)
+        if m != None:
+            print(m.group(0))
+            params[aux.get("name")] = eval(eqn[0].text)
+
     result = transform(tree)
-    json_load = json.loads(str(result))
-    for aux in json_load["variables"]:
+    json_dict = json.loads(str(result))
+    for aux in json_dict["variables"]:
         aux["gf"]["ypts"] = [float(ypt) for ypt in str(aux["gf"]["ypts"]).split(",")]
         for v in ["xmin", "xmax", "ymin", "ymax"]:
             aux["gf"][v] = float(aux["gf"][v])
-    json_dump = json.dumps(json_load, indent=2)
+    
+    params.update(json_dict)
+
+    json_dump = json.dumps(params, indent=2)
     return json_dump;
