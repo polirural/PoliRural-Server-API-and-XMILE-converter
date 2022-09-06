@@ -24,8 +24,11 @@ parser.add_argument("-v", "--verbose", dest="verbose", help="Output debug inform
                     action='store_true', default=False )
 args = parser.parse_args()
 
+impl = logging.getLogger("blib2to3.pgen2.driver")
+impl.setLevel(logging.CRITICAL)
+
 # Setup logging
-logging.basicConfig(format='%(name)s:%(levelname)s:%(message)s', level=logging.INFO)
+logging.basicConfig(format='%(asctime)s;%(name)s;%(levelname)s\t%(message)s', level=logging.INFO)
 if args.verbose:
     logging.getLogger().setLevel(logging.DEBUG)
 

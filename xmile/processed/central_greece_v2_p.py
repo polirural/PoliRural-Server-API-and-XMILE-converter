@@ -5,8 +5,8 @@ Translated using PySD
 
 import numpy as np
 
-from pysd.py_backend.functions import ramp, previous, if_then_else, lookup, step
-from pysd.py_backend.statefuls import Initial, Smooth, Integ, DelayN
+from pysd.py_backend.functions import if_then_else, step, previous, lookup, ramp
+from pysd.py_backend.statefuls import Integ, Initial, Smooth, DelayN
 
 __pysd_version__ = "2.0.0-dev"
 
