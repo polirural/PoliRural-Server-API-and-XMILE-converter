@@ -1,4 +1,6 @@
-# Pysd Polirural Server
+# Polirural Server API and XMILE converter
+
+This repository contains the source code and XMILE source models for the PoliRural server API powering the PoliRural Policy Options Explorer, an innovative system dynamics model web execution framework permitting use of SDM models outside proprietary vendor-locked software.
 
 ## Server application for SD-models in the Polirural Project
 
