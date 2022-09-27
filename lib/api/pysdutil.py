@@ -89,4 +89,4 @@ def load_xmile(model_name):
     params.update(json_dict)
 
     json_dump = json.dumps(params, indent=2)
-    return json_dump;
+    return json_dump
